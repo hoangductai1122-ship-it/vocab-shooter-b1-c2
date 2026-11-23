@@ -25,6 +25,7 @@
   };
 
   const SPEED_PRESETS = {
+    slow:   { baseSpeed: 19, maxSpeed: 30, bossSpeed: 16, spawnInterval: 3.15, minSpawn: 2.2, maxActive: 3 },
     chill:  { baseSpeed: 33, maxSpeed: 54, bossSpeed: 28, spawnInterval: 2.35, minSpawn: 1.55, maxActive: 4 },
     normal: { baseSpeed: 48, maxSpeed: 74, bossSpeed: 38, spawnInterval: 1.85, minSpawn: 1.15, maxActive: 5 },
     fast:   { baseSpeed: 68, maxSpeed: 102, bossSpeed: 50, spawnInterval: 1.45, minSpawn: 0.85, maxActive: 6 }
@@ -1276,8 +1277,8 @@
 
     const curWave = Math.min(game.bossTotalWaves, game.bossWavesDefeated + 1);
     el.bossHudPhase.textContent = game.endless && game.bossOnly
-      ? `Đã hạ ${game.bossWavesDefeated}`
-      : `Đợt ${curWave}/${game.bossTotalWaves}`;
+      ? `👑 #${game.bossWavesDefeated + 1}`
+      : `👑 ${curWave}/${game.bossTotalWaves}`;
 
     const activeBoss = game.activeWords.find(w => w.isBoss);
     const curFillPct = activeBoss
