@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luyện Gõ · Học Từ Vựng Tiếng Anh B1–C2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell" id="app-shell">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <button class="icon-btn back-btn" id="btn-home" title="Chọn mốc & Cài đặt" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="brand-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Luyện Gõ</h1>
+          <p>Gõ các từ tiếng Anh đang rơi để bắn hạ chúng</p>
+        </div>
+      </div>
+
+      <div class="top-bar-right">
+        <div class="quick-level-bar" id="quick-level-bar" role="group" aria-label="Lọc cấp độ CEFR">
+          <button class="lvl-pill active" data-level="ALL">B1–C2</button>
+          <button class="lvl-pill lvl-b1" data-level="B1">B1</button>
+          <button class="lvl-pill lvl-b2" data-level="B2">B2</button>
+          <button class="lvl-pill lvl-c1" data-level="C1">C1</button>
+          <button class="lvl-pill lvl-c2" data-level="C2">C2</button>
+        </div>
+
+        <button class="notebook-btn" id="btn-notebook" title="Sổ từ vựng B1–C2 & Nhập từ mới">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+          </svg>
+          <span>Sổ từ vựng</span>
+          <span class="notebook-count" id="notebook-count">0/1008</span>
+        </button>
+
+        <button class="icon-btn" id="btn-fullscreen" title="Toàn màn hình" aria-label="Toàn màn hình">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Space Arena -->
+    <main class="arena-frame">
+      <section class="arena" id="arena" aria-label="Khu vực chơi bắn từ vựng">
+        <!-- Starfield, lasers, explosions canvas -->
+        <canvas id="fx-canvas"></canvas>
+
+        <!-- Decorative Ringed Planet (Top Right, matching reference) -->
+        <div class="planet-saturn" aria-hidden="true">
+          <svg viewBox="0 0 220 140" fill="none">
+            <defs>
+              <radialGradient id="planetGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.55"/>
+                <stop offset="65%" stop-color="#f9571f" stop-opacity="0.16"/>
+                <stop offset="100%" stop-color="#f9571f" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="planetBody" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#ffb85c"/>
+                <stop offset="45%" stop-color="#eb5e1e"/>
+                <stop offset="100%" stop-color="#87220e"/>
+              </radialGradient>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f3d6a4" stop-opacity="0.9"/>
+                <stop offset="50%" stop-color="#d8aa6e" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#f3d6a4" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <circle cx="110" cy="68" r="64" fill="url(#planetGlow)"/>
+            <!-- Back half of ring -->
+            <path d="M 28 84 A 88 22 -14 0 1 192 52" stroke="url(#ringGrad)" stroke-width="5.5" stroke-linecap="round" opacity="0.65"/>
+            <!-- Planet sphere -->
+            <circle cx="110" cy="68" r="34" fill="url(#planetBody)"/>
+            <!-- Front half of ring -->
+            <path d="M 192 52 A 88 22 -14 0 1 28 84" stroke="url(#ringGrad)" stroke-width="6.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- Top HUD Bar -->
+        <div class="hud-top">
+          <!-- Score pill (Top Left) -->
+          <div class="hud-pill hud-score">
+            <svg class="trophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+            <span class="score-num" id="score-value">0</span>
+            <span class="combo-chip hidden" id="combo-badge">x2</span>
+          </div>
+
+          <!-- Milestone pill (Top Center) -->
+          <button class="hud-pill hud-milestone" id="btn-milestones" title="Nhấn để đổi mốc chủ đề">
+            <div class="milestone-row">
+              <svg class="flag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                <line x1="4" y1="22" x2="4" y2="15"/>
+              </svg>
+              <span class="milestone-label" id="milestone-label">Mốc 1/20</span>
+              <span class="milestone-dot">·</span>
+              <span class="milestone-topic" id="milestone-topic">Technology</span>
+              <span class="milestone-progress-text" id="milestone-progress-text">0/15</span>
+            </div>
+            <div class="milestone-progress-track">
+              <div class="milestone-progress-fill" id="milestone-progress-fill" style="width: 0%"></div>
+            </div>
+          </button>
+
+          <!-- Lives pill (Top Right) -->
+          <div class="hud-pill hud-lives" id="hearts-container" aria-label="Mạng sống">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Right Vertical Floating Controls (Matching Screenshot) -->
+        <div class="arena-controls">
+          <button class="ctrl-circle" id="btn-exit" title="Thoát về menu chọn mốc" aria-label="Thoát">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <button class="ctrl-circle" id="btn-pause" title="Tạm dừng (Esc)" aria-label="Tạm dừng">
+            <svg id="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+              <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+            </svg>
+            <svg id="icon-play" class="hidden" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="7 4 20 12 7 20 7 4"></polygon>
+            </svg>
+          </button>
+          <button class="ctrl-circle" id="btn-keyboard" title="Bật/tắt bàn phím ảo" aria-label="Bàn phím ảo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+              <path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M8 13h.01M12 13h.01M16 13h.01M7 16h10"></path>
+            </svg>
+          </button>
+          <button class="ctrl-circle active" id="btn-sound" title="Bật/tắt âm thanh & phát âm tiếng Anh" aria-label="Âm thanh">
+            <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <svg id="icon-sound-off" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Falling Words Layer -->
+        <div class="words-layer" id="words-layer"></div>
+
+        <!-- In-Place Floating Vietnamese Meaning Popups Layer -->
+        <div class="popups-layer" id="popups-layer"></div>
+
+        <!-- Live Meaning Dock (Bottom Right, shows latest shot-down word's Vietnamese meaning + POS!) -->
+        <aside class="meaning-dock" id="meaning-dock" aria-live="polite">
+          <div class="meaning-history" id="meaning-history"></div>
+          <div class="meaning-current hidden" id="meaning-current">
+            <div class="meaning-current-head">
+              <span class="meaning-status" id="mc-status">✓ VỪA BẮN HẠ</span>
+              <div class="meaning-meta-right">
+                <span class="cefr-tag" id="mc-level">B2</span>
+                <button class="speak-mini-btn" id="mc-speak" title="Nghe phát âm">🔊</button>
+              </div>
+            </div>
+            <div class="meaning-word-line">
+              <strong id="mc-word">algorithm</strong>
+              <span class="meaning-ipa" id="mc-ipa">/ˈæl.ɡə.rɪ.ðəm/</span>
+            </div>
+            <div class="meaning-vi-line">
+              <span class="pos-pill" id="mc-pos">n · danh từ</span>
+              <span class="vi-text" id="mc-meaning">thuật toán</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Active Typing Buffer Indicator (above rocket) -->
+        <div class="typing-indicator hidden" id="typing-indicator">
+          <span class="typing-typed" id="typing-typed"></span><span class="typing-remaining" id="typing-remaining"></span>
+          <span class="typing-hint">ESC để hủy mục tiêu</span>
+        </div>
+
+        <!-- Bottom Glowing Red Barrier Line -->
+        <div class="danger-line" id="danger-line" aria-hidden="true"></div>
+
+        <!-- Cute Blue Mascot (Bottom Left, matching screenshot) -->
+        <div class="mascot" id="mascot" aria-hidden="true">
+          <div class="mascot-bubble hidden" id="mascot-bubble">Tuyệt vời!</div>
+          <svg viewBox="0 0 96 108" fill="none">
+            <defs>
+              <radialGradient id="owlBody" cx="45%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#60b7ff"/>
+                <stop offset="65%" stop-color="#2c7be5"/>
+                <stop offset="100%" stop-color="#194ca8"/>
+              </radialGradient>
+              <radialGradient id="owlBelly" cx="50%" cy="40%" r="65%">
+                <stop offset="0%" stop-color="#eef7ff"/>
+                <stop offset="100%" stop-color="#bedbff"/>
+              </radialGradient>
+            </defs>
+            <!-- Head tuft -->
+            <path d="M46 18 C43 8, 40 7, 42 18" stroke="#f5b841" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M49 17 C50 6, 54 6, 52 17" stroke="#ffcf5c" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M53 19 C57 10, 61 11, 56 20" stroke="#f5b841" stroke-width="3" stroke-linecap="round"/>
+            <!-- Feet -->
+            <ellipse cx="38" cy="96" rx="8" ry="4.5" fill="#f59e0b"/>
+            <ellipse cx="58" cy="96" rx="8" ry="4.5" fill="#f59e0b"/>
+            <!-- Wings -->
+            <ellipse cx="20" cy="64" rx="11" ry="18" transform="rotate(14 20 64)" fill="#2268cf"/>
+            <ellipse cx="76" cy="64" rx="11" ry="18" transform="rotate(-14 76 64)" fill="#2268cf"/>
+            <!-- Body -->
+            <ellipse cx="48" cy="60" rx="28" ry="34" fill="url(#owlBody)"/>
+            <!-- Belly -->
+            <ellipse cx="48" cy="70" rx="18" ry="20" fill="url(#owlBelly)"/>
+            <!-- Eyes -->
+            <circle cx="38" cy="44" r="10.5" fill="#ffffff"/>
+            <circle cx="58" cy="44" r="10.5" fill="#ffffff"/>
+            <circle class="mascot-pupil" cx="39" cy="44" r="5.5" fill="#13223d"/>
+            <circle class="mascot-pupil" cx="57" cy="44" r="5.5" fill="#13223d"/>
+            <circle cx="41" cy="42" r="2" fill="#ffffff"/>
+            <circle cx="59" cy="42" r="2" fill="#ffffff"/>
+            <!-- Cheeks -->
+            <ellipse cx="29" cy="54" rx="4.5" ry="2.6" fill="#ff8fab" opacity="0.55"/>
+            <ellipse cx="67" cy="54" rx="4.5" ry="2.6" fill="#ff8fab" opacity="0.55"/>
+            <!-- Beak -->
+            <path d="M44 51 L52 51 L48 58 Z" fill="#f59e0b" stroke="#d97706" stroke-width="1" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- Rocket Turret (Bottom Center, matching screenshot) -->
+        <div class="rocket-anchor" id="rocket-anchor" aria-hidden="true">
+          <div class="rocket-ship" id="rocket-ship">
+            <svg viewBox="0 0 80 96" fill="none">
+              <defs>
+                <linearGradient id="rocketBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7dd3fc"/>
+                  <stop offset="50%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+                <linearGradient id="flameGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <stop offset="0%" stop-color="#fef08a"/>
+                  <stop offset="55%" stop-color="#fb923c"/>
+                  <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Engine Flame -->
+              <path class="rocket-flame" d="M32 72 Q40 94 48 72 Z" fill="url(#flameGrad)"/>
+              <!-- Left & Right Fins -->
+              <path d="M25 50 L10 72 L26 68 Z" fill="#0ea5e9"/>
+              <path d="M55 50 L70 72 L54 68 Z" fill="#0369a1"/>
+              <!-- Main Hull -->
+              <path d="M40 8 C26 24 23 48 26 70 L54 70 C57 48 54 24 40 8 Z" fill="url(#rocketBody)"/>
+              <!-- Nose Highlight -->
+              <path d="M40 8 C35 16 33 24 33 30 L47 30 C47 24 45 16 40 8 Z" fill="#bae6fd" opacity="0.6"/>
+              <!-- Nozzle -->
+              <rect x="31" y="68" width="18" height="6" rx="2" fill="#1e3a8a"/>
+              <!-- Cockpit Window -->
+              <circle cx="40" cy="40" r="9.5" fill="#0f172a" stroke="#e0f2fe" stroke-width="2.5"/>
+              <circle cx="37.5" cy="37.5" r="3" fill="#38bdf8" opacity="0.85"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Bottom Deck Pill (Matching "1000 common English words" in screenshot) -->
+        <button class="deck-pill" id="deck-pill" title="Nhấn để chọn bộ từ & cấp độ">
+          <span id="deck-pill-text">1,008 từ vựng Oxford B1–C2</span>
+        </button>
+
+        <!-- Hidden mobile input so touchscreen users can tap to type -->
+        <input type="text" id="mobile-input" class="sr-only" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Ô nhập từ vựng" />
+
+        <!-- Virtual Keyboard Drawer (toggled via ⌨ icon) -->
+        <div class="virtual-keyboard hidden" id="virtual-keyboard" aria-label="Bàn phím ảo"></div>
+
+        <!-- Start / Setup Overlay -->
+        <div class="overlay-backdrop" id="start-overlay">
+          <div class="glass-card start-card">
+            <div class="start-header">
+              <div class="start-rocket-badge">🚀</div>
+              <div>
+                <h2>Bắn Từ Vựng Tiếng Anh B1–C2</h2>
+                <p>Gõ chuẩn từ đang rơi để bắn hạ — <strong>nghĩa tiếng Việt &amp; từ loại</strong> sẽ bật ra ngay lập tức!</p>
+              </div>
+            </div>
+
+            <div class="setup-section">
+              <label class="setup-label">Cấp độ CEFR <span class="setup-hint" id="pool-count-hint">(1,008 từ sẵn sàng)</span></label>
+              <div class="chip-group" id="start-level-group">
+                <button class="chip active" data-level="ALL">Tất cả B1–C2</button>
+                <button class="chip chip-b1" data-level="B1">B1 · Trung cấp</button>
+                <button class="chip chip-b2" data-level="B2">B2 · Khá</button>
+                <button class="chip chip-c1" data-level="C1">C1 · Cao cấp</button>
+                <button class="chip chip-c2" data-level="C2">C2 · Thành thạo</button>
+              </div>
+            </div>
+
+            <div class="setup-grid">
+              <div class="setup-section">
+                <label class="setup-label" for="select-milestone">Mốc chủ đề (20 mốc)</label>
+                <select id="select-milestone" class="glass-select"></select>
+              </div>
+
+              <div class="setup-section">
+                <label class="setup-label">Tốc độ rơi</label>
+                <div class="chip-group compact" id="speed-group">
+                  <button class="chip active" data-speed="chill">Thư giãn</button>
+                  <button class="chip" data-speed="normal">Tiêu chuẩn</button>
+                  <button class="chip" data-speed="fast">Thử thách</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-toggles">
+              <label class="toggle-item">
+                <input type="checkbox" id="opt-speak" checked />
+                <span>🔊 Tự động phát âm tiếng Anh khi bắn hạ</span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="opt-show-level" checked />
+                <span>🏷️ Hiện nhãn cấp độ (B1–C2) trên từ đang rơi</span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="opt-endless" />
+                <span>♾️ Chế độ Vô tận (bắn liên tục mọi chủ đề)</span>
+              </label>
+            </div>
+
+            <div class="color-legend">
+              <span>Màu viền theo cấp độ:</span>
+              <span class="legend-dot b1">B1</span>
+              <span class="legend-dot b2">B2</span>
+              <span class="legend-dot c1">C1</span>
+              <span class="legend-dot c2">C2</span>
+            </div>
+
+            <div class="ime-tip">💡 Mẹo: Chuyển bộ gõ (UniKey/EVKey) sang <strong>EN</strong> để gõ các từ có chữ kép (<em>ee, oo, dd</em>) mượt nhất.</div>
+
+            <div class="start-actions">
+              <button class="btn-primary btn-glow" id="btn-start-game">
+                <span>Bắt đầu bắn từ</span>
+                <span class="btn-arrow">→</span>
+              </button>
+              <button class="btn-secondary" id="btn-open-notebook-start">
+                📚 Xem &amp; Nhập bộ từ
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pause Overlay -->
+        <div class="overlay-backdrop hidden" id="pause-overlay">
+          <div class="glass-card compact-card">
+            <h3>⏸ Đang tạm dừng</h3>
+            <p class="muted-text" id="pause-subtitle">Mốc 1/20 · Technology</p>
+            <div class="vertical-actions">
+              <button class="btn-primary" id="btn-resume">Tiếp tục chơi</button>
+              <button class="btn-secondary" id="btn-restart-milestone">Chơi lại mốc này</button>
+              <button class="btn-secondary" id="btn-pause-notebook">Xem sổ từ vựng</button>
+              <button class="btn-ghost" id="btn-pause-menu">Về màn hình chính</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone Complete / Game Over Summary Modal -->
+        <div class="overlay-backdrop hidden" id="result-overlay">
+          <div class="glass-card result-card">
+            <div class="result-banner" id="result-banner">
+              <span class="result-emoji" id="result-emoji">🏆</span>
+              <div>
+                <h2 id="result-title">Hoàn thành Mốc 1/20!</h2>
+                <p id="result-subtitle">Chủ đề: Technology · Bạn đã học thêm nhiều từ vựng mới</p>
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat-box">
+                <span class="stat-label">Điểm số</span>
+                <strong id="res-score">0</strong>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Từ bắn hạ</span>
+                <strong id="res-words">0</strong>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Độ chính xác</span>
+                <strong id="res-accuracy">100%</strong>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Combo cao nhất</span>
+                <strong id="res-combo">0</strong>
+              </div>
+            </div>
+
+            <div class="review-header">
+              <h4>📖 Từ vựng trong ván vừa chơi</h4>
+              <span class="muted-text">Nhấn 🔊 để nghe lại phát âm</span>
+            </div>
+            <div class="review-list" id="result-review-list"></div>
+
+            <div class="result-actions">
+              <button class="btn-primary btn-glow" id="btn-next-milestone">Mốc tiếp theo →</button>
+              <button class="btn-secondary" id="btn-replay-milestone">Chơi lại mốc này</button>
+              <button class="btn-ghost" id="btn-result-menu">Về menu</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Milestones Picker Modal -->
+  <div class="modal-backdrop hidden" id="milestones-modal">
+    <div class="glass-card modal-wide">
+      <div class="modal-head">
+        <div>
+          <h3>🚩 Chọn Mốc Chủ Đề (20 Mốc · B1–C2)</h3>
+          <p class="muted-text">Mỗi mốc gồm ~50 từ vựng chọn lọc trải dài từ B1 đến C2</p>
+        </div>
+        <button class="close-x" id="close-milestones" aria-label="Đóng">✕</button>
+      </div>
+      <div class="milestones-grid" id="milestones-grid"></div>
+    </div>
+  </div>
+
+  <!-- Vocabulary Notebook & Custom Importer Modal -->
+  <div class="modal-backdrop hidden" id="notebook-modal">
+    <div class="glass-card modal-xl">
+      <div class="modal-head">
+        <div>
+          <h3>📚 Kho Từ Vựng B1–C2 &amp; Sổ Tay Học Tập</h3>
+          <p class="muted-text" id="nb-summary-text">1,008 từ vựng · 0 từ đã bắn hạ · 0 từ cần ôn lại</p>
+        </div>
+        <div class="modal-tabs">
+          <button class="tab-btn active" data-tab="browse">Tra cứu bộ từ</button>
+          <button class="tab-btn" data-tab="import">+ Nhập bộ từ riêng</button>
+        </div>
+        <button class="close-x" id="close-notebook" aria-label="Đóng">✕</button>
+      </div>
+
+      <!-- Browse Tab -->
+      <div class="tab-panel" id="tab-browse">
+        <div class="nb-filters">
+          <input type="search" id="nb-search" class="glass-input" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt..." />
+          <select id="nb-level" class="glass-select">
+            <option value="ALL">Mọi cấp độ (B1–C2)</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+            <option value="C2">C2</option>
+          </select>
+          <select id="nb-topic" class="glass-select">
+            <option value="ALL">Mọi chủ đề (20 mốc)</option>
+          </select>
+          <select id="nb-status" class="glass-select">
+            <option value="ALL">Mọi trạng thái</option>
+            <option value="MASTERED">✓ Đã bắn hạ</option>
+            <option value="MISSED">✕ Cần ôn lại</option>
+            <option value="UNSEEN">Chưa gặp</option>
+          </select>
+        </div>
+        <div class="nb-table-wrap">
+          <table class="nb-table">
+            <thead>
+              <tr>
+                <th>Từ vựng</th>
+                <th>Cấp độ</th>
+                <th>Từ loại</th>
+                <th>Nghĩa tiếng Việt</th>
+                <th>Chủ đề</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="nb-tbody"></tbody>
+          </table>
+        </div>
+        <div class="nb-pagination" id="nb-pagination"></div>
+      </div>
+
+      <!-- Import Tab -->
+      <div class="tab-panel hidden" id="tab-import">
+        <div class="import-box">
+          <p>Bạn có thể nhập thêm danh sách từ vựng riêng theo định dạng <strong>CSV</strong> (mỗi dòng 1 từ) hoặc <strong>JSON</strong>:</p>
+          <pre class="code-sample">word,pos,level,ipa,meaning
+serendipity,n,C2,/ˌser.ənˈdɪp.ə.ti/,sự tình cờ may mắn
+resilience,n,C1,/rɪˈzɪl.jəns/,khả năng phục hồi bền bỉ</pre>
+          <div class="import-controls">
+            <label class="btn-secondary file-upload-label">
+              📁 Chọn file .CSV / .JSON
+              <input type="file" id="import-file" accept=".csv,.json,.txt" class="sr-only" />
+            </label>
+            <button class="btn-ghost" id="btn-export-json">⬇️ Tải xuống toàn bộ bộ từ (JSON)</button>
+            <button class="btn-ghost danger-text" id="btn-reset-progress">🗑️ Đặt lại tiến độ học</button>
+          </div>
+          <textarea id="import-textarea" class="glass-textarea" rows="6" placeholder="Dán danh sách từ CSV hoặc JSON vào đây..."></textarea>
+          <div class="import-footer">
+            <span class="muted-text" id="import-feedback">Các từ hợp lệ sẽ được lưu tự động vào trình duyệt và dùng ngay trong game.</span>
+            <button class="btn-primary" id="btn-do-import">Nhập vào game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vocabulary Data Modules (no CORS issues even on file://) -->
+  <script src="data/topics.js"></script>
+  <script src="data/vocab-b1.js"></script>
+  <script src="data/vocab-b2.js"></script>
+  <script src="data/vocab-c1.js"></script>
+  <script src="data/vocab-c2.js"></script>
+
+  <!-- Audio & Game Engine -->
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
