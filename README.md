@@ -1,14 +1,18 @@
-# 🛡️ Luyện Gõ · Game Học Từ Vựng & Boss Collocations B1–C2
+# 🛡️ IELTS Vocab Arcade · Luyện Gõ & Mưa Từ Vựng (A1–C2)
 
-Game bắn từ vựng tiếng Anh phong cách không gian với **4.258 từ vựng đơn + 500 Boss Collocations chuẩn CEFR B1–C2** chia thành **20 mốc chủ đề**. Ngay khi bắn hạ mỗi từ hoặc cụm từ, **nghĩa tiếng Việt, từ loại / cấu trúc và phiên âm IPA** sẽ xuất hiện gọn gàng kèm phát âm tiếng Anh.
+Ứng dụng học và ôn **10.000 từ vựng IELTS (A1–C2) + 500 Boss Collocations** với vòng lặp 2 bước liên kết chặt chẽ **Học từ mới → Ôn chính tả SRS**, kèm phát âm tiếng Anh chuẩn ngay khi bắn hạ từ.
 
 🔗 **Chơi trực tuyến:** https://hoangductai1122-ship-it.github.io/vocab-shooter-b1-c2/
 
-## Tính năng nổi bật
-- **4.258 từ vựng đơn B1–C2** (1.254 B1 · 1.302 B2 · 901 C1 · 801 C2) + **500 Boss Collocations** (25 cụm/chủ đề) trải đều 20 mốc.
-- **Boss Collocation tự nhiên cuối mỗi mốc:** Sau khi bắn xong các từ đơn, 3 đợt Boss Collocation xuất hiện liền mạch (có thanh máu Boss, dấu cách `␣` trực quan, gõ sai Boss lao xuống nhanh hơn), cộng thêm chế độ **👑 Chỉ săn Boss Collocations**.
-- **Chọn vũ khí & loại đạn trước khi vào trận:**
-  - **Vũ khí:** 🛡️ Xe tăng, 🔫 Súng máy hai nòng, 🎯 Pháo điện phòng không.
-  - **Loại đạn:** 💥 Đạn đồng (văng vỏ đạn), ⚡ Tia Laze, 🚀 Tên lửa tầm nhiệt (bay cong kéo khói), 🔮 Cầu Plasma.
-- **Nền không gian sinh động:** Tinh vân chuyển động, trường sao 3 tầng parallax, sao băng lướt ngang, tiểu hành tinh trôi, 2 hành tinh phát sáng và lưới phòng thủ chân trời.
-- **Popup nghĩa tiếng Việt + từ loại gọn nhẹ** tránh che khuất các từ đang rơi, kèm **Sổ từ vựng 4.758 mục** và tính năng nhập bộ từ riêng (CSV / JSON).
+## Nguồn từ vựng chuẩn hóa (10.000 từ đơn + 500 Boss Collocations)
+- **Oxford 3000 / 5000 & Oxford OPAL** (Oxford Phrasal Academic Lexicon)
+- **Cambridge Vocabulary for IELTS / CEFR-J / Octanove C1–C2**
+- **Academic Word List (Coxhead AWL · NAWL · AVL)** — **2.943 từ học thuật** được gắn nhãn `AWL`
+- Phân bổ đầy đủ 6 cấp độ CEFR & 20 mốc chủ đề:
+  - **A1:** 747 từ · **A2:** 801 từ · **B1:** 2.013 từ · **B2:** 2.836 từ · **C1:** 2.342 từ · **C2:** 1.261 từ
+  - **500 Boss Collocations** (25 cụm/chủ đề B1–C2)
+
+## Vòng lặp học 2 bước & Lưu trữ tối ưu
+1. **Bước 1 · 🚀 Luyện Gõ (Học từ mới & Boss):** Ưu tiên rơi các từ bạn chưa từng học; mỗi từ bắn hạ được tự động lưu vào hàng đợi ôn tập (`⏳ Chờ ôn`), hiển thị nghĩa tiếng Việt, từ loại, phiên âm IPA và phát âm tiếng Anh. Có sẵn tốc độ `🐢 Rất chậm`, 3 vũ khí (Xe tăng / Súng máy / Pháo điện) và 4 loại đạn.
+2. **Bước 2 · 🌧️ Mưa Từ Vựng (Ôn chính tả SRS):** Chỉ lấy đúng các từ bạn đã bắn hạ ở Luyện Gõ, ưu tiên các từ đến hạn ôn (`⏳ Cần ôn ngay`), hiển thị nghĩa tiếng Việt kèm gợi ý chữ đầu (`p _ _ _ _ _ _`). Nhớ chuẩn chính tả sẽ nâng từ lên trạng thái `✅ Đã thuộc` theo chu kỳ SRS (1 → 3 → 7 → 21 ngày).
+3. **Lưu trữ gọn nhẹ & Sao lưu:** Dữ liệu tiến độ được nén theo định dạng `vocab_ielts_progress_v2` trong `localStorage` (~22 byte/từ, sẵn sàng lưu trọn 10.000 từ) kèm nút **Xuất / Nhập file sao lưu JSON** ngay trong Sổ từ vựng.

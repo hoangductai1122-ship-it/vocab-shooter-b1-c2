@@ -1,17 +1,23 @@
 /* ==========================================================================
-   Học Từ Vựng B1–C2 · Dual-Game Engine:
-   1. Luyện Gõ (Space Shooter + 500 Boss Collocations + Tank/Gun/Cannon)
-   2. Mưa Từ Vựng (Spelling Recall strictly from shot-down words!)
+   IELTS Vocabulary Suite (10,000 A1–C2 + AWL + 500 Boss Collocations)
+   Tightly Linked 2-Stage Learning Loop:
+     1. Luyện Gõ (Learn NEW words -> saved to Review Queue)
+     2. Mưa Từ Vựng (SRS Spelling Review strictly from learned words -> Mastered)
    ========================================================================== */
 
 (() => {
   "use strict";
 
-  const STORAGE_PROGRESS_KEY = "vocab_shooter_progress_v1";
+  // v2 storage schema cleanly resets legacy v1 data as requested & stores compact SRS entries:
+  // learned[word] = [learnedAtMin, reviewCount, streak, nextDueMin]
+  const LEGACY_PROGRESS_KEY = "vocab_shooter_progress_v1";
+  const STORAGE_PROGRESS_KEY = "vocab_ielts_progress_v2";
   const STORAGE_CUSTOM_KEY = "vocab_shooter_custom_words_v1";
-  const STORAGE_PREFS_KEY = "vocab_shooter_prefs_v2";
+  const STORAGE_PREFS_KEY = "vocab_ielts_prefs_v3";
 
   const LEVEL_COLORS = {
+    A1: "#10b981",
+    A2: "#14b8a6",
     B1: "#38bdf8",
     B2: "#a855f7",
     C1: "#ec4899",
@@ -19,9 +25,11 @@
   };
 
   const LEVEL_BONUS = {
-    B1: 0,
-    B2: 25,
-    C1: 50,
+    A1: 0,
+    A2: 10,
+    B1: 20,
+    B2: 35,
+    C1: 55,
     C2: 80
   };
 
@@ -31,6 +39,9 @@
     normal: { baseSpeed: 48, maxSpeed: 74, bossSpeed: 38, rainSpeed: 36, spawnInterval: 1.85, minSpawn: 1.15, maxActive: 5 },
     fast:   { baseSpeed: 68, maxSpeed: 102, bossSpeed: 50, rainSpeed: 48, spawnInterval: 1.45, minSpawn: 0.85, maxActive: 6 }
   };
+
+  // Spaced repetition intervals in minutes after successful spelling recall in Mưa Từ Vựng
+  const SRS_INTERVALS_MIN = [1440, 4320, 10080, 30240]; // 1d, 3d, 7d, 21d
 
   const BOSS_PHASES_PER_MILESTONE = 3;
   const BOSS_ONLY_GOAL = 5;
@@ -55,14 +66,15 @@
   let singleVocab = [];
   let collocVocab = [];
   let allLibrary = [];
+  let vocabByWord = new Map();
   let progress = loadProgress();
   let prefs = loadPrefs();
-  const sessionMastered = new Set(); // Exact words shot down during this browser session
+  const sessionLearned = new Set(); // Exact words learned in Luyện Gõ during this session
 
   const game = {
-    mode: "shooter",   // "shooter" (Luyện Gõ) | "rain" (Mưa Từ Vựng)
+    mode: "shooter",   // "shooter" (1. Học từ mới) | "rain" (2. Ôn từ đã học)
     status: "hub",     // hub | menu | playing | paused | result
-    levelFilter: prefs.levelFilter || "ALL",
+    levelFilter: prefs.levelFilter || "ALL", // ALL | A1..C2 | AWL
     milestoneId: prefs.milestoneId || 1,
     speedKey: prefs.speedKey || "chill",
     weaponType: prefs.weaponType || "tank",
@@ -72,8 +84,8 @@
     showLevelOnPill: prefs.showLevelOnPill !== false,
     virtualKeyboardOpen: false,
 
-    // Rain Mode preferences
-    rainSource: prefs.rainSource || "all",       // all | recent20 | session
+    // Rain Mode review preferences (strictly from learned words)
+    rainSource: prefs.rainSource || "due",       // due | session | recent20 | all
     rainKind: prefs.rainKind || "WORDS_ONLY",    // WORDS_ONLY | ALL | COLLOCS_ONLY
     rainShowPos: prefs.rainShowPos !== false,
 
@@ -88,8 +100,8 @@
     milestoneGoal: 12,
     wordsDestroyed: 0,
     regularDestroyed: 0,
+    rainMasteredThisRun: 0,
 
-    // Boss Collocation Phase state
     inBossPhase: false,
     bossTotalWaves: BOSS_PHASES_PER_MILESTONE,
     bossWavesDefeated: 0,
@@ -110,7 +122,6 @@
     lastDockWord: null
   };
 
-  // Canvas visual effects state (Space Mode + Rain Mode)
   const fx = {
     width: 1000,
     height: 600,
@@ -131,7 +142,7 @@
 
   const notebookState = {
     page: 1,
-    perPage: 45,
+    perPage: 50,
     filtered: []
   };
 
@@ -157,20 +168,19 @@
     mascot: document.getElementById("mascot"),
     mascotBubble: document.getElementById("mascot-bubble"),
 
-    // Brand top bar
     brandIconShooter: document.getElementById("brand-icon-shooter"),
     brandIconRain: document.getElementById("brand-icon-rain"),
     brandTitle: document.getElementById("brand-title"),
     brandSubtitle: document.getElementById("brand-subtitle"),
 
-    // Boss HUD
     bossHud: document.getElementById("boss-hud"),
     bossHudTitle: document.getElementById("boss-hud-title"),
     bossHudPhase: document.getElementById("boss-hud-phase"),
     bossHpSegments: document.getElementById("boss-hp-segments"),
 
-    // Header & HUD
     btnHome: document.getElementById("btn-home"),
+    btnQuickRain: document.getElementById("btn-quick-rain"),
+    reviewQueueCount: document.getElementById("review-queue-count"),
     btnNotebook: document.getElementById("btn-notebook"),
     notebookCount: document.getElementById("notebook-count"),
     btnFullscreen: document.getElementById("btn-fullscreen"),
@@ -187,7 +197,6 @@
     deckPill: document.getElementById("deck-pill"),
     deckPillText: document.getElementById("deck-pill-text"),
 
-    // Right controls
     btnExit: document.getElementById("btn-exit"),
     btnPause: document.getElementById("btn-pause"),
     iconPause: document.getElementById("icon-pause"),
@@ -197,7 +206,6 @@
     iconSoundOn: document.getElementById("icon-sound-on"),
     iconSoundOff: document.getElementById("icon-sound-off"),
 
-    // Meaning dock & typing UI
     meaningHistory: document.getElementById("meaning-history"),
     meaningCurrent: document.getElementById("meaning-current"),
     mcStatus: document.getElementById("mc-status"),
@@ -214,13 +222,14 @@
     virtualKeyboard: document.getElementById("virtual-keyboard"),
     mobileInput: document.getElementById("mobile-input"),
 
-    // Hub Overlay
+    // Hub
     hubOverlay: document.getElementById("hub-overlay"),
     chooseGameShooter: document.getElementById("choose-game-shooter"),
     chooseGameRain: document.getElementById("choose-game-rain"),
+    hubShooterCount: document.getElementById("hub-shooter-count"),
     hubRainCount: document.getElementById("hub-rain-count"),
 
-    // Game 1 Start Overlay
+    // Game 1 Start
     startOverlay: document.getElementById("start-overlay"),
     btnBackHub1: document.getElementById("btn-back-hub-1"),
     startLevelGroup: document.getElementById("start-level-group"),
@@ -237,7 +246,7 @@
     btnStartGame: document.getElementById("btn-start-game"),
     btnOpenNotebookStart: document.getElementById("btn-open-notebook-start"),
 
-    // Game 2 Rain Start Overlay
+    // Game 2 Rain Start
     rainStartOverlay: document.getElementById("rain-start-overlay"),
     btnBackHub2: document.getElementById("btn-back-hub-2"),
     rainEmptyAlert: document.getElementById("rain-empty-alert"),
@@ -253,7 +262,7 @@
     btnStartRain: document.getElementById("btn-start-rain"),
     btnOpenNotebookRain: document.getElementById("btn-open-notebook-rain"),
 
-    // Pause & Result Overlays
+    // Pause & Result
     pauseOverlay: document.getElementById("pause-overlay"),
     pauseSubtitle: document.getElementById("pause-subtitle"),
     btnResume: document.getElementById("btn-resume"),
@@ -273,6 +282,7 @@
     resultReviewList: document.getElementById("result-review-list"),
     btnNextMilestone: document.getElementById("btn-next-milestone"),
     btnPracticeRainNow: document.getElementById("btn-practice-rain-now"),
+    btnBackLearnMore: document.getElementById("btn-back-learn-more"),
     btnReplayMilestone: document.getElementById("btn-replay-milestone"),
     btnResultMenu: document.getElementById("btn-result-menu"),
 
@@ -298,14 +308,20 @@
     importFeedback: document.getElementById("import-feedback"),
     btnDoImport: document.getElementById("btn-do-import"),
     btnExportJson: document.getElementById("btn-export-json"),
+    btnExportProgress: document.getElementById("btn-export-progress"),
+    importProgressFile: document.getElementById("import-progress-file"),
     btnResetProgress: document.getElementById("btn-reset-progress")
   };
 
   const ctx = el.canvas.getContext("2d");
 
   // --------------------------------------------------------------------------
-  // Helpers & Persistence
+  // Optimized SRS Learning Storage (Game 1 -> Review Queue -> Game 2 Mastered)
   // --------------------------------------------------------------------------
+  function nowMin() {
+    return Math.floor(Date.now() / 60000);
+  }
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -314,32 +330,34 @@
       .replace(/"/g, "&quot;");
   }
 
-  function loadProgress() {
-    try {
-      const raw = localStorage.getItem(STORAGE_PROGRESS_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        const masteredSet = new Set(parsed.mastered || []);
-        return {
-          mastered: masteredSet,
-          recentMastered: Array.isArray(parsed.recentMastered)
-            ? parsed.recentMastered.filter(w => masteredSet.has(w))
-            : Array.from(masteredSet).reverse(),
-          spelled: new Set(parsed.spelled || []),
-          missed: new Set(parsed.missed || []),
-          clearedMilestones: new Set(parsed.clearedMilestones || []),
-          highScore: parsed.highScore || 0
-        };
-      }
-    } catch (_) {}
+  function createEmptyProgress() {
     return {
-      mastered: new Set(),
-      recentMastered: [],
-      spelled: new Set(),
+      learned: {}, // word -> [learnedAtMin, reviewCount, streak, nextDueMin]
       missed: new Set(),
       clearedMilestones: new Set(),
       highScore: 0
     };
+  }
+
+  function loadProgress() {
+    // Cleanly remove old legacy v1 test progress so user starts fresh from 0!
+    try {
+      localStorage.removeItem(LEGACY_PROGRESS_KEY);
+    } catch (_) {}
+
+    try {
+      const raw = localStorage.getItem(STORAGE_PROGRESS_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return {
+          learned: parsed.learned && typeof parsed.learned === "object" ? parsed.learned : {},
+          missed: new Set(parsed.missed || []),
+          clearedMilestones: new Set(parsed.clearedMilestones || []),
+          highScore: Number(parsed.highScore) || 0
+        };
+      }
+    } catch (_) {}
+    return createEmptyProgress();
   }
 
   function saveProgress() {
@@ -347,25 +365,98 @@
       localStorage.setItem(
         STORAGE_PROGRESS_KEY,
         JSON.stringify({
-          mastered: Array.from(progress.mastered),
-          recentMastered: progress.recentMastered.slice(0, 250),
-          spelled: Array.from(progress.spelled),
+          learned: progress.learned,
           missed: Array.from(progress.missed),
           clearedMilestones: Array.from(progress.clearedMilestones),
           highScore: progress.highScore
         })
       );
     } catch (_) {}
-    updateNotebookBadge();
-    updateHubStats();
+    updateProgressBadges();
   }
 
-  function recordMasteredWord(word) {
-    progress.mastered.add(word);
+  function isWordLearned(word) {
+    return Object.prototype.hasOwnProperty.call(progress.learned, word);
+  }
+
+  function isWordDueForReview(word) {
+    const rec = progress.learned[word];
+    if (!rec) return false;
+    return rec[2] === 0 || nowMin() >= rec[3];
+  }
+
+  function isWordMasteredSpelling(word) {
+    const rec = progress.learned[word];
+    return Boolean(rec && rec[2] >= 1);
+  }
+
+  function getLearningCounts() {
+    const keys = Object.keys(progress.learned);
+    const cur = nowMin();
+    let due = 0;
+    let mastered = 0;
+    for (let i = 0; i < keys.length; i++) {
+      const rec = progress.learned[keys[i]];
+      if (rec[2] >= 1) mastered++;
+      if (rec[2] === 0 || cur >= rec[3]) due++;
+    }
+    return { totalLearned: keys.length, due, mastered };
+  }
+
+  // Called when user shoots down a word in Game 1 (Luyện Gõ): adds to Mưa Từ Vựng review queue!
+  function recordLearnedFromShooter(word) {
+    const t = nowMin();
+    const existing = progress.learned[word];
+    if (existing) {
+      // Refresh learned timestamp & mark due if not yet mastered
+      progress.learned[word] = [t, existing[1], existing[2], existing[2] === 0 ? 0 : existing[3]];
+    } else {
+      progress.learned[word] = [t, 0, 0, 0]; // immediately due for Mưa Từ Vựng spelling review!
+    }
     progress.missed.delete(word);
-    sessionMastered.add(word);
-    progress.recentMastered = [word, ...progress.recentMastered.filter(w => w !== word)].slice(0, 250);
+    sessionLearned.add(word);
     saveProgress();
+  }
+
+  // Called when user recalls & spells a word in Game 2 (Mưa Từ Vựng)!
+  function recordRainReviewSuccess(word, usedHint) {
+    const t = nowMin();
+    const existing = progress.learned[word] || [t, 0, 0, 0];
+    const newCount = existing[1] + 1;
+    if (usedHint) {
+      // Needed hint -> keep in due queue to reinforce spelling again
+      progress.learned[word] = [existing[0], newCount, 0, 0];
+    } else {
+      const newStreak = existing[2] + 1;
+      const interval = SRS_INTERVALS_MIN[Math.min(newStreak - 1, SRS_INTERVALS_MIN.length - 1)];
+      progress.learned[word] = [existing[0], newCount, newStreak, t + interval];
+      game.rainMasteredThisRun++;
+    }
+    progress.missed.delete(word);
+    saveProgress();
+  }
+
+  // Called when user misses a word in Game 2 (Mưa Từ Vựng): demotes streak back to 0 (due immediately)
+  function recordRainReviewMiss(word) {
+    const existing = progress.learned[word];
+    if (existing) {
+      progress.learned[word] = [existing[0], existing[1], 0, 0];
+    }
+    progress.missed.add(word);
+    saveProgress();
+  }
+
+  function updateProgressBadges() {
+    const c = getLearningCounts();
+    el.notebookCount.textContent = `${c.totalLearned}/${allLibrary.length}`;
+    el.reviewQueueCount.textContent = String(c.due);
+    el.btnQuickRain.classList.toggle("has-due", c.due > 0);
+    el.hubShooterCount.textContent = `${c.totalLearned.toLocaleString("en-US")} / ${allLibrary.length.toLocaleString("en-US")} đã học`;
+    el.hubRainCount.textContent = c.due > 0
+      ? `${c.due} từ chờ ôn · ${c.mastered} đã thuộc`
+      : c.totalLearned > 0
+        ? `Đã thuộc hết ${c.mastered} từ · Ôn lại`
+        : "0 từ chờ ôn · Học ở Luyện Gõ trước";
   }
 
   function loadPrefs() {
@@ -384,7 +475,7 @@
       showLevelOnPill: true,
       endless: false,
       bossOnly: false,
-      rainSource: "all",
+      rainSource: "due",
       rainKind: "WORDS_ONLY",
       rainShowPos: true
     };
@@ -429,8 +520,10 @@
   }
 
   // --------------------------------------------------------------------------
-  // Vocabulary & Collocation Normalization
+  // Vocabulary & Collocation Normalization (10,000 A1-C2/AWL + 500 Boss)
   // --------------------------------------------------------------------------
+  const VALID_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
+
   function normalizeWordEntry(raw, isCustom = false) {
     const word = String(raw[0] || raw.word || raw.phrase || "")
       .trim()
@@ -442,6 +535,7 @@
     const ipa = String(raw[3] || raw.ipa || "").trim();
     const meaning = String(raw[4] || raw.meaning || "").trim();
     const topicId = Number(raw[5] || raw.topicId || 1);
+    const isAwl = Boolean(raw[6] || raw.isAwl);
     const topic = topicMap.get(topicId) || topics[0];
 
     const posInfo = posMap[rawPos];
@@ -455,12 +549,13 @@
       pattern: isColloc ? rawPos : "",
       posVi,
       posShort,
-      level: ["B1", "B2", "C1", "C2"].includes(level) ? level : "B2",
+      level: VALID_LEVELS.has(level) ? level : "B2",
       ipa,
       meaning,
       topicId: topic ? topic.id : 1,
       topicName: topic ? topic.name : "Technology",
       topicVi: topic ? topic.vi : "Công nghệ",
+      isAwl,
       isColloc,
       isCustom
     };
@@ -480,12 +575,13 @@
       pattern,
       posVi: `Collocation (${pattern})`,
       posShort: `colloc · ${pattern}`,
-      level: ["B1", "B2", "C1", "C2"].includes(level) ? level : "B2",
+      level: VALID_LEVELS.has(level) ? level : "B2",
       ipa: "",
       meaning,
       topicId: topic ? topic.id : 1,
       topicName: topic ? topic.name : "Technology",
       topicVi: topic ? topic.vi : "Công nghệ",
+      isAwl: false,
       isColloc: true,
       isCustom: false
     };
@@ -543,44 +639,46 @@
     singleVocab = words;
     collocVocab = collocs;
     allLibrary = [...singleVocab, ...collocVocab];
+    vocabByWord = new Map(allLibrary.map(e => [e.word, e]));
 
     updatePoolHints();
-    updateNotebookBadge();
-    updateHubStats();
+    updateProgressBadges();
+  }
+
+  function matchesLevelFilter(item) {
+    if (game.levelFilter === "ALL") return true;
+    if (game.levelFilter === "AWL") return item.isAwl;
+    return item.level === game.levelFilter;
   }
 
   function getFilteredPool(sourceList, forMilestone = !game.endless) {
     return sourceList.filter(item => {
-      const matchLvl = game.levelFilter === "ALL" || item.level === game.levelFilter;
+      const matchLvl = matchesLevelFilter(item);
       const matchTopic = !forMilestone || item.topicId === game.milestoneId;
       return matchLvl && matchTopic;
     });
   }
 
-  // STRICTLY returns ONLY words/collocations the player has ALREADY shot down in Game 1!
+  // STRICTLY returns ONLY words the player has ALREADY learned in Game 1 (Luyện Gõ)!
+  // Sorted with SRS priority (newly learned / due first!)
   function getRainPool() {
-    if (progress.mastered.size === 0) return [];
+    const learnedKeys = Object.keys(progress.learned);
+    if (learnedKeys.length === 0) return [];
 
-    const byWord = new Map(allLibrary.map(item => [item.word, item]));
-    let wordKeys = [];
+    // Sort all learned words newest-first so freshly learned words appear first
+    const sortedKeys = learnedKeys.slice().sort((a, b) => (progress.learned[b][0] || 0) - (progress.learned[a][0] || 0));
 
-    if (game.rainSource === "session" && sessionMastered.size > 0) {
-      wordKeys = Array.from(sessionMastered);
+    let chosenKeys = sortedKeys;
+    if (game.rainSource === "due") {
+      chosenKeys = sortedKeys.filter(w => isWordDueForReview(w));
+    } else if (game.rainSource === "session") {
+      chosenKeys = sortedKeys.filter(w => sessionLearned.has(w));
     } else if (game.rainSource === "recent20") {
-      const recentList = progress.recentMastered.length
-        ? progress.recentMastered
-        : Array.from(progress.mastered).reverse();
-      wordKeys = recentList.slice(0, 20);
-    } else {
-      wordKeys = Array.from(progress.mastered);
+      chosenKeys = sortedKeys.slice(0, 20);
     }
 
-    let entries = wordKeys
-      .filter(w => progress.mastered.has(w))
-      .map(w => byWord.get(w))
-      .filter(Boolean);
+    let entries = chosenKeys.map(w => vocabByWord.get(w)).filter(Boolean);
 
-    // Filter by kind (single words vs collocations)
     if (game.rainKind === "WORDS_ONLY") {
       const onlyWords = entries.filter(e => !e.isColloc);
       if (onlyWords.length) entries = onlyWords;
@@ -588,9 +686,8 @@
       entries = entries.filter(e => e.isColloc);
     }
 
-    // Respect top-bar CEFR filter when matching words exist
     if (game.levelFilter !== "ALL") {
-      const lvlMatched = entries.filter(e => e.level === game.levelFilter);
+      const lvlMatched = entries.filter(matchesLevelFilter);
       if (lvlMatched.length) entries = lvlMatched;
     }
 
@@ -608,72 +705,70 @@
 
   function buildQueueForRun() {
     if (game.mode === "rain") {
-      return shuffle(getRainPool());
+      // Keep SRS due order with gentle shuffling within same priority bucket
+      const pool = getRainPool();
+      const dueNow = shuffle(pool.filter(e => isWordDueForReview(e.word)));
+      const others = shuffle(pool.filter(e => !isWordDueForReview(e.word)));
+      return [...dueNow, ...others];
     }
 
+    // Game 1 (Luyện Gõ): ALWAYS prioritize UNSEEN (chưa học) words first!
     const pool = getFilteredPool(singleVocab, !game.endless);
     const fallback = pool.length ? pool : singleVocab;
+    const unseen = fallback.filter(e => !isWordLearned(e.word));
+    const already = fallback.filter(e => isWordLearned(e.word));
 
-    if (game.levelFilter === "ALL" && !game.endless) {
-      const byLvl = { B1: [], B2: [], C1: [], C2: [] };
-      fallback.forEach(w => { if (byLvl[w.level]) byLvl[w.level].push(w); });
-      const b1 = shuffle(byLvl.B1);
-      const b2 = shuffle(byLvl.B2);
-      const c1 = shuffle(byLvl.C1);
-      const c2 = shuffle(byLvl.C2);
-      const mixed = [];
-      const maxLen = Math.max(b1.length, b2.length, c1.length, c2.length);
-      for (let i = 0; i < maxLen; i++) {
-        if (b1[i]) mixed.push(b1[i]);
-        if (b2[i]) mixed.push(b2[i]);
-        if (c1[i]) mixed.push(c1[i]);
-        if (c2[i]) mixed.push(c2[i]);
+    const orderGroup = list => {
+      if (game.levelFilter === "ALL" && !game.endless) {
+        const tiers = ["A1", "A2", "B1", "B2", "C1", "C2"];
+        const buckets = tiers.map(lv => shuffle(list.filter(w => w.level === lv)));
+        const mixed = [];
+        const maxLen = Math.max(0, ...buckets.map(b => b.length));
+        for (let i = 0; i < maxLen; i++) {
+          for (const b of buckets) {
+            if (b[i]) mixed.push(b[i]);
+          }
+        }
+        return mixed;
       }
-      return mixed;
-    }
+      return shuffle(list);
+    };
 
-    return shuffle(fallback);
+    return [...orderGroup(unseen), ...orderGroup(already)];
   }
 
   function buildBossQueue(forMilestone = !game.endless) {
     const pool = getFilteredPool(collocVocab, forMilestone);
     const fallback = pool.length ? pool : collocVocab;
+    const unseen = fallback.filter(c => !isWordLearned(c.word));
+    const source = unseen.length >= 3 ? unseen : fallback;
 
-    if (game.levelFilter === "ALL") {
-      const tier1 = shuffle(fallback.filter(c => c.level === "B1" || c.level === "B2"));
-      const tier2 = shuffle(fallback.filter(c => c.level === "B2" || c.level === "C1"));
-      const tier3 = shuffle(fallback.filter(c => c.level === "C1" || c.level === "C2"));
+    if (game.levelFilter === "ALL" || game.levelFilter === "AWL") {
+      const tier1 = shuffle(source.filter(c => c.level === "B1" || c.level === "B2"));
+      const tier2 = shuffle(source.filter(c => c.level === "B2" || c.level === "C1"));
+      const tier3 = shuffle(source.filter(c => c.level === "C1" || c.level === "C2"));
 
       const used = new Set();
       const ordered = [];
       const pushUnique = list => {
         for (const item of list) {
-          if (!used.has(item.word)) {
-            used.add(item.word);
-            ordered.push(item);
-            return true;
-          }
+          if (!used.has(item.word)) { used.add(item.word); ordered.push(item); return; }
         }
-        return false;
       };
-
       pushUnique(tier1);
       pushUnique(tier2);
       pushUnique(tier3);
-      for (const item of shuffle(fallback)) {
-        if (!used.has(item.word)) {
-          used.add(item.word);
-          ordered.push(item);
-        }
+      for (const item of shuffle(source)) {
+        if (!used.has(item.word)) { used.add(item.word); ordered.push(item); }
       }
       return ordered;
     }
 
-    return shuffle(fallback);
+    return shuffle(source);
   }
 
   // --------------------------------------------------------------------------
-  // Mode Switching (Hub <-> Space Shooter <-> Rain Spelling)
+  // Mode Switching (Hub <-> Space Shooter <-> Rain Spelling Review)
   // --------------------------------------------------------------------------
   function applyModeTheme() {
     const isRain = game.mode === "rain";
@@ -682,11 +777,11 @@
     el.brandIconRain.classList.toggle("hidden", !isRain);
 
     if (isRain) {
-      el.brandTitle.textContent = "Mưa Từ Vựng";
-      el.brandSubtitle.textContent = "Đọc nghĩa đang rơi, nhớ ra từ tiếng Anh đã bắn hạ và gõ để bắn hạ";
+      el.brandTitle.textContent = "Mưa Từ Vựng · Ôn Chính Tả";
+      el.brandSubtitle.textContent = "Ôn lại các từ bạn đã học từ Luyện Gõ — gõ đúng chính tả để đánh dấu Đã thuộc";
     } else {
-      el.brandTitle.textContent = "Luyện Gõ · Boss Collocations";
-      el.brandSubtitle.textContent = "Gõ các từ tiếng Anh B1–C2 đang rơi để bắn hạ & học nghĩa tiếng Việt";
+      el.brandTitle.textContent = "Luyện Gõ · Học Từ Mới IELTS";
+      el.brandSubtitle.textContent = "10.000 từ Oxford / Cambridge / AWL (A1–C2) — bắn hạ để học nghĩa & đưa vào hàng chờ ôn";
     }
   }
 
@@ -702,7 +797,7 @@
     el.pauseOverlay.classList.add("hidden");
     el.resultOverlay.classList.add("hidden");
     el.hubOverlay.classList.remove("hidden");
-    updateHubStats();
+    updateProgressBadges();
     syncPauseIcon();
     updateHUD();
   }
@@ -734,28 +829,33 @@
     updateHUD();
   }
 
-  function updateHubStats() {
-    const masteredCnt = progress.mastered.size;
-    el.hubRainCount.textContent = masteredCnt > 0
-      ? `Ôn chính tả · ${masteredCnt} từ đã bắn`
-      : "Cần bắn từ ở Luyện Gõ trước";
-  }
-
   function syncRainSetupControls() {
-    const masteredCnt = progress.mastered.size;
-    const hasAny = masteredCnt > 0;
+    const counts = getLearningCounts();
+    const hasAny = counts.totalLearned > 0;
 
     el.rainEmptyAlert.classList.toggle("hidden", hasAny);
     el.rainSetupBody.classList.toggle("hidden", !hasAny);
 
-    // Update source chip counts
+    const dueBtn = el.rainSourceGroup.querySelector('[data-source="due"]');
     const sessionBtn = el.rainSourceGroup.querySelector('[data-source="session"]');
+    const allBtn = el.rainSourceGroup.querySelector('[data-source="all"]');
+
+    if (dueBtn) {
+      dueBtn.textContent = `⏳ Cần ôn ngay (${counts.due})`;
+      dueBtn.disabled = counts.due === 0;
+    }
     if (sessionBtn) {
-      sessionBtn.textContent = `Vừa bắn phiên này (${sessionMastered.size})`;
-      sessionBtn.disabled = sessionMastered.size === 0;
-      if (game.rainSource === "session" && sessionMastered.size === 0) {
-        game.rainSource = "all";
-      }
+      sessionBtn.textContent = `Vừa học phiên này (${sessionLearned.size})`;
+      sessionBtn.disabled = sessionLearned.size === 0;
+    }
+    if (allBtn) {
+      allBtn.textContent = `Tất cả đã học (${counts.totalLearned})`;
+    }
+
+    // Smart auto-fallback if selected bucket is currently empty
+    if (game.rainSource === "due" && counts.due === 0 && hasAny) game.rainSource = "all";
+    if (game.rainSource === "session" && sessionLearned.size === 0 && hasAny) {
+      game.rainSource = counts.due > 0 ? "due" : "all";
     }
 
     el.rainSourceGroup.querySelectorAll(".chip").forEach(btn => {
@@ -769,12 +869,12 @@
     el.rainOptPos.checked = game.rainShowPos;
 
     const pool = getRainPool();
-    el.rainPoolHint.textContent = `(${pool.length} từ hợp lệ sẵn sàng ôn)`;
+    el.rainPoolHint.textContent = `(${pool.length} từ sẵn sàng ôn · ${counts.mastered} đã thuộc)`;
     el.btnStartRain.disabled = pool.length === 0;
   }
 
   // --------------------------------------------------------------------------
-  // Weapon & Ammo Management (Space Mode)
+  // Weapon & Ammo Management
   // --------------------------------------------------------------------------
   function getActiveRotator() {
     if (game.weaponType === "gun") return el.rotatorGun;
@@ -786,7 +886,6 @@
     if (!["tank", "gun", "cannon"].includes(type)) return;
     game.weaponType = type;
     savePrefs();
-
     el.weaponTank.classList.toggle("hidden", type !== "tank");
     el.weaponGun.classList.toggle("hidden", type !== "gun");
     el.weaponCannon.classList.toggle("hidden", type !== "cannon");
@@ -853,7 +952,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Canvas FX (Lively Space Mode + Stormy Rain Mode + Weapon Projectiles)
+  // Canvas FX (Space Mode + Rain Mode + Weapons)
   // --------------------------------------------------------------------------
   function resizeCanvas() {
     const rect = el.arena.getBoundingClientRect();
@@ -875,7 +974,6 @@
   }
 
   function initBackdrops() {
-    // Space stars (3 layers)
     fx.stars = [];
     const palette = ["#ffffff", "#ffffff", "#bfdbfe", "#e9d5ff", "#fde68a", "#a5f3fc"];
     for (let i = 0; i < 175; i++) {
@@ -893,7 +991,6 @@
       });
     }
 
-    // Space nebulae
     fx.nebulae = [
       { x: fx.width * 0.2, y: fx.height * 0.35, r: 290, vx: 6, vy: 3, color: "124, 58, 237", baseA: 0.14, phase: 0 },
       { x: fx.width * 0.78, y: fx.height * 0.48, r: 260, vx: -5, vy: 4, color: "14, 165, 233", baseA: 0.13, phase: 1.7 },
@@ -902,7 +999,6 @@
       { x: fx.width * 0.85, y: fx.height * 0.76, r: 210, vx: -6, vy: 2, color: "45, 212, 191", baseA: 0.09, phase: 2.3 }
     ];
 
-    // Space asteroids
     fx.asteroids = [];
     for (let i = 0; i < 6; i++) {
       const sides = 6 + Math.floor(Math.random() * 3);
@@ -923,7 +1019,6 @@
       });
     }
 
-    // Raindrops for Mưa Từ Vựng!
     fx.raindrops = [];
     for (let i = 0; i < 85; i++) {
       fx.raindrops.push({
@@ -943,8 +1038,7 @@
     const speed = 520 + Math.random() * 360;
     const colors = ["#7dd3fc", "#fde68a", "#e9d5ff", "#ffffff"];
     fx.meteors.push({
-      x: startX,
-      y: startY,
+      x: startX, y: startY,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       len: 75 + Math.random() * 75,
@@ -956,13 +1050,9 @@
   function fireAmmoAt(tx, ty, accentColor, isFinishingShot = false) {
     const muzzle = getShooterOriginPoint();
 
-    // Rain mode fires crisp luminous aqua-gold bolt from the origami boat mast
     if (game.mode === "rain") {
       fx.lasers.push({
-        x1: muzzle.x,
-        y1: muzzle.y,
-        x2: tx,
-        y2: ty,
+        x1: muzzle.x, y1: muzzle.y, x2: tx, y2: ty,
         color: isFinishingShot ? "#fde047" : "#38bdf8",
         thick: isFinishingShot,
         life: isFinishingShot ? 0.22 : 0.14,
@@ -974,25 +1064,18 @@
 
     const ammo = game.ammoType;
     fx.muzzleFlashes.push({
-      x: muzzle.x,
-      y: muzzle.y,
+      x: muzzle.x, y: muzzle.y,
       angle: (game.turretAngle * Math.PI) / 180,
       color: ammo === "plasma" ? "#e879f9" : ammo === "laser" ? accentColor : "#fde047",
       size: isFinishingShot ? 22 : 14,
-      life: 0.09,
-      maxLife: 0.09
+      life: 0.09, maxLife: 0.09
     });
 
     if (ammo === "laser") {
       fx.lasers.push({
-        x1: muzzle.x,
-        y1: muzzle.y,
-        x2: tx,
-        y2: ty,
-        color: accentColor,
-        thick: isFinishingShot,
-        life: isFinishingShot ? 0.24 : 0.15,
-        maxLife: isFinishingShot ? 0.24 : 0.15
+        x1: muzzle.x, y1: muzzle.y, x2: tx, y2: ty,
+        color: accentColor, thick: isFinishingShot,
+        life: isFinishingShot ? 0.24 : 0.15, maxLife: isFinishingShot ? 0.24 : 0.15
       });
       spawnImpactSparks(tx, ty, accentColor, isFinishingShot ? 10 : 5);
       return;
@@ -1001,13 +1084,9 @@
     if (ammo === "bullet") {
       const ejectDir = Math.random() < 0.5 ? 1 : -1;
       fx.casings.push({
-        x: muzzle.pivotX + ejectDir * 14,
-        y: muzzle.pivotY - 4,
-        vx: ejectDir * (70 + Math.random() * 65),
-        vy: -(85 + Math.random() * 65),
-        rot: Math.random() * Math.PI,
-        vrot: ejectDir * (10 + Math.random() * 8),
-        life: 0.65
+        x: muzzle.pivotX + ejectDir * 14, y: muzzle.pivotY - 4,
+        vx: ejectDir * (70 + Math.random() * 65), vy: -(85 + Math.random() * 65),
+        rot: Math.random() * Math.PI, vrot: ejectDir * (10 + Math.random() * 8), life: 0.65
       });
 
       const shots = game.weaponType === "gun" ? [-6, 6] : [0];
@@ -1016,10 +1095,8 @@
         const sx = muzzle.x + Math.cos(rad) * off;
         const sy = muzzle.y + Math.sin(rad) * off;
         fx.projectiles.push({
-          type: "bullet",
-          x: sx, y: sy, sx, sy,
-          tx: tx + (Math.random() - 0.5) * 12,
-          ty: ty + (Math.random() - 0.5) * 8,
+          type: "bullet", x: sx, y: sy, sx, sy,
+          tx: tx + (Math.random() - 0.5) * 12, ty: ty + (Math.random() - 0.5) * 8,
           t: 0, duration: 0.12, color: "#fde047", isFinal: isFinishingShot
         });
       });
@@ -1029,10 +1106,8 @@
     if (ammo === "missile") {
       const curveSide = (Math.random() < 0.5 ? -1 : 1) * (55 + Math.random() * 65);
       fx.projectiles.push({
-        type: "missile",
-        x: muzzle.x, y: muzzle.y, sx: muzzle.x, sy: muzzle.y,
-        cx: (muzzle.x + tx) / 2 + curveSide,
-        cy: (muzzle.y + ty) / 2 + 25,
+        type: "missile", x: muzzle.x, y: muzzle.y, sx: muzzle.x, sy: muzzle.y,
+        cx: (muzzle.x + tx) / 2 + curveSide, cy: (muzzle.y + ty) / 2 + 25,
         tx, ty, t: 0, duration: 0.28, color: "#fb923c", isFinal: isFinishingShot
       });
       return;
@@ -1040,8 +1115,7 @@
 
     if (ammo === "plasma") {
       fx.projectiles.push({
-        type: "plasma",
-        x: muzzle.x, y: muzzle.y, sx: muzzle.x, sy: muzzle.y,
+        type: "plasma", x: muzzle.x, y: muzzle.y, sx: muzzle.x, sy: muzzle.y,
         tx, ty, t: 0, duration: 0.19, color: "#c084fc", isFinal: isFinishingShot
       });
     }
@@ -1052,13 +1126,10 @@
       const ang = Math.random() * Math.PI * 2;
       const spd = 60 + Math.random() * 150;
       fx.particles.push({
-        x, y,
-        vx: Math.cos(ang) * spd,
-        vy: Math.sin(ang) * spd,
+        x, y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
         r: 1.6 + Math.random() * 2.2,
         color: i % 2 === 0 ? "#fde047" : color,
-        life: 0.22 + Math.random() * 0.18,
-        maxLife: 0.4
+        life: 0.22 + Math.random() * 0.18, maxLife: 0.4
       });
     }
   }
@@ -1077,9 +1148,7 @@
       const ang = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.35;
       const spd = (isBoss ? 105 : 70) + Math.random() * (isBoss ? 280 : 210);
       fx.particles.push({
-        x, y,
-        vx: Math.cos(ang) * spd,
-        vy: Math.sin(ang) * spd,
+        x, y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
         r: (isBoss ? 2.8 : 2) + Math.random() * 3.4,
         color: i % 3 === 0 ? "#fde047" : i % 4 === 0 ? "#ffffff" : isBoss ? "#f43f5e" : color,
         life: 0.48 + Math.random() * (isBoss ? 0.55 : 0.35),
@@ -1089,7 +1158,6 @@
   }
 
   function renderRainBackdrop(dt, nowSec) {
-    // 1. Falling Rain Streaks
     ctx.save();
     ctx.lineCap = "round";
     for (const r of fx.raindrops) {
@@ -1111,7 +1179,6 @@
     }
     ctx.restore();
 
-    // 2. Gentle Ocean Wave Highlight & Rain Ripples
     ctx.save();
     ctx.strokeStyle = "rgba(125, 211, 252, 0.38)";
     ctx.lineWidth = 1.6;
@@ -1141,10 +1208,8 @@
   }
 
   function renderSpaceBackdrop(dt, nowSec) {
-    // 0. Drifting Nebulae
     for (const n of fx.nebulae) {
-      n.x += n.vx * dt;
-      n.y += n.vy * dt;
+      n.x += n.vx * dt; n.y += n.vy * dt;
       if (n.x < -n.r) n.x = fx.width + n.r;
       if (n.x > fx.width + n.r) n.x = -n.r;
       if (n.y < -n.r) n.y = fx.height + n.r;
@@ -1161,7 +1226,6 @@
       ctx.fill();
     }
 
-    // 0b. Horizon Defense Grid
     const horizonTop = fx.height - 110;
     const horizonBot = fx.height - 24;
     ctx.save();
@@ -1172,10 +1236,7 @@
       const t = (row * 22 + gridScroll) / 110;
       const y = horizonTop + Math.pow(t, 1.55) * (horizonBot - horizonTop);
       ctx.globalAlpha = t * 0.7;
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(fx.width, y);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(fx.width, y); ctx.stroke();
     }
     const cxGrid = fx.width / 2;
     ctx.globalAlpha = 0.45;
@@ -1187,62 +1248,40 @@
     }
     ctx.restore();
 
-    // 0c. Distant Asteroids
     for (const ast of fx.asteroids) {
-      ast.x += ast.vx * dt;
-      ast.y += ast.vy * dt;
-      ast.rot += ast.vrot * dt;
+      ast.x += ast.vx * dt; ast.y += ast.vy * dt; ast.rot += ast.vrot * dt;
       if (ast.y > fx.height + 30) { ast.y = -30; ast.x = Math.random() * fx.width; }
       if (ast.x < -30) ast.x = fx.width + 30;
       if (ast.x > fx.width + 30) ast.x = -30;
-
       ctx.save();
-      ctx.translate(ast.x, ast.y);
-      ctx.rotate(ast.rot);
-      ctx.globalAlpha = ast.alpha;
-      ctx.fillStyle = "#94a3b8";
-      ctx.strokeStyle = "#cbd5e1";
-      ctx.lineWidth = 1;
+      ctx.translate(ast.x, ast.y); ctx.rotate(ast.rot);
+      ctx.globalAlpha = ast.alpha; ctx.fillStyle = "#94a3b8"; ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 1;
       ctx.beginPath();
       ast.pts.forEach((pt, idx) => {
         const px = Math.cos(pt.ang) * ast.size * pt.rad;
         const py = Math.sin(pt.ang) * ast.size * pt.rad;
-        if (idx === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
+        if (idx === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       });
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
+      ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
     }
 
-    // 1. 3-Layer Parallax Stars
     for (const s of fx.stars) {
       const speedMult = game.status === "playing" ? (game.inBossPhase ? 1.8 : 1.0) : 0.45;
       s.y += s.drift * speedMult * dt;
       if (s.y > fx.height) { s.y = -2; s.x = Math.random() * fx.width; }
       const tw = 0.52 + 0.48 * Math.sin(nowSec * s.speed + s.phase);
-      ctx.globalAlpha = s.alpha * tw;
-      ctx.fillStyle = s.hue;
-
+      ctx.globalAlpha = s.alpha * tw; ctx.fillStyle = s.hue;
       if (s.sparkle) {
         const len = s.r * 3.1;
         ctx.beginPath();
-        ctx.moveTo(s.x - len, s.y);
-        ctx.lineTo(s.x + len, s.y);
-        ctx.moveTo(s.x, s.y - len);
-        ctx.lineTo(s.x, s.y + len);
-        ctx.strokeStyle = s.hue;
-        ctx.lineWidth = 1.05;
-        ctx.stroke();
+        ctx.moveTo(s.x - len, s.y); ctx.lineTo(s.x + len, s.y);
+        ctx.moveTo(s.x, s.y - len); ctx.lineTo(s.x, s.y + len);
+        ctx.strokeStyle = s.hue; ctx.lineWidth = 1.05; ctx.stroke();
       }
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
 
-    // 1b. Meteors
     fx.meteorTimer -= dt;
     if (fx.meteorTimer <= 0) {
       spawnMeteor();
@@ -1250,48 +1289,27 @@
     }
     for (let i = fx.meteors.length - 1; i >= 0; i--) {
       const m = fx.meteors[i];
-      m.life -= dt;
-      m.x += m.vx * dt;
-      m.y += m.vy * dt;
-      if (m.life <= 0 || m.x < -120 || m.y > fx.height + 120) {
-        fx.meteors.splice(i, 1);
-        continue;
-      }
+      m.life -= dt; m.x += m.vx * dt; m.y += m.vy * dt;
+      if (m.life <= 0 || m.x < -120 || m.y > fx.height + 120) { fx.meteors.splice(i, 1); continue; }
       const mag = Math.hypot(m.vx, m.vy) || 1;
       const tailX = m.x - (m.vx / mag) * m.len;
       const tailY = m.y - (m.vy / mag) * m.len;
-      const a = Math.min(1, m.life * 2.2);
-
       ctx.save();
       const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
-      grad.addColorStop(0, m.color);
-      grad.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.globalAlpha = a * 0.85;
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = 2.1;
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      ctx.moveTo(m.x, m.y);
-      ctx.lineTo(tailX, tailY);
-      ctx.stroke();
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath();
-      ctx.arc(m.x, m.y, 1.8, 0, Math.PI * 2);
-      ctx.fill();
+      grad.addColorStop(0, m.color); grad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.globalAlpha = Math.min(1, m.life * 2.2) * 0.85;
+      ctx.strokeStyle = grad; ctx.lineWidth = 2.1; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(tailX, tailY); ctx.stroke();
+      ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(m.x, m.y, 1.8, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
   }
 
   function renderCanvas(dt, nowSec) {
     ctx.clearRect(0, 0, fx.width, fx.height);
+    if (game.mode === "rain") renderRainBackdrop(dt, nowSec);
+    else renderSpaceBackdrop(dt, nowSec);
 
-    if (game.mode === "rain") {
-      renderRainBackdrop(dt, nowSec);
-    } else {
-      renderSpaceBackdrop(dt, nowSec);
-    }
-
-    // Shockwave rings
     for (let i = fx.rings.length - 1; i >= 0; i--) {
       const ring = fx.rings[i];
       ring.life -= dt;
@@ -1299,48 +1317,27 @@
       const p = 1 - ring.life / ring.maxLife;
       const curR = ring.r + (ring.maxR - ring.r) * (1 - Math.pow(1 - p, 3));
       ctx.save();
-      ctx.globalAlpha = (1 - p) * 0.78;
-      ctx.strokeStyle = ring.color;
-      ctx.lineWidth = 3.2 * (1 - p) + 0.8;
-      ctx.beginPath();
-      ctx.arc(ring.x, ring.y, curR, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
+      ctx.globalAlpha = (1 - p) * 0.78; ctx.strokeStyle = ring.color; ctx.lineWidth = 3.2 * (1 - p) + 0.8;
+      ctx.beginPath(); ctx.arc(ring.x, ring.y, curR, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
     }
 
-    // Laser / Boat energy bolts
     for (let i = fx.lasers.length - 1; i >= 0; i--) {
       const l = fx.lasers[i];
       l.life -= dt;
       if (l.life <= 0) { fx.lasers.splice(i, 1); continue; }
       const alpha = l.life / l.maxLife;
-      ctx.save();
-      ctx.lineCap = "round";
-      ctx.globalAlpha = alpha * 0.58;
-      ctx.strokeStyle = l.color;
-      ctx.lineWidth = l.thick ? 11 : 6;
-      ctx.beginPath();
-      ctx.moveTo(l.x1, l.y1);
-      ctx.lineTo(l.x2, l.y2);
-      ctx.stroke();
-
-      ctx.globalAlpha = alpha;
-      ctx.strokeStyle = "#fef9c3";
-      ctx.lineWidth = l.thick ? 3.5 : 2;
-      ctx.beginPath();
-      ctx.moveTo(l.x1, l.y1);
-      ctx.lineTo(l.x2, l.y2);
-      ctx.stroke();
+      ctx.save(); ctx.lineCap = "round";
+      ctx.globalAlpha = alpha * 0.58; ctx.strokeStyle = l.color; ctx.lineWidth = l.thick ? 11 : 6;
+      ctx.beginPath(); ctx.moveTo(l.x1, l.y1); ctx.lineTo(l.x2, l.y2); ctx.stroke();
+      ctx.globalAlpha = alpha; ctx.strokeStyle = "#fef9c3"; ctx.lineWidth = l.thick ? 3.5 : 2;
+      ctx.beginPath(); ctx.moveTo(l.x1, l.y1); ctx.lineTo(l.x2, l.y2); ctx.stroke();
       ctx.restore();
     }
 
-    // Active Projectiles (Bullets, Homing Missiles, Plasma Orbs)
     for (let i = fx.projectiles.length - 1; i >= 0; i--) {
       const pr = fx.projectiles[i];
-      const prevX = pr.x;
-      const prevY = pr.y;
+      const prevX = pr.x, prevY = pr.y;
       pr.t += dt / pr.duration;
-
       if (pr.t >= 1) {
         if (pr.type === "missile") {
           fx.rings.push({ x: pr.tx, y: pr.ty, r: 4, maxR: 34, color: "#fb923c", life: 0.22, maxLife: 0.22 });
@@ -1361,118 +1358,77 @@
         pr.x = inv * inv * pr.sx + 2 * inv * u * pr.cx + u * u * pr.tx;
         pr.y = inv * inv * pr.sy + 2 * inv * u * pr.cy + u * u * pr.ty;
         const ang = Math.atan2(pr.y - prevY, pr.x - prevX);
-
         fx.particles.push({
-          x: pr.x - Math.cos(ang) * 8,
-          y: pr.y - Math.sin(ang) * 8,
-          vx: (Math.random() - 0.5) * 26,
-          vy: (Math.random() - 0.5) * 26,
+          x: pr.x - Math.cos(ang) * 8, y: pr.y - Math.sin(ang) * 8,
+          vx: (Math.random() - 0.5) * 26, vy: (Math.random() - 0.5) * 26,
           r: 2.5 + Math.random() * 2.4,
           color: Math.random() < 0.45 ? "#fb923c" : "rgba(226, 232, 240, 0.75)",
           life: 0.24, maxLife: 0.24
         });
-
-        ctx.save();
-        ctx.translate(pr.x, pr.y);
-        ctx.rotate(ang);
+        ctx.save(); ctx.translate(pr.x, pr.y); ctx.rotate(ang);
         ctx.fillStyle = "#f8fafc";
-        ctx.beginPath();
-        ctx.moveTo(11, 0); ctx.lineTo(-6, -4); ctx.lineTo(-9, 0); ctx.lineTo(-6, 4);
-        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(11, 0); ctx.lineTo(-6, -4); ctx.lineTo(-9, 0); ctx.lineTo(-6, 4); ctx.closePath(); ctx.fill();
         ctx.fillStyle = "#ef4444";
-        ctx.beginPath();
-        ctx.moveTo(11, 0); ctx.lineTo(4, -2.8); ctx.lineTo(4, 2.8);
-        ctx.closePath(); ctx.fill();
-        ctx.fillStyle = "#fde047";
-        ctx.beginPath(); ctx.arc(-9, 0, 3.2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(11, 0); ctx.lineTo(4, -2.8); ctx.lineTo(4, 2.8); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = "#fde047"; ctx.beginPath(); ctx.arc(-9, 0, 3.2, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
       } else if (pr.type === "bullet") {
-        pr.x = pr.sx + (pr.tx - pr.sx) * u;
-        pr.y = pr.sy + (pr.ty - pr.sy) * u;
+        pr.x = pr.sx + (pr.tx - pr.sx) * u; pr.y = pr.sy + (pr.ty - pr.sy) * u;
         const tailU = Math.max(0, u - 0.28);
-        const tailX = pr.sx + (pr.tx - pr.sx) * tailU;
-        const tailY = pr.sy + (pr.ty - pr.sy) * tailU;
-        ctx.save();
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "rgba(251, 146, 60, 0.72)";
-        ctx.lineWidth = 6;
+        const tailX = pr.sx + (pr.tx - pr.sx) * tailU, tailY = pr.sy + (pr.ty - pr.sy) * tailU;
+        ctx.save(); ctx.lineCap = "round";
+        ctx.strokeStyle = "rgba(251, 146, 60, 0.72)"; ctx.lineWidth = 6;
         ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(pr.x, pr.y); ctx.stroke();
-        ctx.strokeStyle = "#fef9c3";
-        ctx.lineWidth = 2.6;
+        ctx.strokeStyle = "#fef9c3"; ctx.lineWidth = 2.6;
         ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(pr.x, pr.y); ctx.stroke();
         ctx.restore();
       } else if (pr.type === "plasma") {
-        pr.x = pr.sx + (pr.tx - pr.sx) * u;
-        pr.y = pr.sy + (pr.ty - pr.sy) * u;
+        pr.x = pr.sx + (pr.tx - pr.sx) * u; pr.y = pr.sy + (pr.ty - pr.sy) * u;
         const pulse = 8 + Math.sin(nowSec * 36) * 2.2;
         ctx.save();
         const grad = ctx.createRadialGradient(pr.x, pr.y, 1, pr.x, pr.y, pulse * 1.9);
-        grad.addColorStop(0, "#ffffff");
-        grad.addColorStop(0.35, "#e879f9");
-        grad.addColorStop(0.7, "rgba(56, 189, 248, 0.55)");
-        grad.addColorStop(1, "rgba(56, 189, 248, 0)");
-        ctx.fillStyle = grad;
-        ctx.beginPath(); ctx.arc(pr.x, pr.y, pulse * 1.9, 0, Math.PI * 2); ctx.fill();
+        grad.addColorStop(0, "#ffffff"); grad.addColorStop(0.35, "#e879f9");
+        grad.addColorStop(0.7, "rgba(56, 189, 248, 0.55)"); grad.addColorStop(1, "rgba(56, 189, 248, 0)");
+        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(pr.x, pr.y, pulse * 1.9, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
       }
     }
 
-    // Brass shell casings
     for (let i = fx.casings.length - 1; i >= 0; i--) {
       const c = fx.casings[i];
       c.life -= dt;
       if (c.life <= 0) { fx.casings.splice(i, 1); continue; }
-      c.vy += 420 * dt;
-      c.x += c.vx * dt;
-      c.y += c.vy * dt;
-      c.rot += c.vrot * dt;
-      ctx.save();
-      ctx.globalAlpha = Math.min(1, c.life * 2.5);
-      ctx.translate(c.x, c.y);
-      ctx.rotate(c.rot);
-      ctx.fillStyle = "#f59e0b";
-      ctx.fillRect(-3.5, -1.6, 7, 3.2);
-      ctx.restore();
+      c.vy += 420 * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.rot += c.vrot * dt;
+      ctx.save(); ctx.globalAlpha = Math.min(1, c.life * 2.5);
+      ctx.translate(c.x, c.y); ctx.rotate(c.rot); ctx.fillStyle = "#f59e0b";
+      ctx.fillRect(-3.5, -1.6, 7, 3.2); ctx.restore();
     }
 
-    // Muzzle Flashes
     for (let i = fx.muzzleFlashes.length - 1; i >= 0; i--) {
       const mf = fx.muzzleFlashes[i];
       mf.life -= dt;
       if (mf.life <= 0) { fx.muzzleFlashes.splice(i, 1); continue; }
-      ctx.save();
-      ctx.globalAlpha = mf.life / mf.maxLife;
-      ctx.translate(mf.x, mf.y);
-      ctx.rotate(mf.angle);
+      ctx.save(); ctx.globalAlpha = mf.life / mf.maxLife;
+      ctx.translate(mf.x, mf.y); ctx.rotate(mf.angle);
       const grad = ctx.createRadialGradient(0, 0, 1, 0, -4, mf.size);
-      grad.addColorStop(0, "#ffffff");
-      grad.addColorStop(0.45, mf.color);
-      grad.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = grad;
-      ctx.beginPath(); ctx.arc(0, -4, mf.size, 0, Math.PI * 2); ctx.fill();
+      grad.addColorStop(0, "#ffffff"); grad.addColorStop(0.45, mf.color); grad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(0, -4, mf.size, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
 
-    // Particles
     for (let i = fx.particles.length - 1; i >= 0; i--) {
       const p = fx.particles[i];
       p.life -= dt;
       if (p.life <= 0) { fx.particles.splice(i, 1); continue; }
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-      p.vx *= 0.96;
-      p.vy *= 0.96;
-      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * (0.4 + 0.6 * (p.life / p.maxLife)), 0, Math.PI * 2);
-      ctx.fill();
+      p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.96; p.vy *= 0.96;
+      ctx.globalAlpha = Math.max(0, p.life / p.maxLife); ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (0.4 + 0.6 * (p.life / p.maxLife)), 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
   }
 
   // --------------------------------------------------------------------------
-  // UI & HUD Rendering Helpers
+  // UI & HUD Rendering
   // --------------------------------------------------------------------------
   function renderHearts() {
     let html = "";
@@ -1514,10 +1470,7 @@
       const depleted = i < game.bossWavesDefeated;
       const isCurrent = i === game.bossWavesDefeated;
       const wPct = depleted ? 0 : isCurrent ? curFillPct : 100;
-      segHtml += `
-        <div class="boss-hp-seg ${depleted ? "depleted" : ""}">
-          <div class="boss-hp-seg-fill" style="width:${wPct.toFixed(1)}%"></div>
-        </div>`;
+      segHtml += `<div class="boss-hp-seg ${depleted ? "depleted" : ""}"><div class="boss-hp-seg-fill" style="width:${wPct.toFixed(1)}%"></div></div>`;
     }
     el.bossHpSegments.innerHTML = segHtml;
   }
@@ -1531,18 +1484,21 @@
       el.comboBadge.classList.add("hidden");
     }
 
+    const counts = getLearningCounts();
+
     if (game.mode === "rain") {
-      const srcName = game.rainSource === "session"
-        ? "Phiên vừa bắn"
-        : game.rainSource === "recent20"
-          ? "20 từ gần nhất"
-          : "Từ đã bắn hạ";
+      const srcName = game.rainSource === "due"
+        ? "Cần ôn ngay"
+        : game.rainSource === "session"
+          ? "Phiên vừa học"
+          : game.rainSource === "recent20"
+            ? "20 từ gần nhất"
+            : "Tất cả đã học";
       el.milestoneLabel.textContent = "Mưa Chính Tả";
       el.milestoneTopic.textContent = srcName;
       el.milestoneProgressText.textContent = `${game.wordsDestroyed}/${game.milestoneGoal}`;
-      const pct = game.milestoneGoal > 0 ? Math.min(100, (game.wordsDestroyed / game.milestoneGoal) * 100) : 0;
-      el.milestoneProgressFill.style.width = `${pct}%`;
-      el.deckPillText.textContent = `Kho đã bắn hạ · ${progress.mastered.size} từ`;
+      el.milestoneProgressFill.style.width = `${Math.min(100, (game.wordsDestroyed / Math.max(1, game.milestoneGoal)) * 100)}%`;
+      el.deckPillText.textContent = `Kho đã học: ${counts.totalLearned} từ · Đã thuộc: ${counts.mastered}`;
     } else {
       const topic = topicMap.get(game.milestoneId) || topics[0];
       if (game.endless) {
@@ -1567,10 +1523,9 @@
         }
       }
 
-      const lvlLabel = game.levelFilter === "ALL" ? "B1–C2" : `Level ${game.levelFilter}`;
+      const lvlLabel = game.levelFilter === "ALL" ? "A1–C2" : game.levelFilter === "AWL" ? "🎓 AWL IELTS" : `Level ${game.levelFilter}`;
       const wordCnt = getFilteredPool(singleVocab, false).length;
-      const colCnt = getFilteredPool(collocVocab, false).length;
-      el.deckPillText.textContent = `${wordCnt.toLocaleString("en-US")} từ + ${colCnt} Boss Collocations · ${lvlLabel}`;
+      el.deckPillText.textContent = `${wordCnt.toLocaleString("en-US")} từ IELTS · ${lvlLabel}`;
     }
 
     renderHearts();
@@ -1578,25 +1533,18 @@
     el.arena.classList.toggle("hide-pill-levels", !game.showLevelOnPill);
   }
 
-  function updateNotebookBadge() {
-    el.notebookCount.textContent = `${progress.mastered.size}/${allLibrary.length}`;
-  }
-
   function updatePoolHints() {
     const wAll = getFilteredPool(singleVocab, false).length;
-    const cAll = getFilteredPool(collocVocab, false).length;
     const wTopic = getFilteredPool(singleVocab, true).length;
     const cTopic = getFilteredPool(collocVocab, true).length;
     el.poolCountHint.textContent = game.endless
-      ? `(${wAll.toLocaleString("en-US")} từ + ${cAll} Boss Collocations)`
-      : `(${wTopic} từ + ${cTopic} Boss Collocations trong mốc này)`;
+      ? `(${wAll.toLocaleString("en-US")} từ IELTS sẵn sàng)`
+      : `(${wTopic} từ + ${cTopic} Boss trong mốc này · ${wAll.toLocaleString("en-US")} tổng)`;
   }
 
   function formatPhraseCharsHtml(text, typedCount) {
     const typed = text.slice(0, typedCount);
     const rest = text.slice(typedCount);
-
-    const typedHtml = escapeHtml(typed);
     let restHtml = "";
     for (let i = 0; i < rest.length; i++) {
       const ch = rest[i];
@@ -1607,10 +1555,9 @@
         restHtml += escapeHtml(ch);
       }
     }
-    return `<span class="typed">${typedHtml}</span><span class="untyped">${restHtml}</span>`;
+    return `<span class="typed">${escapeHtml(typed)}</span><span class="untyped">${restHtml}</span>`;
   }
 
-  // Format Mưa Từ Vựng blank mask (e.g. `p _ _ _ _ _ _` -> as typed: `p a c _ _ _ _`)
   function formatRainMaskHtml(word, typedCount, revealedExtra = 0) {
     let html = "";
     for (let i = 0; i < word.length; i++) {
@@ -1644,10 +1591,7 @@
     const nextCh = text[w.typedCount] || null;
     if (game.mode === "rain") {
       el.typingTyped.textContent = text.slice(0, w.typedCount);
-      el.typingRemaining.textContent = text
-        .slice(w.typedCount)
-        .replace(/[a-z]/g, "_")
-        .replace(/ /g, " ");
+      el.typingRemaining.textContent = text.slice(w.typedCount).replace(/[a-z]/g, "_").replace(/ /g, " ");
       el.typingHint.textContent = "Bấm ? mở gợi ý · ESC đổi từ";
     } else {
       el.typingTyped.textContent = text.slice(0, w.typedCount);
@@ -1662,7 +1606,6 @@
     el.mascot.classList.remove("cheer", "shock");
     void el.mascot.offsetWidth;
     el.mascot.classList.add(mode);
-
     if (text) {
       el.mascotBubble.textContent = text;
       el.mascotBubble.classList.remove("hidden");
@@ -1672,12 +1615,11 @@
   }
 
   // --------------------------------------------------------------------------
-  // Compact Vietnamese Meaning + POS Reveal
+  // Compact Meaning Popup & Dock
   // --------------------------------------------------------------------------
   function showMeaningPopup(entry, x, y, missed = false) {
     const popup = document.createElement("div");
     popup.className = `meaning-popup${missed ? " missed" : ""}`;
-
     const clampedX = Math.max(125, Math.min(fx.width - 140, x));
     const clampedY = Math.max(88, Math.min(fx.height - 115, y));
     popup.style.left = `${clampedX}px`;
@@ -1694,15 +1636,12 @@
         <span class="mp-vi">${escapeHtml(entry.meaning)}</span>
       </div>
     `;
-
     el.popupsLayer.appendChild(popup);
     setTimeout(() => popup.remove(), entry.isColloc ? 2600 : 2200);
   }
 
   function updateMeaningDock(entry, missed = false) {
-    if (game.lastDockWord) {
-      game.recentMeanings = [game.lastDockWord];
-    }
+    if (game.lastDockWord) game.recentMeanings = [game.lastDockWord];
     game.lastDockWord = { entry, missed };
 
     el.meaningHistory.innerHTML = game.recentMeanings
@@ -1725,12 +1664,12 @@
     el.meaningCurrent.style.animation = "";
 
     el.mcStatus.textContent = missed
-      ? (game.mode === "rain" ? "✕ ĐÁP ÁN CHÍNH TẢ" : "✕ BỎ LỠ · GHI NHỚ")
+      ? (game.mode === "rain" ? "✕ ĐÁP ÁN · CẦN ÔN LẠI" : "✕ BỎ LỠ · GHI NHỚ")
       : game.mode === "rain"
-        ? "✓ NHỚ CHÍNH TẢ CHUẨN"
+        ? "✅ ĐÃ THUỘC CHÍNH TẢ"
         : entry.isColloc
-          ? "👑 BOSS COLLOCATION ĐÃ HẠ"
-          : "✓ VỪA BẮN HẠ";
+          ? "👑 ĐÃ LƯU SANG MƯA TỪ VỰNG"
+          : "✓ ĐÃ HỌC · THÊM VÀO CHỜ ÔN";
     el.mcLevel.textContent = entry.level;
     el.mcLevel.className = `cefr-tag ${entry.level}`;
     el.mcWord.textContent = entry.word;
@@ -1741,7 +1680,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Spawning: Space Words / Boss Collocations / Rain Spelling Cards
+  // Spawning: Space Words, Boss Collocations, & Rain Cards
   // --------------------------------------------------------------------------
   function pickNextWordEntry() {
     const activeSet = new Set(game.activeWords.map(w => w.entry.word));
@@ -1751,9 +1690,7 @@
       game.wordQueue = buildQueueForRun();
     }
 
-    let idx = game.wordQueue.findIndex(
-      e => !activeSet.has(e.word) && !activeFirstLetters.has(e.word[0])
-    );
+    let idx = game.wordQueue.findIndex(e => !activeSet.has(e.word) && !activeFirstLetters.has(e.word[0]));
     if (idx === -1) idx = game.wordQueue.findIndex(e => !activeSet.has(e.word));
     if (idx === -1) return null;
 
@@ -1766,7 +1703,6 @@
     const maxX = Math.max(minX + 40, fx.width - pillW - 76);
     let chosenX = minX + Math.random() * (maxX - minX);
     let bestClearance = -1;
-
     for (let attempt = 0; attempt < 12; attempt++) {
       const candX = minX + Math.random() * (maxX - minX);
       let minDist = Infinity;
@@ -1777,17 +1713,13 @@
         }
       }
       if (minDist > 26) return candX;
-      if (minDist > bestClearance) {
-        bestClearance = minDist;
-        chosenX = candX;
-      }
+      if (minDist > bestClearance) { bestClearance = minDist; chosenX = candX; }
     }
     return chosenX;
   }
 
   function spawnWord() {
     if (game.inBossPhase) return;
-
     const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
     const maxCap = game.mode === "rain" ? Math.min(3, preset.maxActive) : preset.maxActive;
     if (game.activeWords.length >= maxCap) return;
@@ -1857,7 +1789,8 @@
       h: pillH,
       speed,
       typedCount: 0,
-      hintExtra: 0
+      hintExtra: 0,
+      usedHint: false
     };
 
     node.style.transform = `translate3d(${wordObj.x}px, ${wordObj.y}px, 0)`;
@@ -1869,12 +1802,8 @@
     game.inBossPhase = true;
     game.bossTotalWaves = wavesCount;
     game.bossWavesDefeated = 0;
-
-    if (!game.bossQueue.length) {
-      game.bossQueue = buildBossQueue(!game.endless);
-    }
+    if (!game.bossQueue.length) game.bossQueue = buildBossQueue(!game.endless);
     updateHUD();
-
     setTimeout(() => {
       if (game.status === "playing" && game.inBossPhase && !game.activeWords.some(w => w.isBoss)) {
         spawnNextBossWave();
@@ -1884,10 +1813,7 @@
 
   function spawnNextBossWave() {
     if (!game.inBossPhase || game.status !== "playing") return;
-
-    if (!game.bossQueue.length) {
-      game.bossQueue = buildBossQueue(!game.endless);
-    }
+    if (!game.bossQueue.length) game.bossQueue = buildBossQueue(!game.endless);
     const entry = game.bossQueue.shift();
     if (!entry) return;
 
@@ -1935,7 +1861,8 @@
       h: pillH,
       speed,
       typedCount: 0,
-      hintExtra: 0
+      hintExtra: 0,
+      usedHint: false
     };
 
     node.style.transform = `translate3d(${bossObj.x}px, ${bossObj.y}px, 0)`;
@@ -1965,7 +1892,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Typing Mechanics, Rain Hint & Scoring
+  // Typing Mechanics, Hint & Scoring
   // --------------------------------------------------------------------------
   function renderTargetDisplay(target) {
     if (game.mode === "rain") {
@@ -1983,6 +1910,7 @@
       game.lockedWord = target;
       target.el.classList.add("locked");
     }
+    target.usedHint = true;
     target.hintExtra = Math.min(target.entry.word.length - target.typedCount, target.hintExtra + 1);
     game.combo = 0;
     renderTargetDisplay(target);
@@ -2056,10 +1984,7 @@
       target.el.classList.remove("wrong-hit");
       void target.el.offsetWidth;
       target.el.classList.add("wrong-hit");
-
-      if (target.isBoss) {
-        target.y += 10;
-      }
+      if (target.isBoss) target.y += 10;
       updateHUD();
     }
   }
@@ -2101,6 +2026,7 @@
   function destroyWord(target, cx, cy, color) {
     const entry = target.entry;
     const wasBoss = target.isBoss;
+    const usedHint = Boolean(target.usedHint);
     removeWordObj(target);
 
     game.wordsDestroyed++;
@@ -2115,15 +2041,13 @@
     if (game.score > progress.highScore) progress.highScore = game.score;
 
     if (game.mode === "rain") {
-      progress.spelled.add(entry.word);
-      saveProgress();
+      recordRainReviewSuccess(entry.word, usedHint);
     } else {
-      recordMasteredWord(entry.word);
+      recordLearnedFromShooter(entry.word);
     }
 
     game.sessionLog.unshift({ entry, status: "hit" });
 
-    // Visual FX + Explosion SFX + Crystal-Clear English Pronunciation (120ms after boom!)
     spawnExplosion(cx, cy, color, wasBoss);
     audio.playExplosion(game.combo, wasBoss);
     audio.speakWord(entry.word, false, 120);
@@ -2131,41 +2055,33 @@
     showMeaningPopup(entry, cx, cy, false);
     updateMeaningDock(entry, false);
 
-    // Rain Mode Victory Check
     if (game.mode === "rain") {
       if (game.combo > 0 && game.combo % 3 === 0) {
         triggerMascot("cheer", `Nhớ chuẩn x${game.combo}! ⛵`);
       }
       updateHUD();
-
       if (game.wordsDestroyed >= game.milestoneGoal) {
         audio.playMilestoneWin();
-        setTimeout(() => {
-          if (game.status === "playing") finishRun(true);
-        }, 700);
+        setTimeout(() => { if (game.status === "playing") finishRun(true); }, 700);
       } else if (game.activeWords.length === 0) {
         game.spawnTimer = Math.min(game.spawnTimer, 0.35);
       }
       return;
     }
 
-    // Space Shooter Boss Logic
     if (wasBoss) {
       game.bossWavesDefeated++;
       triggerMascot("cheer", `Hạ Boss ${game.bossWavesDefeated}/${game.bossTotalWaves}! 👑`);
       updateHUD();
 
       if (game.endless && game.bossOnly) {
-        setTimeout(() => {
-          if (game.status === "playing") spawnNextBossWave();
-        }, 700);
+        setTimeout(() => { if (game.status === "playing") spawnNextBossWave(); }, 700);
         return;
       }
 
       if (game.bossWavesDefeated >= game.bossTotalWaves) {
         game.score += 500;
         if (game.score > progress.highScore) progress.highScore = game.score;
-
         spawnExplosion(fx.width * 0.35, fx.height * 0.38, "#fbbf24", true);
         spawnExplosion(fx.width * 0.65, fx.height * 0.35, "#38bdf8", true);
         audio.playBossDefeat();
@@ -2180,21 +2096,14 @@
           progress.clearedMilestones.add(game.milestoneId);
           saveProgress();
           updateHUD();
-          setTimeout(() => {
-            if (game.status === "playing") finishRun(true);
-          }, 950);
+          setTimeout(() => { if (game.status === "playing") finishRun(true); }, 950);
         }
       } else {
-        setTimeout(() => {
-          if (game.status === "playing" && game.inBossPhase) {
-            spawnNextBossWave();
-          }
-        }, 780);
+        setTimeout(() => { if (game.status === "playing" && game.inBossPhase) spawnNextBossWave(); }, 780);
       }
       return;
     }
 
-    // Regular Space Shooter Word Celebrations
     if (game.combo > 0 && game.combo % 4 === 0) {
       triggerMascot("cheer", `Combo x${game.combo}! 🔥`);
     } else if (entry.level === "C2") {
@@ -2209,12 +2118,10 @@
       triggerBossPhase(BOSS_PHASES_PER_MILESTONE);
       return;
     }
-
     if (game.endless && !game.bossOnly && game.regularDestroyed >= game.nextEndlessBossAt) {
       triggerBossPhase(1);
       return;
     }
-
     if (game.activeWords.length === 0) {
       game.spawnTimer = Math.min(game.spawnTimer, 0.35);
     }
@@ -2236,15 +2143,17 @@
     game.lives = Math.max(0, game.lives - 1);
     game.combo = 0;
 
-    if (game.mode === "shooter" && !progress.mastered.has(entry.word)) {
+    if (game.mode === "rain") {
+      recordRainReviewMiss(entry.word);
+    } else if (!isWordLearned(entry.word)) {
       progress.missed.add(entry.word);
       saveProgress();
     }
     game.sessionLog.unshift({ entry, status: "missed" });
 
-    // Show full word + meaning so player learns the missed word immediately!
     showMeaningPopup(entry, cx, cy, true);
     updateMeaningDock(entry, true);
+
     if (game.mode === "rain") {
       audio.playWaterSplash();
       audio.speakWord(entry.word, false, 180);
@@ -2265,28 +2174,20 @@
     updateHUD();
 
     if (game.lives <= 0) {
-      setTimeout(() => {
-        if (game.status === "playing") finishRun(false);
-      }, 450);
+      setTimeout(() => { if (game.status === "playing") finishRun(false); }, 450);
       return;
     }
 
-    // In Rain mode, re-queue missed word so you get another chance if milestone not finished
     if (game.mode === "rain" && game.wordsDestroyed + game.activeWords.length < game.milestoneGoal) {
       game.wordQueue.push(entry);
     }
-
     if (wasBoss && game.inBossPhase) {
-      setTimeout(() => {
-        if (game.status === "playing" && game.inBossPhase && game.activeWords.length === 0) {
-          spawnNextBossWave();
-        }
-      }, 850);
+      setTimeout(() => { if (game.status === "playing" && game.inBossPhase && game.activeWords.length === 0) spawnNextBossWave(); }, 850);
     }
   }
 
   // --------------------------------------------------------------------------
-  // Game Lifecycle (Start, Pause, Resume, Result, Loop)
+  // Game Lifecycle
   // --------------------------------------------------------------------------
   function startRun() {
     audio.unlock();
@@ -2300,7 +2201,7 @@
         openGameSetup("rain");
         return;
       }
-      game.maxLives = 4; // 4 hearts matching Mưa Từ Vựng screenshot!
+      game.maxLives = 4;
       game.milestoneGoal = Math.min(20, rainPool.length);
     } else {
       game.maxLives = 3;
@@ -2317,6 +2218,7 @@
     game.wrongChars = 0;
     game.wordsDestroyed = 0;
     game.regularDestroyed = 0;
+    game.rainMasteredThisRun = 0;
 
     game.inBossPhase = false;
     game.bossWavesDefeated = 0;
@@ -2369,7 +2271,7 @@
       el.pauseSubtitle.textContent = game.inBossPhase
         ? `👑 Đang đấu Boss Collocation · ${topic.name}`
         : game.endless
-          ? `Chế độ Vô tận · Đã bắn hạ ${game.wordsDestroyed} mục tiêu`
+          ? `Chế độ Vô tận · Đã học ${game.wordsDestroyed} từ`
           : `Mốc ${topic.id}/20 · ${topic.name} (${game.regularDestroyed}/${game.milestoneGoal} từ + Boss)`;
     }
     el.pauseOverlay.classList.remove("hidden");
@@ -2394,38 +2296,40 @@
 
     const totalTyped = game.correctChars + game.wrongChars;
     const accuracy = totalTyped > 0 ? Math.round((game.correctChars / totalTyped) * 100) : 100;
+    const counts = getLearningCounts();
 
     if (game.mode === "rain") {
       el.btnNextMilestone.classList.add("hidden");
       el.btnPracticeRainNow.classList.add("hidden");
+      el.btnBackLearnMore.classList.remove("hidden");
       if (victory) {
         el.resultEmoji.textContent = "⛵";
-        el.resultTitle.textContent = "Xuất sắc! Vượt qua cơn Mưa Từ Vựng!";
-        el.resultSubtitle.textContent = `Bạn đã nhớ và gõ chuẩn chính tả ${game.wordsDestroyed} từ đã bắn hạ`;
+        el.resultTitle.textContent = `Hoàn thành ôn chính tả · Đã thuộc +${game.rainMasteredThisRun} từ!`;
+        el.resultSubtitle.textContent = `Còn ${counts.due} từ chờ ôn · Tổng đã thuộc: ${counts.mastered}/${counts.totalLearned} từ`;
       } else {
         audio.playGameOver();
         el.resultEmoji.textContent = "🌧️";
-        el.resultTitle.textContent = "Thuyền đã chạm sóng!";
-        el.resultSubtitle.textContent = `Bạn đã nhớ đúng ${game.wordsDestroyed} từ · Xem lại chính tả các từ bên dưới nhé`;
+        el.resultTitle.textContent = "Kết thúc lượt ôn tập!";
+        el.resultSubtitle.textContent = `Đã thuộc thêm ${game.rainMasteredThisRun} từ · Các từ quên sẽ được giữ lại để ôn tiếp`;
       }
     } else {
       const topic = topicMap.get(game.milestoneId) || topics[0];
-      const hasShotWords = progress.mastered.size > 0;
-      el.btnPracticeRainNow.classList.toggle("hidden", !hasShotWords);
-      el.btnPracticeRainNow.textContent = sessionMastered.size > 0
-        ? `🌧️ Kiểm tra chính tả (${sessionMastered.size} từ vừa bắn)`
-        : `🌧️ Kiểm tra chính tả (${progress.mastered.size} từ)`;
+      el.btnBackLearnMore.classList.add("hidden");
+      el.btnPracticeRainNow.classList.toggle("hidden", counts.totalLearned === 0);
+      el.btnPracticeRainNow.textContent = counts.due > 0
+        ? `🌧️ Ôn chính tả ngay (${counts.due} từ chờ ôn)`
+        : `🌧️ Ôn chính tả (${counts.totalLearned} từ đã học)`;
 
       if (victory) {
         el.resultEmoji.textContent = "👑";
         el.resultTitle.textContent = `Tiêu diệt Boss · Vượt Mốc ${topic.id}/20!`;
-        el.resultSubtitle.textContent = `Chủ đề: ${topic.name} (${topic.vi}) · Hạ gục ${game.wordsDestroyed} từ & Collocations (+500 thưởng Boss)`;
+        el.resultSubtitle.textContent = `${game.wordsDestroyed} từ mới đã lưu vào hàng chờ ôn Mưa Từ Vựng (+500 điểm Boss)`;
         el.btnNextMilestone.classList.toggle("hidden", game.milestoneId >= topics.length);
       } else {
         audio.playGameOver();
         el.resultEmoji.textContent = "💥";
-        el.resultTitle.textContent = game.endless ? "Kết thúc lượt chiến đấu!" : "Lá chắn phòng thủ đã vỡ!";
-        el.resultSubtitle.textContent = `Bạn đã bắn hạ ${game.wordsDestroyed} mục tiêu · Ôn lại nghĩa hoặc sang Mưa Từ Vựng test chính tả nhé`;
+        el.resultTitle.textContent = game.endless ? "Kết thúc lượt học!" : "Lá chắn phòng thủ đã vỡ!";
+        el.resultSubtitle.textContent = `Bạn đã học được ${game.wordsDestroyed} từ mới — chuyển qua Mưa Từ Vựng để ôn lại ngay nhé!`;
         el.btnNextMilestone.classList.add("hidden");
       }
     }
@@ -2446,6 +2350,7 @@
               <button class="speak-mini-btn" data-speak="${escapeHtml(item.entry.word)}" title="Nghe phát âm">🔊</button>
               ${item.entry.isColloc ? `<span class="boss-tag-badge">👑 BOSS</span>` : ""}
               <span class="review-word">${escapeHtml(item.entry.word)}</span>
+              ${item.entry.isAwl ? `<span class="awl-tag">AWL</span>` : ""}
               ${item.entry.ipa ? `<span class="review-ipa">${escapeHtml(item.entry.ipa)}</span>` : ""}
               <span class="cefr-tag ${escapeHtml(item.entry.level)}">${escapeHtml(item.entry.level)}</span>
               <span class="pos-pill pos-${escapeHtml(item.entry.pos)}">${escapeHtml(item.entry.posShort)}</span>
@@ -2473,7 +2378,6 @@
     el.btnSound.classList.toggle("active", audio.soundEnabled);
   }
 
-  // Main Animation Loop
   function gameLoop(ts) {
     if (!game.lastFrameTs) game.lastFrameTs = ts;
     const dt = Math.min(0.05, (ts - game.lastFrameTs) / 1000);
@@ -2501,10 +2405,7 @@
         const w = game.activeWords[i];
         w.y += w.speed * dt;
         w.el.style.transform = `translate3d(${w.x}px, ${w.y}px, 0)`;
-
-        if (w.y + w.h >= dangerY) {
-          handleWordMissed(w);
-        }
+        if (w.y + w.h >= dangerY) handleWordMissed(w);
       }
 
       if (game.lockedWord && game.mode === "shooter") {
@@ -2568,7 +2469,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Modals: Milestones Picker & Vocabulary Notebook
+  // Modals: Milestones & Vocabulary Notebook + Progress Backup
   // --------------------------------------------------------------------------
   function populateTopicSelects() {
     const optsHtml = topics
@@ -2581,7 +2482,7 @@
 
   function openMilestonesModal() {
     if (game.mode === "rain") {
-      openNotebookModal("MASTERED");
+      openNotebookModal("LEARNED");
       return;
     }
     if (game.status === "playing") pauseGame();
@@ -2592,10 +2493,9 @@
   function renderMilestonesGrid() {
     el.milestonesGrid.innerHTML = topics
       .map(t => {
-        const wInTopic = singleVocab.filter(w => w.topicId === t.id && (game.levelFilter === "ALL" || w.level === game.levelFilter));
-        const cInTopic = collocVocab.filter(c => c.topicId === t.id && (game.levelFilter === "ALL" || c.level === game.levelFilter));
-        const totalInTopic = wInTopic.length + cInTopic.length;
-        const masteredInTopic = [...wInTopic, ...cInTopic].filter(w => progress.mastered.has(w.word)).length;
+        const wInTopic = singleVocab.filter(w => w.topicId === t.id && matchesLevelFilter(w));
+        const cInTopic = collocVocab.filter(c => c.topicId === t.id && matchesLevelFilter(c));
+        const learnedInTopic = [...wInTopic, ...cInTopic].filter(w => isWordLearned(w.word)).length;
         const cleared = progress.clearedMilestones.has(t.id);
         const current = !game.endless && game.milestoneId === t.id;
 
@@ -2603,10 +2503,10 @@
           <button class="ms-card ${current ? "current" : ""} ${cleared ? "cleared" : ""}" data-milestone="${t.id}">
             <div class="ms-card-top">
               <span>${t.icon} Mốc ${t.id}/20</span>
-              ${cleared ? `<span class="ms-cleared-badge">👑 Đã diệt Boss</span>` : `<span>${masteredInTopic}/${totalInTopic}</span>`}
+              ${cleared ? `<span class="ms-cleared-badge">👑 Đã diệt Boss</span>` : `<span>${learnedInTopic}/${wInTopic.length + cInTopic.length}</span>`}
             </div>
             <div class="ms-card-title">${t.name}</div>
-            <div class="ms-card-sub">${wInTopic.length} từ + ${cInTopic.length} Boss Collocations</div>
+            <div class="ms-card-sub">${wInTopic.length} từ IELTS + ${cInTopic.length} Boss</div>
           </button>`;
       })
       .join("");
@@ -2631,17 +2531,23 @@
     const lvl = el.nbLevel.value;
     const topicVal = el.nbTopic.value;
     const statusVal = el.nbStatus.value;
+    const counts = getLearningCounts();
 
-    el.nbSummaryText.textContent = `${singleVocab.length.toLocaleString("en-US")} từ đơn + ${collocVocab.length} Boss Collocations · ${progress.mastered.size} đã bắn hạ · ${progress.spelled.size} thuộc chính tả`;
+    el.nbSummaryText.textContent = `${singleVocab.length.toLocaleString("en-US")} từ IELTS (A1–C2) + ${collocVocab.length} Boss · ${counts.due} chờ ôn · ${counts.mastered} đã thuộc`;
 
     notebookState.filtered = allLibrary.filter(item => {
       if (kind === "WORD" && item.isColloc) return false;
+      if (kind === "AWL" && !item.isAwl) return false;
       if (kind === "COLLOC" && !item.isColloc) return false;
       if (lvl !== "ALL" && item.level !== lvl) return false;
       if (topicVal !== "ALL" && item.topicId !== Number(topicVal)) return false;
-      if (statusVal === "MASTERED" && !progress.mastered.has(item.word)) return false;
+
+      if (statusVal === "DUE" && !isWordDueForReview(item.word)) return false;
+      if (statusVal === "MASTERED" && !isWordMasteredSpelling(item.word)) return false;
+      if (statusVal === "LEARNED" && !isWordLearned(item.word)) return false;
       if (statusVal === "MISSED" && !progress.missed.has(item.word)) return false;
-      if (statusVal === "UNSEEN" && (progress.mastered.has(item.word) || progress.missed.has(item.word))) return false;
+      if (statusVal === "UNSEEN" && (isWordLearned(item.word) || progress.missed.has(item.word))) return false;
+
       if (q && !item.word.includes(q) && !item.meaning.toLowerCase().includes(q)) return false;
       return true;
     });
@@ -2658,11 +2564,13 @@
     } else {
       el.nbTbody.innerHTML = slice
         .map(item => {
-          const isSpelled = progress.spelled.has(item.word);
-          const isMastered = progress.mastered.has(item.word);
-          const isMissed = progress.missed.has(item.word);
-          const stClass = isMastered ? "mastered" : isMissed ? "missed" : "unseen";
-          const stText = isSpelled ? "⛵ Thuộc chính tả" : isMastered ? "✓ Đã bắn hạ" : isMissed ? "✕ Cần ôn lại" : "Chưa gặp";
+          const mastered = isWordMasteredSpelling(item.word);
+          const due = isWordDueForReview(item.word);
+          const missed = progress.missed.has(item.word);
+          let stClass = "unseen", stText = "Chưa học";
+          if (mastered && !due) { stClass = "mastered"; stText = "✅ Đã thuộc"; }
+          else if (due) { stClass = "due"; stText = "⏳ Chờ ôn"; }
+          else if (missed) { stClass = "missed"; stText = "✕ Cần ôn lại"; }
 
           return `
             <tr>
@@ -2671,8 +2579,9 @@
                   <button class="speak-mini-btn" data-speak="${escapeHtml(item.word)}" title="Nghe phát âm">🔊</button>
                   <div>
                     <div class="nb-word-main">
-                      ${item.isColloc ? `<span class="boss-tag-badge" style="margin-right:6px;">👑 BOSS</span>` : ""}
+                      ${item.isColloc ? `<span class="boss-tag-badge" style="margin-right:5px;">👑 BOSS</span>` : ""}
                       ${escapeHtml(item.word)}
+                      ${item.isAwl ? `<span class="awl-tag">AWL</span>` : ""}
                     </div>
                     ${item.ipa ? `<div class="nb-word-ipa">${escapeHtml(item.ipa)}</div>` : ""}
                   </div>
@@ -2717,15 +2626,10 @@
           const parts = line.split(",");
           if (parts.length >= 2) {
             const word = parts[0].trim().toLowerCase().replace(/\s+/g, " ");
-            if (parts.length === 2) {
-              parsedRows.push([word, word.includes(" ") ? "colloc" : "n", "B2", "", parts[1].trim(), game.milestoneId]);
-            } else if (parts.length === 3) {
-              parsedRows.push([word, parts[1].trim(), "B2", "", parts[2].trim(), game.milestoneId]);
-            } else if (parts.length === 4) {
-              parsedRows.push([word, parts[1].trim(), parts[2].trim(), "", parts[3].trim(), game.milestoneId]);
-            } else {
-              parsedRows.push([word, parts[1].trim(), parts[2].trim(), parts[3].trim(), parts.slice(4).join(",").trim(), game.milestoneId]);
-            }
+            if (parts.length === 2) parsedRows.push([word, word.includes(" ") ? "colloc" : "n", "B2", "", parts[1].trim(), game.milestoneId]);
+            else if (parts.length === 3) parsedRows.push([word, parts[1].trim(), "B2", "", parts[2].trim(), game.milestoneId]);
+            else if (parts.length === 4) parsedRows.push([word, parts[1].trim(), parts[2].trim(), "", parts[3].trim(), game.milestoneId]);
+            else parsedRows.push([word, parts[1].trim(), parts[2].trim(), parts[3].trim(), parts.slice(4).join(",").trim(), game.milestoneId]);
           }
         }
       }
@@ -2738,12 +2642,12 @@
     for (const row of parsedRows) {
       const n = normalizeWordEntry(row, true);
       if (/^[a-z]+( [a-z]+)*$/.test(n.word) && n.meaning) {
-        valid.push([n.word, n.isColloc ? (n.pattern || "colloc") : n.pos, n.level, n.ipa, n.meaning, n.topicId]);
+        valid.push([n.word, n.isColloc ? (n.pattern || "colloc") : n.pos, n.level, n.ipa, n.meaning, n.topicId, 0]);
       }
     }
 
     if (!valid.length) {
-      el.importFeedback.textContent = "⚠️ Không tìm thấy mục hợp lệ (từ/collocation chỉ gồm chữ cái a–z và dấu cách, kèm nghĩa tiếng Việt).";
+      el.importFeedback.textContent = "⚠️ Không tìm thấy mục hợp lệ.";
       return;
     }
 
@@ -2756,11 +2660,11 @@
     updateHUD();
 
     el.importTextarea.value = "";
-    el.importFeedback.textContent = `✅ Đã nhập ${valid.length} mục mới! Tổng kho hiện có ${allLibrary.length.toLocaleString("en-US")} từ & Boss Collocations.`;
+    el.importFeedback.textContent = `✅ Đã nhập ${valid.length} mục mới! Tổng kho hiện có ${allLibrary.length.toLocaleString("en-US")} mục.`;
   }
 
   // --------------------------------------------------------------------------
-  // Sync Controls & Events
+  // Sync Controls & Event Listeners
   // --------------------------------------------------------------------------
   function setLevelFilter(level) {
     game.levelFilter = level;
@@ -2796,11 +2700,8 @@
 
   function bindEvents() {
     window.addEventListener("resize", resizeCanvas);
-
-    // Unlock audio/speech engine on very first user gesture
     window.addEventListener("pointerdown", () => audio.unlock(), { once: true });
 
-    // Global Typing Input
     window.addEventListener("keydown", e => {
       audio.unlock();
       const tag = document.activeElement && document.activeElement.tagName;
@@ -2829,34 +2730,11 @@
         return;
       }
 
-      if (e.key === "Backspace") {
-        e.preventDefault();
-        handleBackspace();
-        return;
-      }
-
-      if (e.key === "Tab") {
-        e.preventDefault();
-        unlockTarget();
-        return;
-      }
-
-      if (game.mode === "rain" && (e.key === "?" || e.key === "/")) {
-        e.preventDefault();
-        revealRainHint();
-        return;
-      }
-
-      if (e.key === " ") {
-        e.preventDefault();
-        handleCharInput(" ");
-        return;
-      }
-
-      if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) {
-        e.preventDefault();
-        handleCharInput(e.key);
-      }
+      if (e.key === "Backspace") { e.preventDefault(); handleBackspace(); return; }
+      if (e.key === "Tab") { e.preventDefault(); unlockTarget(); return; }
+      if (game.mode === "rain" && (e.key === "?" || e.key === "/")) { e.preventDefault(); revealRainHint(); return; }
+      if (e.key === " ") { e.preventDefault(); handleCharInput(" "); return; }
+      if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) { e.preventDefault(); handleCharInput(e.key); }
     });
 
     el.mobileInput.addEventListener("input", () => {
@@ -2867,7 +2745,7 @@
       }
     });
 
-    // Hub Navigation
+    // Hub & Quick 2-Game Link Bridge
     el.chooseGameShooter.addEventListener("click", () => { audio.unlock(); openGameSetup("shooter"); });
     el.chooseGameRain.addEventListener("click", () => { audio.unlock(); openGameSetup("rain"); });
     el.btnBackHub1.addEventListener("click", openHub);
@@ -2876,7 +2754,16 @@
     el.btnHome.addEventListener("click", openHub);
     el.btnGotoShooterEmpty.addEventListener("click", () => openGameSetup("shooter"));
 
-    // Test Voice buttons
+    // Top bar quick jump to Mưa Từ Vựng review queue!
+    el.btnQuickRain.addEventListener("click", () => {
+      el.btnQuickRain.blur();
+      audio.unlock();
+      const c = getLearningCounts();
+      game.rainSource = c.due > 0 ? "due" : "all";
+      savePrefs();
+      openGameSetup("rain");
+    });
+
     [el.btnTestVoice1, el.btnTestVoice2].forEach(btn => {
       btn.addEventListener("click", () => {
         btn.blur();
@@ -2885,13 +2772,12 @@
       });
     });
 
-    // Top bar & HUD
     el.btnExit.addEventListener("click", () => openGameSetup(game.mode));
     el.deckPill.addEventListener("click", openMilestonesModal);
     el.btnMilestones.addEventListener("click", openMilestonesModal);
     el.btnNotebook.addEventListener("click", () => openNotebookModal());
     el.btnOpenNotebookStart.addEventListener("click", () => openNotebookModal());
-    el.btnOpenNotebookRain.addEventListener("click", () => openNotebookModal("MASTERED"));
+    el.btnOpenNotebookRain.addEventListener("click", () => openNotebookModal("LEARNED"));
     el.btnPauseNotebook.addEventListener("click", () => openNotebookModal());
 
     el.btnFullscreen.addEventListener("click", () => {
@@ -2927,28 +2813,10 @@
       if (game.lastDockWord) audio.speakWord(game.lastDockWord.entry.word, true, 0);
     });
 
-    // Game 1 Setup
-    el.startWeaponGroup.addEventListener("click", e => {
-      const btn = e.target.closest(".chip");
-      if (btn) setWeaponType(btn.dataset.weapon);
-    });
-    el.startAmmoGroup.addEventListener("click", e => {
-      const btn = e.target.closest(".chip");
-      if (btn) setAmmoType(btn.dataset.ammo);
-    });
-
-    el.quickLevelBar.addEventListener("click", e => {
-      const btn = e.target.closest(".lvl-pill");
-      if (!btn) return;
-      btn.blur();
-      setLevelFilter(btn.dataset.level);
-    });
-
-    el.startLevelGroup.addEventListener("click", e => {
-      const btn = e.target.closest(".chip");
-      if (btn) setLevelFilter(btn.dataset.level);
-    });
-
+    el.startWeaponGroup.addEventListener("click", e => { const btn = e.target.closest(".chip"); if (btn) setWeaponType(btn.dataset.weapon); });
+    el.startAmmoGroup.addEventListener("click", e => { const btn = e.target.closest(".chip"); if (btn) setAmmoType(btn.dataset.ammo); });
+    el.quickLevelBar.addEventListener("click", e => { const btn = e.target.closest(".lvl-pill"); if (!btn) return; btn.blur(); setLevelFilter(btn.dataset.level); });
+    el.startLevelGroup.addEventListener("click", e => { const btn = e.target.closest(".chip"); if (btn) setLevelFilter(btn.dataset.level); });
     el.speedGroup.addEventListener("click", e => {
       const btn = e.target.closest(".chip");
       if (!btn) return;
@@ -2957,43 +2825,13 @@
       savePrefs();
     });
 
-    el.selectMilestone.addEventListener("change", () => {
-      game.milestoneId = Number(el.selectMilestone.value);
-      savePrefs();
-      updatePoolHints();
-      updateHUD();
-    });
-
-    el.optSpeak.addEventListener("change", () => {
-      audio.autoSpeak = el.optSpeak.checked;
-      el.rainOptSpeak.checked = audio.autoSpeak;
-      savePrefs();
-    });
-
-    el.optShowLevel.addEventListener("change", () => {
-      game.showLevelOnPill = el.optShowLevel.checked;
-      savePrefs();
-      updateHUD();
-    });
-
-    el.optBossOnly.addEventListener("change", () => {
-      game.bossOnly = el.optBossOnly.checked;
-      savePrefs();
-      updatePoolHints();
-      updateHUD();
-    });
-
-    el.optEndless.addEventListener("change", () => {
-      game.endless = el.optEndless.checked;
-      el.selectMilestone.disabled = game.endless;
-      savePrefs();
-      updatePoolHints();
-      updateHUD();
-    });
-
+    el.selectMilestone.addEventListener("change", () => { game.milestoneId = Number(el.selectMilestone.value); savePrefs(); updatePoolHints(); updateHUD(); });
+    el.optSpeak.addEventListener("change", () => { audio.autoSpeak = el.optSpeak.checked; el.rainOptSpeak.checked = audio.autoSpeak; savePrefs(); });
+    el.optShowLevel.addEventListener("change", () => { game.showLevelOnPill = el.optShowLevel.checked; savePrefs(); updateHUD(); });
+    el.optBossOnly.addEventListener("change", () => { game.bossOnly = el.optBossOnly.checked; savePrefs(); updatePoolHints(); updateHUD(); });
+    el.optEndless.addEventListener("change", () => { game.endless = el.optEndless.checked; el.selectMilestone.disabled = game.endless; savePrefs(); updatePoolHints(); updateHUD(); });
     el.btnStartGame.addEventListener("click", () => { game.mode = "shooter"; startRun(); });
 
-    // Game 2 (Mưa Từ Vựng) Setup
     el.rainSourceGroup.addEventListener("click", e => {
       const btn = e.target.closest(".chip");
       if (!btn || btn.disabled) return;
@@ -3001,13 +2839,7 @@
       savePrefs();
       syncRainSetupControls();
     });
-
-    el.rainKindSelect.addEventListener("change", () => {
-      game.rainKind = el.rainKindSelect.value;
-      savePrefs();
-      syncRainSetupControls();
-    });
-
+    el.rainKindSelect.addEventListener("change", () => { game.rainKind = el.rainKindSelect.value; savePrefs(); syncRainSetupControls(); });
     el.rainSpeedGroup.addEventListener("click", e => {
       const btn = e.target.closest(".chip");
       if (!btn) return;
@@ -3015,57 +2847,31 @@
       el.rainSpeedGroup.querySelectorAll(".chip").forEach(c => c.classList.toggle("active", c === btn));
       savePrefs();
     });
-
-    el.rainOptSpeak.addEventListener("change", () => {
-      audio.autoSpeak = el.rainOptSpeak.checked;
-      el.optSpeak.checked = audio.autoSpeak;
-      savePrefs();
-    });
-
-    el.rainOptPos.addEventListener("change", () => {
-      game.rainShowPos = el.rainOptPos.checked;
-      savePrefs();
-    });
-
+    el.rainOptSpeak.addEventListener("change", () => { audio.autoSpeak = el.rainOptSpeak.checked; el.optSpeak.checked = audio.autoSpeak; savePrefs(); });
+    el.rainOptPos.addEventListener("change", () => { game.rainShowPos = el.rainOptPos.checked; savePrefs(); });
     el.btnStartRain.addEventListener("click", () => { game.mode = "rain"; startRun(); });
 
-    // Pause & Result overlay buttons
     el.btnResume.addEventListener("click", resumeGame);
     el.btnRestartMilestone.addEventListener("click", startRun);
     el.btnPauseMenu.addEventListener("click", () => openGameSetup(game.mode));
-
-    el.btnNextMilestone.addEventListener("click", () => {
-      if (game.milestoneId < topics.length) {
-        game.milestoneId++;
-        savePrefs();
-      }
-      startRun();
-    });
-
+    el.btnNextMilestone.addEventListener("click", () => { if (game.milestoneId < topics.length) { game.milestoneId++; savePrefs(); } startRun(); });
     el.btnPracticeRainNow.addEventListener("click", () => {
-      game.mode = "rain";
-      game.rainSource = sessionMastered.size > 0 ? "session" : "all";
+      const c = getLearningCounts();
+      game.rainSource = c.due > 0 ? "due" : sessionLearned.size > 0 ? "session" : "all";
       savePrefs();
       openGameSetup("rain");
     });
-
+    el.btnBackLearnMore.addEventListener("click", () => openGameSetup("shooter"));
     el.btnReplayMilestone.addEventListener("click", startRun);
     el.btnResultMenu.addEventListener("click", () => openGameSetup(game.mode));
 
     document.addEventListener("click", e => {
       const speakBtn = e.target.closest("[data-speak]");
-      if (speakBtn) {
-        speakBtn.blur();
-        audio.unlock();
-        audio.speakWord(speakBtn.dataset.speak, true, 0);
-      }
+      if (speakBtn) { speakBtn.blur(); audio.unlock(); audio.speakWord(speakBtn.dataset.speak, true, 0); }
     });
 
-    // Milestones modal
     el.closeMilestones.addEventListener("click", () => el.milestonesModal.classList.add("hidden"));
-    el.milestonesModal.addEventListener("click", e => {
-      if (e.target === el.milestonesModal) el.milestonesModal.classList.add("hidden");
-    });
+    el.milestonesModal.addEventListener("click", e => { if (e.target === el.milestonesModal) el.milestonesModal.classList.add("hidden"); });
     el.milestonesGrid.addEventListener("click", e => {
       const card = e.target.closest(".ms-card");
       if (!card) return;
@@ -3078,11 +2884,8 @@
       startRun();
     });
 
-    // Notebook modal
     el.closeNotebook.addEventListener("click", () => el.notebookModal.classList.add("hidden"));
-    el.notebookModal.addEventListener("click", e => {
-      if (e.target === el.notebookModal) el.notebookModal.classList.add("hidden");
-    });
+    el.notebookModal.addEventListener("click", e => { if (e.target === el.notebookModal) el.notebookModal.classList.add("hidden"); });
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -3098,13 +2901,8 @@
     });
 
     el.nbPagination.addEventListener("click", e => {
-      if (e.target.id === "nb-prev" && notebookState.page > 1) {
-        notebookState.page--;
-        renderNotebook();
-      } else if (e.target.id === "nb-next") {
-        notebookState.page++;
-        renderNotebook();
-      }
+      if (e.target.id === "nb-prev" && notebookState.page > 1) { notebookState.page--; renderNotebook(); }
+      else if (e.target.id === "nb-next") { notebookState.page++; renderNotebook(); }
     });
 
     el.btnDoImport.addEventListener("click", () => importCustomVocabulary(el.importTextarea.value));
@@ -3112,46 +2910,76 @@
       const file = e.target.files?.[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = () => {
-        el.importTextarea.value = String(reader.result || "");
-        importCustomVocabulary(el.importTextarea.value);
-      };
+      reader.onload = () => { el.importTextarea.value = String(reader.result || ""); importCustomVocabulary(el.importTextarea.value); };
       reader.readAsText(file, "utf-8");
       el.importFile.value = "";
     });
 
     el.btnExportJson.addEventListener("click", () => {
       const payload = allLibrary.map(v => ({
-        word: v.word,
-        kind: v.isColloc ? "collocation" : "word",
-        pos: v.isColloc ? v.pattern : v.pos,
-        posVi: v.posVi,
-        level: v.level,
-        ipa: v.ipa,
-        meaning: v.meaning,
-        topicId: v.topicId,
-        topic: v.topicName
+        word: v.word, kind: v.isColloc ? "collocation" : "word",
+        pos: v.isColloc ? v.pattern : v.pos, posVi: v.posVi, level: v.level,
+        isAwl: v.isAwl, ipa: v.ipa, meaning: v.meaning, topicId: v.topicId, topic: v.topicName
       }));
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
-      a.download = "vocab-and-collocations-b1-c2.json";
-      a.click();
+      a.href = url; a.download = "ielts-vocab-a1-c2-10500.json"; a.click();
       URL.revokeObjectURL(url);
     });
 
-    el.btnResetProgress.addEventListener("click", () => {
-      if (!confirm("Bạn có chắc muốn đặt lại toàn bộ tiến độ bắn hạ & mốc đã hoàn thành?")) return;
-      progress = {
-        mastered: new Set(),
-        recentMastered: [],
-        spelled: new Set(),
-        missed: new Set(),
-        clearedMilestones: new Set(),
-        highScore: 0
+    // Export / Import Learning Progress Backup!
+    el.btnExportProgress.addEventListener("click", () => {
+      const backup = {
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        learned: progress.learned,
+        missed: Array.from(progress.missed),
+        clearedMilestones: Array.from(progress.clearedMilestones),
+        highScore: progress.highScore
       };
-      sessionMastered.clear();
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "ielts-progress-backup.json"; a.click();
+      URL.revokeObjectURL(url);
+      el.importFeedback.textContent = "✅ Đã tải file sao lưu tiến độ học!";
+    });
+
+    el.importProgressFile.addEventListener("change", e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(String(reader.result || "{}"));
+          if (data && typeof data.learned === "object") {
+            progress = {
+              learned: data.learned,
+              missed: new Set(data.missed || []),
+              clearedMilestones: new Set(data.clearedMilestones || []),
+              highScore: Number(data.highScore) || 0
+            };
+            saveProgress();
+            renderNotebook();
+            if (game.mode === "rain") syncRainSetupControls();
+            updateHUD();
+            el.importFeedback.textContent = `✅ Đã khôi phục tiến độ (${Object.keys(progress.learned).length} từ đã học)!`;
+          } else {
+            el.importFeedback.textContent = "❌ File sao lưu tiến độ không hợp lệ.";
+          }
+        } catch (err) {
+          el.importFeedback.textContent = `❌ Lỗi đọc file tiến độ: ${err.message}`;
+        }
+      };
+      reader.readAsText(file, "utf-8");
+      el.importProgressFile.value = "";
+    });
+
+    el.btnResetProgress.addEventListener("click", () => {
+      if (!confirm("Xóa sạch toàn bộ dữ liệu từ đã học & quay về từ đầu (0 từ)?")) return;
+      progress = createEmptyProgress();
+      sessionLearned.clear();
       saveProgress();
       renderNotebook();
       if (game.mode === "rain") syncRainSetupControls();
@@ -3159,9 +2987,6 @@
     });
   }
 
-  // --------------------------------------------------------------------------
-  // Bootstrap
-  // --------------------------------------------------------------------------
   function init() {
     audio.soundEnabled = prefs.soundEnabled !== false;
     audio.autoSpeak = prefs.autoSpeak !== false;
@@ -3176,7 +3001,6 @@
     updateHUD();
     bindEvents();
 
-    // Start on Game Selection Hub so user chooses between Luyện Gõ & Mưa Từ Vựng!
     openHub();
     requestAnimationFrame(gameLoop);
   }

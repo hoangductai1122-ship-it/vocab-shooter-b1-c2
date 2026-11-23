@@ -2373,3 +2373,102 @@ button, select, input, textarea {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ==========================================================================
+   CEFR A1/A2/AWL Palette, Review Queue Bridge Pill & Minimal Step Labels
+   ========================================================================== */
+
+:root {
+  --a1-border: #10b981;
+  --a1-bg: rgba(6, 78, 59, 0.74);
+  --a1-glow: rgba(16, 185, 129, 0.35);
+
+  --a2-border: #14b8a6;
+  --a2-bg: rgba(17, 94, 89, 0.74);
+  --a2-glow: rgba(20, 184, 166, 0.35);
+}
+
+.word-pill.lvl-A1 { border-color: var(--a1-border); background: var(--a1-bg); box-shadow: 0 0 18px var(--a1-glow), inset 0 1px 0 rgba(255,255,255,0.16); }
+.word-pill.lvl-A2 { border-color: var(--a2-border); background: var(--a2-bg); box-shadow: 0 0 18px var(--a2-glow), inset 0 1px 0 rgba(255,255,255,0.16); }
+
+.lvl-pill.lvl-a1.active, .chip.chip-a1.active { background: rgba(16, 185, 129, 0.22); color: #6ee7b7; border-color: var(--a1-border); box-shadow: inset 0 0 0 1px var(--a1-border); }
+.lvl-pill.lvl-a2.active, .chip.chip-a2.active { background: rgba(20, 184, 166, 0.22); color: #5eead4; border-color: var(--a2-border); box-shadow: inset 0 0 0 1px var(--a2-border); }
+.lvl-pill.lvl-awl.active, .chip.chip-awl.active { background: rgba(251, 191, 36, 0.22); color: #fde047; border-color: #f59e0b; box-shadow: inset 0 0 0 1px #f59e0b; }
+
+.cefr-tag.A1 { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.5); }
+.cefr-tag.A2 { background: rgba(20, 184, 166, 0.2); color: #5eead4; border: 1px solid rgba(20, 184, 166, 0.5); }
+
+.awl-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(245, 158, 11, 0.18);
+  color: #fde047;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  margin-left: 4px;
+}
+
+/* Top Bar Live Link Pill: Luyện Gõ -> Mưa Từ Vựng */
+.review-queue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.72);
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.review-queue-btn:hover {
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #e0f2fe;
+}
+
+.review-queue-btn.has-due {
+  background: rgba(14, 116, 144, 0.34);
+  border-color: rgba(56, 189, 248, 0.65);
+  color: #e0f2fe;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.22);
+}
+
+.review-queue-count {
+  padding: 1.5px 6px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.22);
+  color: #7dd3fc;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.review-queue-btn.has-due .review-queue-count {
+  background: #38bdf8;
+  color: #082f49;
+}
+
+.gc-step {
+  font-size: 11px;
+  font-weight: 600;
+  color: #7dd3fc;
+  letter-spacing: 0.02em;
+}
+
+.nb-status-pill.due {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fde047;
+}
+
+@media (max-width: 1120px) {
+  .quick-level-bar { display: none; }
+}
