@@ -1,8 +1,6 @@
-// CEFR C2 Vocabulary (250 words across 20 thematic milestones)
-// Format: [word, pos, level, ipa, vietnamese_meaning, topicId]
+// CEFR C2 Vocabulary (audited & verified)
 window.VOCAB_PARTS = window.VOCAB_PARTS || [];
 window.VOCAB_PARTS.push([
-  // 1. Technology
   ["cybernetics", "n", "C2", "/ˌsaɪ.bəˈnet.ɪks/", "điều khiển học", 1],
   ["ephemeral", "adj", "C2", "/ɪˈfem.ər.əl/", "phù du, ngắn ngủi", 1],
   ["heuristic", "adj", "C2", "/hjʊəˈrɪs.tɪk/", "dựa trên kinh nghiệm khám phá", 1],
@@ -16,12 +14,11 @@ window.VOCAB_PARTS.push([
   ["singularity", "n", "C2", "/ˌsɪŋ.ɡjəˈlær.ə.ti/", "điểm kỳ dị công nghệ, tính độc nhất", 1],
   ["stochastic", "adj", "C2", "/stəˈkæs.tɪk/", "ngẫu nhiên theo xác suất", 1],
   ["telemetric", "adj", "C2", "/ˌtel.ɪˈmet.rɪk/", "thuộc đo đạc từ xa", 1],
-  // 2. Science & Research
   ["abiotic", "adj", "C2", "/ˌeɪ.baɪˈɒt.ɪk/", "vô sinh, không thuộc sinh vật", 2],
   ["amorphous", "adj", "C2", "/əˈmɔː.fəs/", "vô định hình", 2],
   ["axiom", "n", "C2", "/ˈæk.si.əm/", "tiên đề, chân lý hiển nhiên", 2],
   ["concomitant", "adj", "C2", "/kənˈkɒm.ɪ.tənt/", "đi kèm theo, đồng thời xảy ra", 2],
-  ["entropy", "n", "C2", "/ˈen.trə.pi/", "độ hỗn loạn, entropy", 2],
+  ["entropy", "n", "C2", "/ˈen.trə.pi/", "độ hỗn loạn, sự hỗn độn (vật lý)", 2],
   ["epistemology", "n", "C2", "/ɪˌpɪs.təˈmɒl.ə.dʒi/", "nhận thức luận", 2],
   ["falsifiable", "adj", "C2", "/ˈfɔːl.sɪ.faɪ.ə.bəl/", "có thể kiểm chứng bác bỏ được", 2],
   ["homeostasis", "n", "C2", "/ˌhəʊ.mi.əʊˈsteɪ.sɪs/", "cân bằng nội môi", 2],
@@ -30,7 +27,6 @@ window.VOCAB_PARTS.push([
   ["quiescent", "adj", "C2", "/kwiˈes.ənt/", "ở trạng thái tĩnh, không hoạt động", 2],
   ["symbiosis", "n", "C2", "/ˌsɪm.baɪˈəʊ.sɪs/", "sự cộng sinh", 2],
   ["taxonomy", "n", "C2", "/tækˈsɒn.ə.mi/", "hệ thống phân loại học", 2],
-  // 3. Business & Work
   ["acumen", "n", "C2", "/ˈæk.jə.mən/", "sự nhạy bén, sắc sảo (kinh doanh)", 3],
   ["ameliorate", "v", "C2", "/əˈmiː.li.ə.reɪt/", "cải thiện tình trạng xấu", 3],
   ["conglomerate", "n", "C2", "/kənˈɡlɒm.ər.ət/", "tập đoàn đa ngành", 3],
@@ -44,8 +40,7 @@ window.VOCAB_PARTS.push([
   ["sinecure", "n", "C2", "/ˈsaɪ.nə.kjʊər/", "chức vụ nhàn hạ nhưng lương cao", 3],
   ["synergy", "n", "C2", "/ˈsɪn.ə.dʒi/", "sức mạnh cộng hưởng", 3],
   ["zeitgeist", "n", "C2", "/ˈzaɪt.ɡaɪst/", "tinh thần của thời đại", 3],
-  // 4. Education & Study
-  ["autodidact", "n", "C2", "/ˌɔː.təʊˈdaɪ.dækt/", "người tự học thành tài", 4],
+  ["autodidact", "n", "C2", "/ˌɔː.təʊˈdaɪ.dækt/", "người tự học, tự nghiên cứu", 4],
   ["cognizant", "adj", "C2", "/ˈkɒɡ.nɪ.zənt/", "nhận thức rõ, am tường", 4],
   ["compendium", "n", "C2", "/kəmˈpen.di.əm/", "bản tóm lược toàn diện, cẩm nang", 4],
   ["didactic", "adj", "C2", "/daɪˈdæk.tɪk/", "mang tính giáo huấn, thuyết giáo", 4],
@@ -58,7 +53,6 @@ window.VOCAB_PARTS.push([
   ["recondite", "adj", "C2", "/ˈrek.ən.daɪt/", "uyên thâm, khó hiểu", 4],
   ["sagacious", "adj", "C2", "/səˈɡeɪ.ʃəs/", "sáng suốt, thông thái", 4],
   ["treatise", "n", "C2", "/ˈtriː.tɪs/", "chuyên luận khoa học", 4],
-  // 5. Environment & Nature
   ["anthropogenic", "adj", "C2", "/ˌæn.θrə.pəˈdʒen.ɪk/", "do con người gây ra", 5],
   ["bucolic", "adj", "C2", "/bjuːˈkɒl.ɪk/", "thuộc đồng quê thanh bình", 5],
   ["cataclysmic", "adj", "C2", "/ˌkæt.əˈklɪz.mɪk/", "mang tính đại hồng thủy, hủy diệt", 5],
@@ -72,7 +66,6 @@ window.VOCAB_PARTS.push([
   ["pernicious", "adj", "C2", "/pəˈnɪʃ.əs/", "độc hại ngầm, gây hủy hoại dần", 5],
   ["sylvan", "adj", "C2", "/ˈsɪl.vən/", "thuộc rừng cây rậm rạp", 5],
   ["verdant", "adj", "C2", "/ˈvɜː.dənt/", "xanh tươi mơn mởn", 5],
-  // 6. Health & Medicine
   ["aberration", "n", "C2", "/ˌæb.əˈreɪ.ʃən/", "sự sai lệch khỏi bình thường", 6],
   ["atrophy", "n", "C2", "/ˈæt.rə.fi/", "sự teo cơ, suy thoái dần", 6],
   ["convalesce", "v", "C2", "/ˌkɒn.vəˈles/", "dưỡng bệnh, hồi phục sức khỏe", 6],
@@ -86,7 +79,6 @@ window.VOCAB_PARTS.push([
   ["palliative", "adj", "C2", "/ˈpæl.i.ə.tɪv/", "giảm nhẹ triệu chứng (không trị tận gốc)", 6],
   ["salubrious", "adj", "C2", "/səˈluː.bri.əs/", "lành mạnh, tốt cho sức khỏe", 6],
   ["virulent", "adj", "C2", "/ˈvɪr.ə.lənt/", "cực độc, lây lan dữ dội", 6],
-  // 7. Society & Culture
   ["anomie", "n", "C2", "/ˈæn.ə.mi/", "sự hỗn loạn chuẩn mực xã hội", 7],
   ["bourgeois", "adj", "C2", "/ˈbʊəʒ.wɑː/", "thuộc giai cấp tư sản, trưởng giả", 7],
   ["clique", "n", "C2", "/kliːk/", "nhóm bè phái khép kín", 7],
@@ -100,7 +92,6 @@ window.VOCAB_PARTS.push([
   ["stratification", "n", "C2", "/ˌstræt.ɪ.fɪˈkeɪ.ʃən/", "sự phân tầng xã hội", 7],
   ["xenophobia", "n", "C2", "/ˌzen.əˈfəʊ.bi.ə/", "tâm lý bài ngoại", 7],
   ["parochial", "adj", "C2", "/pəˈrəʊ.ki.əl/", "cục bộ, thiển cận", 7],
-  // 8. Law & Politics
   ["abrogate", "v", "C2", "/ˈæb.rə.ɡeɪt/", "bãi bỏ chính thức (luật/hiệp ước)", 8],
   ["acquittal", "n", "C2", "/əˈkwɪt.əl/", "sự tuyên bố trắng án", 8],
   ["autocracy", "n", "C2", "/ɔːˈtɒk.rə.si/", "chế độ chuyên quyền, độc tài", 8],
@@ -114,7 +105,6 @@ window.VOCAB_PARTS.push([
   ["promulgate", "v", "C2", "/ˈprɒm.əl.ɡeɪt/", "ban bố, truyền bá luật lệ", 8],
   ["sedition", "n", "C2", "/sɪˈdɪʃ.ən/", "tội kích động nổi loạn", 8],
   ["usurp", "v", "C2", "/juːˈzɜːp/", "soán ngôi, chiếm đoạt quyền lực", 8],
-  // 9. Psychology & Mind
   ["anhedonia", "n", "C2", "/ˌæn.hiˈdəʊ.ni.ə/", "chứng mất khả năng cảm nhận niềm vui", 9],
   ["capricious", "adj", "C2", "/kəˈprɪʃ.əs/", "thất thường, đồng bóng", 9],
   ["dissonance", "n", "C2", "/ˈdɪs.ən.əns/", "sự bất hòa, xung đột nhận thức", 9],
@@ -128,7 +118,6 @@ window.VOCAB_PARTS.push([
   ["solipsism", "n", "C2", "/ˈsɒl.ɪp.sɪ.zəm/", "thuyết duy ngã (chỉ coi bản thân là thật)", 9],
   ["sublimate", "v", "C2", "/ˈsʌb.lɪ.meɪt/", "thăng hoa (chuyển hóa xung năng)", 9],
   ["torpor", "n", "C2", "/ˈtɔː.pər/", "trạng thái đờ đẫn, trì trệ", 9],
-  // 10. Media & Communication
   ["bombastic", "adj", "C2", "/bɒmˈbæs.tɪk/", "khoa trương, rỗng tuếch", 10],
   ["calumny", "n", "C2", "/ˈkæl.əm.ni/", "sự vu khống, bôi nhọ thanh danh", 10],
   ["circumlocution", "n", "C2", "/ˌsɜː.kəm.ləˈkjuː.ʃən/", "lối nói vòng vo dài dòng", 10],
@@ -142,7 +131,6 @@ window.VOCAB_PARTS.push([
   ["polemic", "n", "C2", "/pəˈlem.ɪk/", "bài bút chiến, luận chiến gay gắt", 10],
   ["taciturn", "adj", "C2", "/ˈtæs.ɪ.tɜːn/", "ít nói, trầm mặc", 10],
   ["verbiage", "n", "C2", "/ˈvɜː.bi.ɪdʒ/", "sự dài dòng rườm rà câu chữ", 10],
-  // 11. Economy & Finance
   ["arbitrage", "n", "C2", "/ˈɑː.bɪ.trɑːʒ/", "kinh doanh chênh lệch giá", 11],
   ["avarice", "n", "C2", "/ˈæv.ər.ɪs/", "lòng tham lam tiền bạc", 11],
   ["cartel", "n", "C2", "/kɑːˈtel/", "liên minh độc quyền thao túng giá", 11],
@@ -156,8 +144,7 @@ window.VOCAB_PARTS.push([
   ["profligate", "adj", "C2", "/ˈprɒf.lɪ.ɡət/", "hoang phí, tiêu xài phung phí", 11],
   ["usury", "n", "C2", "/ˈjuː.ʒər.i/", "tội cho vay nặng lãi", 11],
   ["windfall", "n", "C2", "/ˈwɪnd.fɔːl/", "khoản tiền bất ngờ từ trên trời rơi xuống", 11],
-  // 12. Arts & Literature
-  ["baroque", "adj", "C2", "/bəˈrɒk/", "phong cách Baroque cầu kỳ lộng lẫy", 12],
+  ["baroque", "adj", "C2", "/bəˈrɒk/", "cầu kỳ, lộng lẫy (kiểu Ba-rốc)", 12],
   ["cacophony", "n", "C2", "/kəˈkɒf.ə.ni/", "tạp âm chói tai, âm thanh hỗn độn", 12],
   ["chiaroscuro", "n", "C2", "/kiˌɑː.rəˈskʊə.rəʊ/", "nghệ thuật tương phản sáng tối", 12],
   ["dilettante", "n", "C2", "/ˌdɪl.ɪˈtæn.ti/", "người chơi nghệ thuật tài tử, hời hợt", 12],
@@ -169,7 +156,6 @@ window.VOCAB_PARTS.push([
   ["pastiche", "n", "C2", "/pæsˈtiːʃ/", "tác phẩm phỏng theo nhiều phong cách", 12],
   ["sublime", "adj", "C2", "/səˈblaɪm/", "tuyệt mỹ, cao siêu hùng vĩ", 12],
   ["verisimilitude", "n", "C2", "/ˌver.ɪ.sɪˈmɪl.ɪ.tjuːd/", "tính chân thực như thật (trong nghệ thuật)", 12],
-  // 13. Travel & Globalism
   ["archipelago", "n", "C2", "/ˌɑː.kɪˈpel.ə.ɡəʊ/", "quần đảo", 13],
   ["autarky", "n", "C2", "/ˈɔː.tɑː.ki/", "chính sách tự cung tự cấp khép kín", 13],
   ["behemoth", "n", "C2", "/bɪˈhiː.mɒθ/", "tổ chức/vật thể khổng lồ", 13],
@@ -182,7 +168,6 @@ window.VOCAB_PARTS.push([
   ["rapprochement", "n", "C2", "/ˌræp.rɒʃˈmɒ̃/", "sự xích lại gần nhau (ngoại giao)", 13],
   ["topography", "n", "C2", "/təˈpɒɡ.rə.fi/", "địa hình học", 13],
   ["vanguard", "n", "C2", "/ˈvæn.ɡɑːd/", "đội tiên phong, người đi đầu xu hướng", 13],
-  // 14. Urban & Architecture
   ["bastion", "n", "C2", "/ˈbæs.tʃən/", "pháo đài kiên cố, thành trì", 14],
   ["brutalism", "n", "C2", "/ˈbruː.təl.ɪ.zəm/", "kiến trúc thô mộc bê tông", 14],
   ["colonnade", "n", "C2", "/ˌkɒl.əˈneɪd/", "hàng cột kiến trúc", 14],
@@ -195,11 +180,10 @@ window.VOCAB_PARTS.push([
   ["portico", "n", "C2", "/ˈpɔː.tɪ.kəʊ/", "cổng mái hiên có hàng cột", 14],
   ["ramshackle", "adj", "C2", "/ˈræm.ʃæk.əl/", "xập xệ, ọp ẹp", 14],
   ["vernacular", "adj", "C2", "/vəˈnæk.jə.lər/", "thuộc bản địa, bình dân", 14],
-  // 15. Ethics & Philosophy
   ["ascetic", "adj", "C2", "/əˈset.ɪk/", "khổ hạnh, tiết chế khắc kỷ", 15],
   ["casuistry", "n", "C2", "/ˈkæʒ.u.ɪ.stri/", "lối ngụy biện tinh vi về đạo đức", 15],
   ["deontology", "n", "C2", "/ˌdiː.ɒnˈtɒl.ə.dʒi/", "đạo đức học nghĩa vụ", 15],
-  ["determinism", "n", "C2", "/dɪˈtɜː.mɪ.nɪ.zəm/", "thuyết quyết định luận", 15],
+  ["determinism", "n", "C2", "/dɪˈtɜː.mɪ.nɪ.zəm/", "quyết định luận, thuyết tất định", 15],
   ["hedonism", "n", "C2", "/ˈhiː.dən.ɪ.zəm/", "chủ nghĩa khoái lạc", 15],
   ["iniquity", "n", "C2", "/ɪˈnɪk.wə.ti/", "sự bất công tàn ác, tội lỗi nặng", 15],
   ["nihilism", "n", "C2", "/ˈnaɪ.ɪ.lɪ.zəm/", "chủ nghĩa hư vô", 15],
@@ -208,7 +192,6 @@ window.VOCAB_PARTS.push([
   ["rectitude", "n", "C2", "/ˈrek.tɪ.tjuːd/", "sự chính trực, đúng đắn đạo đức", 15],
   ["sophistry", "n", "C2", "/ˈsɒf.ɪ.stri/", "thuật ngụy biện tinh vi", 15],
   ["teleology", "n", "C2", "/ˌtiː.liˈɒl.ə.dʒi/", "mục đích luận", 15],
-  // 16. History & Heritage
   ["anachronism", "n", "C2", "/əˈnæk.rə.nɪ.zəm/", "sự lỗi thời, sai lệch niên đại", 16],
   ["antebellum", "adj", "C2", "/ˌæn.tiˈbel.əm/", "thuộc thời kỳ trước chiến tranh", 16],
   ["archaic", "adj", "C2", "/ɑːˈkeɪ.ɪk/", "cổ xưa, lỗi thời", 16],
@@ -221,7 +204,6 @@ window.VOCAB_PARTS.push([
   ["precursor", "n", "C2", "/ˌpriːˈkɜː.sər/", "tiền thân, người đi trước", 16],
   ["primordial", "adj", "C2", "/praɪˈmɔː.di.əl/", "nguyên sơ, từ thuở hồng hoang", 16],
   ["vestige", "n", "C2", "/ˈves.tɪdʒ/", "dấu vết tàn dư sót lại", 16],
-  // 17. Logic & Analysis
   ["aporia", "n", "C2", "/əˈpɔː.ri.ə/", "sự bế tắc nan giải trong lập luận", 17],
   ["chimerical", "adj", "C2", "/kaɪˈmer.ɪ.kəl/", "hão huyền, viển vông", 17],
   ["cogent", "adj", "C2", "/ˈkəʊ.dʒənt/", "đanh thép, cực kỳ thuyết phục", 17],
@@ -234,7 +216,6 @@ window.VOCAB_PARTS.push([
   ["specious", "adj", "C2", "/ˈspiː.ʃəs/", "có vẻ đúng nhưng thực chất sai lệch", 17],
   ["syllogism", "n", "C2", "/ˈsɪl.ə.dʒɪ.zəm/", "tam đoạn luận", 17],
   ["tautology", "n", "C2", "/tɔːˈtɒl.ə.dʒi/", "lối nói lặp ý thừa thãi", 17],
-  // 18. Character & Emotion
   ["acrimonious", "adj", "C2", "/ˌæk.rɪˈməʊ.ni.əs/", "gay gắt, cay nghiệt", 18],
   ["alacrity", "n", "C2", "/əˈlæk.rə.ti/", "sự hăng hái, nhanh nhẹn sẵn lòng", 18],
   ["fastidious", "adj", "C2", "/fæˈstɪd.i.əs/", "khó tính, cực kỳ kỹ lưỡng", 18],
@@ -247,20 +228,18 @@ window.VOCAB_PARTS.push([
   ["querulous", "adj", "C2", "/ˈkwer.ə.ləs/", "hay càu nhàu, hay phàn nàn", 18],
   ["sanguine", "adj", "C2", "/ˈsæŋ.ɡwɪn/", "lạc quan tin tưởng giữa nghịch cảnh", 18],
   ["supercilious", "adj", "C2", "/ˌsuː.pəˈsɪl.i.əs/", "kiêu căng, khinh khỉnh", 18],
-  // 19. Action & Change
   ["abjure", "v", "C2", "/æbˈdʒʊər/", "tuyên bố từ bỏ (niềm tin/quyền lợi)", 19],
   ["aggrandize", "v", "C2", "/əˈɡræn.daɪz/", "khuếch trương quyền lực/thanh thế", 19],
   ["assuage", "v", "C2", "/əˈsweɪdʒ/", "xoa dịu, làm nguôi ngoai", 19],
   ["attenuate", "v", "C2", "/əˈten.ju.eɪt/", "làm suy yếu, giảm cường độ", 19],
   ["coalesce", "v", "C2", "/ˌkəʊ.əˈles/", "hợp nhất lại thành một khối", 19],
-  ["enfeeble", "v", "C2", "/ɪnˈfiː.bəl/", "làm suy yếu, kiệt quệ", 19],
+  ["enfeeble", "v", "C2", "/ɪnˈfiː.bəl/", "làm suy yếu, làm kiệt sức", 19],
   ["enervate", "v", "C2", "/ˈen.ə.veɪt/", "làm cạn kiệt sinh lực", 19],
   ["extirpate", "v", "C2", "/ˈek.stə.peɪt/", "nhổ tận gốc, diệt trừ hoàn toàn", 19],
-  ["galvanize", "v", "C2", "/ˈɡæl.və.naɪz/", "kích động, thúc đẩy hành động tức thì", 19],
+  ["galvanize", "v", "C2", "/ˈɡæl.və.naɪz/", "khuấy động, thúc đẩy hành động mạnh mẽ", 19],
   ["mollify", "v", "C2", "/ˈmɒl.ɪ.faɪ/", "xoa dịu cơn giận, làm dịu đi", 19],
   ["ossify", "v", "C2", "/ˈɒs.ɪ.faɪ/", "trở nên cứng nhắc, bảo thủ", 19],
   ["vitiate", "v", "C2", "/ˈvɪʃ.i.eɪt/", "làm hư hỏng, làm mất hiệu lực", 19],
-  // 20. Academic & Rhetoric
   ["aphorism", "n", "C2", "/ˈæf.ə.rɪ.zəm/", "câu cách ngôn súc tích", 20],
   ["axiomatic", "adj", "C2", "/ˌæk.si.əˈmæt.ɪk/", "hiển nhiên không cần chứng minh", 20],
   ["conciliatory", "adj", "C2", "/kənˈsɪl.i.ə.tər.i/", "mang tính hòa giải, xoa dịu", 20],

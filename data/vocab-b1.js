@@ -1,8 +1,6 @@
-// CEFR B1 Vocabulary (250 words across 20 thematic milestones)
-// Format: [word, pos, level, ipa, vietnamese_meaning, topicId]
+// CEFR B1 Vocabulary (audited & verified)
 window.VOCAB_PARTS = window.VOCAB_PARTS || [];
 window.VOCAB_PARTS.push([
-  // 1. Technology
   ["access", "v", "B1", "/ˈæk.ses/", "truy cập, tiếp cận", 1],
   ["application", "n", "B1", "/ˌæp.lɪˈkeɪ.ʃən/", "ứng dụng, đơn xin việc", 1],
   ["backup", "n", "B1", "/ˈbæk.ʌp/", "bản sao lưu dự phòng", 1],
@@ -16,9 +14,8 @@ window.VOCAB_PARTS.push([
   ["hardware", "n", "B1", "/ˈhɑːd.weər/", "phần cứng máy tính", 1],
   ["install", "v", "B1", "/ɪnˈstɔːl/", "cài đặt, lắp đặt", 1],
   ["network", "n", "B1", "/ˈnet.wɜːk/", "mạng lưới, hệ thống mạng", 1],
-  // 2. Science & Research
   ["analysis", "n", "B1", "/əˈnæl.ə.sɪs/", "sự phân tích", 2],
-  ["chemical", "adj", "B1", "/ˈkem.ɪ.kəl/", "thuộc hóa học, chất hóa học", 2],
+  ["chemical", "adj", "B1", "/ˈkem.ɪ.kəl/", "thuộc hóa học", 2],
   ["confirm", "v", "B1", "/kənˈfɜːm/", "xác nhận, chứng thực", 2],
   ["discover", "v", "B1", "/dɪˈskʌv.ər/", "khám phá, phát hiện", 2],
   ["electric", "adj", "B1", "/ɪˈlek.trɪk/", "chạy bằng điện", 2],
@@ -30,7 +27,6 @@ window.VOCAB_PARTS.push([
   ["laboratory", "n", "B1", "/ləˈbɒr.ə.tər.i/", "phòng thí nghiệm", 2],
   ["measure", "v", "B1", "/ˈmeʒ.ər/", "đo lường, đánh giá", 2],
   ["method", "n", "B1", "/ˈmeθ.əd/", "phương pháp, cách thức", 2],
-  // 3. Business & Work
   ["achieve", "v", "B1", "/əˈtʃiːv/", "đạt được, giành được", 3],
   ["agency", "n", "B1", "/ˈeɪ.dʒən.si/", "đại lý, cơ quan", 3],
   ["ambition", "n", "B1", "/æmˈbɪʃ.ən/", "tham vọng, hoài bão", 3],
@@ -44,7 +40,6 @@ window.VOCAB_PARTS.push([
   ["interview", "n", "B1", "/ˈɪn.tə.vjuː/", "cuộc phỏng vấn", 3],
   ["manage", "v", "B1", "/ˈmæn.ɪdʒ/", "quản lý, xoay xở", 3],
   ["promote", "v", "B1", "/prəˈməʊt/", "thăng chức, quảng bá", 3],
-  // 4. Education & Study
   ["academic", "adj", "B1", "/ˌæk.əˈdem.ɪk/", "thuộc học thuật", 4],
   ["assignment", "n", "B1", "/əˈsaɪn.mənt/", "bài tập được giao, nhiệm vụ", 4],
   ["attend", "v", "B1", "/əˈtend/", "tham dự, có mặt", 4],
@@ -58,7 +53,6 @@ window.VOCAB_PARTS.push([
   ["knowledge", "n", "B1", "/ˈnɒl.ɪdʒ/", "kiến thức, sự hiểu biết", 4],
   ["lecture", "n", "B1", "/ˈlek.tʃər/", "bài giảng", 4],
   ["revise", "v", "B1", "/rɪˈvaɪz/", "ôn tập, chỉnh sửa", 4],
-  // 5. Environment & Nature
   ["atmosphere", "n", "B1", "/ˈæt.mə.sfɪər/", "bầu khí quyển, không khí", 5],
   ["climate", "n", "B1", "/ˈklaɪ.mət/", "khí hậu", 5],
   ["creature", "n", "B1", "/ˈkriː.tʃər/", "sinh vật", 5],
@@ -72,7 +66,6 @@ window.VOCAB_PARTS.push([
   ["protect", "v", "B1", "/prəˈtekt/", "bảo vệ", 5],
   ["recycle", "v", "B1", "/ˌriːˈsaɪ.kəl/", "tái chế", 5],
   ["wildlife", "n", "B1", "/ˈwaɪld.laɪf/", "động vật hoang dã", 5],
-  // 6. Health & Medicine
   ["allergy", "n", "B1", "/ˈæl.ə.dʒi/", "chứng dị ứng", 6],
   ["ambulance", "n", "B1", "/ˈæm.bjə.ləns/", "xe cứu thương", 6],
   ["anxiety", "n", "B1", "/æŋˈzaɪ.ə.ti/", "sự lo âu, lo lắng", 6],
@@ -86,7 +79,6 @@ window.VOCAB_PARTS.push([
   ["injury", "n", "B1", "/ˈɪn.dʒər.i/", "chấn thương, vết thương", 6],
   ["recover", "v", "B1", "/rɪˈkʌv.ər/", "hồi phục, bình phục", 6],
   ["symptom", "n", "B1", "/ˈsɪmp.təm/", "triệu chứng", 6],
-  // 7. Society & Culture
   ["background", "n", "B1", "/ˈbæk.ɡraʊnd/", "nền tảng, xuất thân", 7],
   ["charity", "n", "B1", "/ˈtʃær.ə.ti/", "tổ chức từ thiện, lòng nhân ái", 7],
   ["citizen", "n", "B1", "/ˈsɪt.ɪ.zən/", "công dân", 7],
@@ -100,7 +92,6 @@ window.VOCAB_PARTS.push([
   ["poverty", "n", "B1", "/ˈpɒv.ə.ti/", "sự nghèo đói", 7],
   ["tradition", "n", "B1", "/trəˈdɪʃ.ən/", "truyền thống", 7],
   ["volunteer", "n", "B1", "/ˌvɒl.ənˈtɪər/", "tình nguyện viên", 7],
-  // 8. Law & Politics
   ["accuse", "v", "B1", "/əˈkjuːz/", "buộc tội, cáo buộc", 8],
   ["arrest", "v", "B1", "/əˈrest/", "bắt giữ", 8],
   ["authority", "n", "B1", "/ɔːˈθɒr.ə.ti/", "chính quyền, thẩm quyền", 8],
@@ -114,7 +105,6 @@ window.VOCAB_PARTS.push([
   ["policy", "n", "B1", "/ˈpɒl.ə.si/", "chính sách", 8],
   ["punish", "v", "B1", "/ˈpʌn.ɪʃ/", "trừng phạt", 8],
   ["witness", "n", "B1", "/ˈwɪt.nəs/", "nhân chứng", 8],
-  // 9. Psychology & Mind
   ["attitude", "n", "B1", "/ˈæt.ɪ.tjuːd/", "thái độ, quan điểm", 9],
   ["aware", "adj", "B1", "/əˈweər/", "nhận thức được, biết rõ", 9],
   ["behavior", "n", "B1", "/bɪˈheɪ.vjər/", "hành vi, cách cư xử", 9],
@@ -128,7 +118,6 @@ window.VOCAB_PARTS.push([
   ["memory", "n", "B1", "/ˈmem.ər.i/", "trí nhớ, ký ức", 9],
   ["mental", "adj", "B1", "/ˈmen.təl/", "thuộc tinh thần, tâm trí", 9],
   ["motivate", "v", "B1", "/ˈməʊ.tɪ.veɪt/", "tạo động lực, thúc đẩy", 9],
-  // 10. Media & Communication
   ["advertise", "v", "B1", "/ˈæd.və.taɪz/", "quảng cáo", 10],
   ["announce", "v", "B1", "/əˈnaʊns/", "thông báo, công bố", 10],
   ["article", "n", "B1", "/ˈɑː.tɪ.kəl/", "bài báo, điều khoản", 10],
@@ -142,7 +131,6 @@ window.VOCAB_PARTS.push([
   ["publish", "v", "B1", "/ˈpʌb.lɪʃ/", "xuất bản, công bố", 10],
   ["respond", "v", "B1", "/rɪˈspɒnd/", "phản hồi, đáp lại", 10],
   ["translate", "v", "B1", "/trænzˈleɪt/", "dịch thuật, phiên dịch", 10],
-  // 11. Economy & Finance
   ["account", "n", "B1", "/əˈkaʊnt/", "tài khoản, bản tường thuật", 11],
   ["afford", "v", "B1", "/əˈfɔːd/", "đủ khả năng chi trả", 11],
   ["bargain", "n", "B1", "/ˈbɑː.ɡɪn/", "món hời, sự mặc cả", 11],
@@ -156,7 +144,6 @@ window.VOCAB_PARTS.push([
   ["income", "n", "B1", "/ˈɪn.kʌm/", "thu nhập", 11],
   ["invest", "v", "B1", "/ɪnˈvest/", "đầu tư", 11],
   ["profit", "n", "B1", "/ˈprɒf.ɪt/", "lợi nhuận", 11],
-  // 12. Arts & Literature
   ["author", "n", "B1", "/ˈɔː.θər/", "tác giả", 12],
   ["chapter", "n", "B1", "/ˈtʃæp.tər/", "chương sách", 12],
   ["comedy", "n", "B1", "/ˈkɒm.ə.di/", "hài kịch", 12],
@@ -170,7 +157,6 @@ window.VOCAB_PARTS.push([
   ["perform", "v", "B1", "/pəˈfɔːm/", "biểu diễn, thực hiện", 12],
   ["poetry", "n", "B1", "/ˈpəʊ.ə.tri/", "thơ ca", 12],
   ["sculpture", "n", "B1", "/ˈskʌlp.tʃər/", "tác phẩm điêu khắc", 12],
-  // 13. Travel & Globalism
   ["abroad", "adv", "B1", "/əˈbrɔːd/", "ở nước ngoài", 13],
   ["adventure", "n", "B1", "/ədˈven.tʃər/", "cuộc phiêu lưu", 13],
   ["border", "n", "B1", "/ˈbɔː.dər/", "biên giới, đường viền", 13],
@@ -184,7 +170,6 @@ window.VOCAB_PARTS.push([
   ["luggage", "n", "B1", "/ˈlʌɡ.ɪdʒ/", "hành lý", 13],
   ["route", "n", "B1", "/ruːt/", "tuyến đường, lộ trình", 13],
   ["tourism", "n", "B1", "/ˈtʊə.rɪ.zəm/", "ngành du lịch", 13],
-  // 14. Urban & Architecture
   ["avenue", "n", "B1", "/ˈæv.ə.njuː/", "đại lộ", 14],
   ["balcony", "n", "B1", "/ˈbæl.kə.ni/", "ban công", 14],
   ["concrete", "n", "B1", "/ˈkɒŋ.kriːt/", "bê tông", 14],
@@ -198,7 +183,6 @@ window.VOCAB_PARTS.push([
   ["structure", "n", "B1", "/ˈstrʌk.tʃər/", "cấu trúc, công trình", 14],
   ["suburb", "n", "B1", "/ˈsʌb.ɜːb/", "vùng ngoại ô", 14],
   ["urban", "adj", "B1", "/ˈɜː.bən/", "thuộc đô thị", 14],
-  // 15. Ethics & Philosophy
   ["blame", "v", "B1", "/bleɪm/", "đổ lỗi, khiển trách", 15],
   ["duty", "n", "B1", "/ˈdjuː.ti/", "bổn phận, nghĩa vụ", 15],
   ["equal", "adj", "B1", "/ˈiː.kwəl/", "bình đẳng, ngang bằng", 15],
@@ -211,7 +195,6 @@ window.VOCAB_PARTS.push([
   ["respect", "v", "B1", "/rɪˈspekt/", "tôn trọng", 15],
   ["truth", "n", "B1", "/truːθ/", "sự thật, chân lý", 15],
   ["value", "n", "B1", "/ˈvæl.juː/", "giá trị", 15],
-  // 16. History & Heritage
   ["ancient", "adj", "B1", "/ˈeɪn.ʃənt/", "cổ đại, lâu đời", 16],
   ["battle", "n", "B1", "/ˈbæt.əl/", "trận chiến", 16],
   ["century", "n", "B1", "/ˈsen.tʃər.i/", "thế kỷ", 16],
@@ -224,7 +207,6 @@ window.VOCAB_PARTS.push([
   ["monument", "n", "B1", "/ˈmɒn.jə.mənt/", "đài tưởng niệm, di tích", 16],
   ["origin", "n", "B1", "/ˈɒr.ɪ.dʒɪn/", "nguồn gốc, xuất xứ", 16],
   ["royal", "adj", "B1", "/ˈrɔɪ.əl/", "thuộc hoàng gia", 16],
-  // 17. Logic & Analysis
   ["average", "adj", "B1", "/ˈæv.ər.ɪdʒ/", "trung bình", 17],
   ["category", "n", "B1", "/ˈkæt.ə.ɡri/", "hạng mục, phân loại", 17],
   ["compare", "v", "B1", "/kəmˈpeər/", "so sánh", 17],
@@ -237,7 +219,6 @@ window.VOCAB_PARTS.push([
   ["predict", "v", "B1", "/prɪˈdɪkt/", "dự đoán", 17],
   ["reason", "n", "B1", "/ˈriː.zən/", "lý do, lý trí", 17],
   ["solution", "n", "B1", "/səˈluː.ʃən/", "giải pháp", 17],
-  // 18. Character & Emotion
   ["anxious", "adj", "B1", "/ˈæŋk.ʃəs/", "lo lắng, bồn chồn", 18],
   ["brave", "adj", "B1", "/breɪv/", "dũng cảm, gan dạ", 18],
   ["calm", "adj", "B1", "/kɑːm/", "bình tĩnh, êm đềm", 18],
@@ -250,7 +231,6 @@ window.VOCAB_PARTS.push([
   ["patient", "adj", "B1", "/ˈpeɪ.ʃənt/", "kiên nhẫn", 18],
   ["reliable", "adj", "B1", "/rɪˈlaɪ.ə.bəl/", "đáng tin cậy", 18],
   ["selfish", "adj", "B1", "/ˈsel.fɪʃ/", "ích kỷ", 18],
-  // 19. Action & Change
   ["adapt", "v", "B1", "/əˈdæpt/", "thích nghi, điều chỉnh", 19],
   ["adjust", "v", "B1", "/əˈdʒʌst/", "điều chỉnh, thích ứng", 19],
   ["attempt", "v", "B1", "/əˈtempt/", "nỗ lực, cố gắng", 19],
@@ -263,7 +243,6 @@ window.VOCAB_PARTS.push([
   ["reduce", "v", "B1", "/rɪˈdjuːs/", "giảm bớt, cắt giảm", 19],
   ["replace", "v", "B1", "/rɪˈpleɪs/", "thay thế", 19],
   ["survive", "v", "B1", "/səˈvaɪv/", "sống sót, tồn tại", 19],
-  // 20. Academic & Rhetoric
   ["actually", "adv", "B1", "/ˈæk.tʃu.ə.li/", "thực ra, trên thực tế", 20],
   ["argue", "v", "B1", "/ˈɑːɡ.juː/", "tranh luận, lập luận", 20],
   ["briefly", "adv", "B1", "/ˈbriːf.li/", "một cách ngắn gọn", 20],

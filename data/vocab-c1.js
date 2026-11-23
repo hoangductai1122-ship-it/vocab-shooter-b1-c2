@@ -1,8 +1,6 @@
-// CEFR C1 Vocabulary (250 words across 20 thematic milestones)
-// Format: [word, pos, level, ipa, vietnamese_meaning, topicId]
+// CEFR C1 Vocabulary (audited & verified)
 window.VOCAB_PARTS = window.VOCAB_PARTS || [];
 window.VOCAB_PARTS.push([
-  // 1. Technology
   ["architecture", "n", "C1", "/ˈɑː.kɪ.tek.tʃər/", "kiến trúc hệ thống, kiến trúc", 1],
   ["autonomous", "adj", "C1", "/ɔːˈtɒn.ə.məs/", "tự hành, tự chủ", 1],
   ["biometric", "adj", "C1", "/ˌbaɪ.əʊˈmet.rɪk/", "thuộc sinh trắc học", 1],
@@ -16,7 +14,6 @@ window.VOCAB_PARTS.push([
   ["protocol", "n", "C1", "/ˈprəʊ.tə.kɒl/", "giao thức, quy trình chuẩn", 1],
   ["scalable", "adj", "C1", "/ˈskeɪ.lə.bəl/", "có khả năng mở rộng quy mô", 1],
   ["surveillance", "n", "C1", "/səˈveɪ.ləns/", "sự giám sát, theo dõi", 1],
-  // 2. Science & Research
   ["anomaly", "n", "C1", "/əˈnɒm.ə.li/", "sự bất thường, điểm dị thường", 2],
   ["catalyst", "n", "C1", "/ˈkæt.əl.ɪst/", "chất xúc tác, nhân tố thúc đẩy", 2],
   ["correlate", "v", "C1", "/ˈkɒr.ə.leɪt/", "tương quan, có liên hệ mật thiết", 2],
@@ -30,7 +27,6 @@ window.VOCAB_PARTS.push([
   ["replicate", "v", "C1", "/ˈrep.lɪ.keɪt/", "tái tạo, sao chép chính xác", 2],
   ["rigorous", "adj", "C1", "/ˈrɪɡ.ər.əs/", "nghiêm ngặt, khắt khe", 2],
   ["synthesize", "v", "C1", "/ˈsɪn.θə.saɪz/", "tổng hợp", 2],
-  // 3. Business & Work
   ["accountable", "adj", "C1", "/əˈkaʊn.tə.bəl/", "chịu trách nhiệm giải trình", 3],
   ["benchmark", "n", "C1", "/ˈbentʃ.mɑːk/", "tiêu chuẩn đối chiếu, chuẩn mực", 3],
   ["consolidate", "v", "C1", "/kənˈsɒl.ɪ.deɪt/", "củng cố, hợp nhất", 3],
@@ -38,13 +34,12 @@ window.VOCAB_PARTS.push([
   ["diversify", "v", "C1", "/daɪˈvɜː.sɪ.faɪ/", "đa dạng hóa", 3],
   ["entrepreneur", "n", "C1", "/ˌɒn.trə.prəˈnɜːr/", "doanh nhân khởi nghiệp", 3],
   ["hierarchy", "n", "C1", "/ˈhaɪə.rɑː.ki/", "hệ thống phân cấp", 3],
-  ["leverage", "v", "C1", "/ˈliː.vər.ɪdʒ/", "tận dụng tối đa, đòn bẩy", 3],
+  ["leverage", "v", "C1", "/ˈliː.vər.ɪdʒ/", "tận dụng tối đa, khai thác", 3],
   ["lucrative", "adj", "C1", "/ˈluː.krə.tɪv/", "sinh lời cao, béo bở", 3],
   ["merger", "n", "C1", "/ˈmɜː.dʒər/", "sự sáp nhập doanh nghiệp", 3],
   ["stakeholder", "n", "C1", "/ˈsteɪkˌhəʊl.dər/", "bên liên quan", 3],
   ["streamline", "v", "C1", "/ˈstriːm.laɪn/", "tinh gọn, hợp lý hóa quy trình", 3],
   ["viable", "adj", "C1", "/ˈvaɪ.ə.bəl/", "khả thi, có thể tồn tại", 3],
-  // 4. Education & Study
   ["accredit", "v", "C1", "/əˈkred.ɪt/", "công nhận chính thức, kiểm định", 4],
   ["aptitude", "n", "C1", "/ˈæp.tɪ.tjuːd/", "năng khiếu, khả năng thiên bẩm", 4],
   ["articulate", "v", "C1", "/ɑːˈtɪk.jə.leɪt/", "diễn đạt rõ ràng, mạch lạc", 4],
@@ -58,7 +53,6 @@ window.VOCAB_PARTS.push([
   ["plagiarism", "n", "C1", "/ˈpleɪ.dʒər.ɪ.zəm/", "sự đạo văn", 4],
   ["retention", "n", "C1", "/rɪˈten.ʃən/", "khả năng ghi nhớ, sự giữ lại", 4],
   ["syllabus", "n", "C1", "/ˈsɪl.ə.bəs/", "đề cương môn học", 4],
-  // 5. Environment & Nature
   ["arid", "adj", "C1", "/ˈær.ɪd/", "khô cằn", 5],
   ["catastrophe", "n", "C1", "/kəˈtæs.trə.fi/", "đại thảm họa", 5],
   ["deforestation", "n", "C1", "/diːˌfɒr.ɪˈsteɪ.ʃən/", "nạn phá rừng", 5],
@@ -72,7 +66,6 @@ window.VOCAB_PARTS.push([
   ["reclaim", "v", "C1", "/rɪˈkleɪm/", "cải tạo đất, đòi lại", 5],
   ["scarcity", "n", "C1", "/ˈskeə.sə.ti/", "sự khan hiếm", 5],
   ["watershed", "n", "C1", "/ˈwɔː.tə.ʃed/", "lưu vực, bước ngoặt lịch sử", 5],
-  // 6. Health & Medicine
   ["acute", "adj", "C1", "/əˈkjuːt/", "cấp tính, nghiêm trọng, sắc bén", 6],
   ["ailment", "n", "C1", "/ˈeɪl.mənt/", "căn bệnh nhẹ, chứng khó chịu", 6],
   ["alleviate", "v", "C1", "/əˈliː.vi.eɪt/", "làm dịu bớt, giảm đau", 6],
@@ -86,7 +79,6 @@ window.VOCAB_PARTS.push([
   ["pathogen", "n", "C1", "/ˈpæθ.ə.dʒən/", "mầm bệnh", 6],
   ["prognosis", "n", "C1", "/prɒɡˈnəʊ.sɪs/", "tiên lượng bệnh", 6],
   ["sedentary", "adj", "C1", "/ˈsed.ən.tər.i/", "ít vận động, ngồi nhiều", 6],
-  // 7. Society & Culture
   ["affluent", "adj", "C1", "/ˈæf.lu.ənt/", "giàu có, thịnh vượng", 7],
   ["alienate", "v", "C1", "/ˈeɪ.li.ə.neɪt/", "làm xa lánh, tách biệt", 7],
   ["cohesion", "n", "C1", "/kəʊˈhiː.ʒən/", "sự gắn kết, cố kết xã hội", 7],
@@ -100,7 +92,6 @@ window.VOCAB_PARTS.push([
   ["pluralism", "n", "C1", "/ˈplʊə.rə.lɪ.zəm/", "chủ nghĩa đa nguyên", 7],
   ["secular", "adj", "C1", "/ˈsek.jə.lər/", "thế tục, phi tôn giáo", 7],
   ["solidarity", "n", "C1", "/ˌsɒl.ɪˈdær.ə.ti/", "tình đoàn kết", 7],
-  // 8. Law & Politics
   ["allegation", "n", "C1", "/ˌæl.əˈɡeɪ.ʃən/", "lời cáo buộc (chưa chứng minh)", 8],
   ["arbitration", "n", "C1", "/ˌɑː.bɪˈtreɪ.ʃən/", "sự phân xử bằng trọng tài", 8],
   ["bureaucracy", "n", "C1", "/bjʊəˈrɒk.rə.si/", "bộ máy quan liêu, hành chính", 8],
@@ -114,7 +105,6 @@ window.VOCAB_PARTS.push([
   ["ratify", "v", "C1", "/ˈræt.ɪ.faɪ/", "phê chuẩn, thông qua chính thức", 8],
   ["sovereignty", "n", "C1", "/ˈsɒv.rɪn.ti/", "chủ quyền quốc gia", 8],
   ["treaty", "n", "C1", "/ˈtriː.ti/", "hiệp ước", 8],
-  // 9. Psychology & Mind
   ["altruism", "n", "C1", "/ˈæl.tru.ɪ.zəm/", "lòng vị tha", 9],
   ["ambivalent", "adj", "C1", "/æmˈbɪv.ə.lənt/", "mâu thuẫn nội tâm, nước đôi", 9],
   ["apathy", "n", "C1", "/ˈæp.ə.θi/", "sự thờ ơ, lãnh đạm", 9],
@@ -128,7 +118,6 @@ window.VOCAB_PARTS.push([
   ["neurosis", "n", "C1", "/njʊəˈrəʊ.sɪs/", "rối loạn lo âu tâm thần", 9],
   ["phobia", "n", "C1", "/ˈfəʊ.bi.ə/", "nỗi ám ảnh sợ hãi", 9],
   ["psyche", "n", "C1", "/ˈsaɪ.ki/", "tâm hồn, tâm trí", 9],
-  // 10. Media & Communication
   ["anecdote", "n", "C1", "/ˈæn.ɪk.dəʊt/", "giai thoại, mẩu chuyện ngắn", 10],
   ["candid", "adj", "C1", "/ˈkæn.dɪd/", "thẳng thắn, bộc trực", 10],
   ["lucid", "adj", "C1", "/ˈluː.sɪd/", "rõ ràng, mạch lạc dễ hiểu", 10],
@@ -142,7 +131,6 @@ window.VOCAB_PARTS.push([
   ["sensational", "adj", "C1", "/senˈseɪ.ʃən.əl/", "giật gân, gây chấn động", 10],
   ["tacit", "adj", "C1", "/ˈtæs.ɪt/", "ngầm hiểu, không nói ra", 10],
   ["unanimous", "adj", "C1", "/juːˈnæn.ɪ.məs/", "nhất trí hoàn toàn", 10],
-  // 11. Economy & Finance
   ["austerity", "n", "C1", "/ɒˈster.ə.ti/", "chính sách thắt lưng buộc bụng", 11],
   ["capitalism", "n", "C1", "/ˈkæp.ɪ.təl.ɪ.zəm/", "chủ nghĩa tư bản", 11],
   ["collateral", "n", "C1", "/kəˈlæt.ər.əl/", "tài sản thế chấp", 11],
@@ -156,7 +144,6 @@ window.VOCAB_PARTS.push([
   ["prosperity", "n", "C1", "/prɒsˈper.ə.ti/", "sự thịnh vượng, phồn vinh", 11],
   ["speculate", "v", "C1", "/ˈspek.jə.leɪt/", "đầu cơ, suy đoán", 11],
   ["tariff", "n", "C1", "/ˈtær.ɪf/", "thuế quan", 11],
-  // 12. Arts & Literature
   ["allegory", "n", "C1", "/ˈæl.ə.ɡər.i/", "truyện ngụ ngôn, ẩn dụ kéo dài", 12],
   ["anthology", "n", "C1", "/ænˈθɒl.ə.dʒi/", "tuyển tập văn thơ", 12],
   ["artisan", "n", "C1", "/ˌɑː.tɪˈzæn/", "nghệ nhân, thợ thủ công", 12],
@@ -169,7 +156,6 @@ window.VOCAB_PARTS.push([
   ["poignant", "adj", "C1", "/ˈpɔɪ.njənt/", "sâu sắc, gây xúc động mạnh", 12],
   ["prose", "n", "C1", "/prəʊz/", "văn xuôi", 12],
   ["surreal", "adj", "C1", "/səˈrɪəl/", "siêu thực, kỳ ảo", 12],
-  // 13. Travel & Globalism
   ["asylum", "n", "C1", "/əˈsaɪ.ləm/", "sự tị nạn chính trị", 13],
   ["cosmopolitan", "adj", "C1", "/ˌkɒz.məˈpɒl.ɪ.tən/", "mang tính quốc tế, đa văn hóa", 13],
   ["diaspora", "n", "C1", "/daɪˈæs.pər.ə/", "cộng đồng kiều bào hải ngoại", 13],
@@ -182,7 +168,6 @@ window.VOCAB_PARTS.push([
   ["sojourn", "n", "C1", "/ˈsɒdʒ.ən/", "kỳ lưu trú ngắn hạn", 13],
   ["transnational", "adj", "C1", "/ˌtrænzˈnæʃ.ən.əl/", "xuyên quốc gia", 13],
   ["wanderlust", "n", "C1", "/ˈwɒn.də.lʌst/", "niềm đam mê xê dịch", 13],
-  // 14. Urban & Architecture
   ["acoustics", "n", "C1", "/əˈkuː.stɪks/", "âm học (trong thiết kế)", 14],
   ["zoning", "n", "C1", "/ˈzəʊ.nɪŋ/", "quy hoạch phân khu đô thị", 14],
   ["dilapidated", "adj", "C1", "/dɪˈlæp.ɪ.deɪ.tɪd/", "đổ nát, xiêu vẹo", 14],
@@ -195,7 +180,6 @@ window.VOCAB_PARTS.push([
   ["revitalize", "v", "C1", "/ˌriːˈvaɪ.təl.aɪz/", "tái sinh, hồi sinh khu vực", 14],
   ["sanitation", "n", "C1", "/ˌsæn.ɪˈteɪ.ʃən/", "hệ thống vệ sinh công cộng", 14],
   ["sprawl", "n", "C1", "/sprɔːl/", "sự mở rộng đô thị thiếu quy hoạch", 14],
-  // 15. Ethics & Philosophy
   ["autonomy", "n", "C1", "/ɔːˈtɒn.ə.mi/", "quyền tự chủ, tự trị", 15],
   ["benevolent", "adj", "C1", "/bəˈnev.əl.ənt/", "nhân từ, rộng lượng", 15],
   ["dogma", "n", "C1", "/ˈdɒɡ.mə/", "giáo điều, học thuyết cứng nhắc", 15],
@@ -205,10 +189,9 @@ window.VOCAB_PARTS.push([
   ["impartial", "adj", "C1", "/ɪmˈpɑː.ʃəl/", "công tâm, không thiên vị", 15],
   ["intrinsic", "adj", "C1", "/ɪnˈtrɪn.zɪk/", "nội tại, thuộc bản chất", 15],
   ["pragmatic", "adj", "C1", "/præɡˈmæt.ɪk/", "thực dụng, thực tế", 15],
-  ["scrupulous", "adj", "C1", "/ˈskruː.pjə.ləs/", "tỉ mỉ, hết sức cẩn trọng đạo đức", 15],
+  ["scrupulous", "adj", "C1", "/ˈskruː.pjə.ləs/", "tỉ mỉ, liêm chính", 15],
   ["stoic", "adj", "C1", "/ˈstəʊ.ɪk/", "khắc kỷ, điềm tĩnh chịu đựng", 15],
   ["utilitarian", "adj", "C1", "/juːˌtɪl.ɪˈteə.ri.ən/", "theo thuyết vị lợi, chú trọng công năng", 15],
-  // 16. History & Heritage
   ["antiquity", "n", "C1", "/ænˈtɪk.wə.ti/", "thời cổ đại, đồ cổ", 16],
   ["archaeology", "n", "C1", "/ˌɑː.kiˈɒl.ə.dʒi/", "khảo cổ học", 16],
   ["chronology", "n", "C1", "/krəˈnɒl.ə.dʒi/", "niên đại học, trình tự thời gian", 16],
@@ -221,7 +204,6 @@ window.VOCAB_PARTS.push([
   ["relic", "n", "C1", "/ˈrel.ɪk/", "di vật, tàn tích", 16],
   ["renaissance", "n", "C1", "/rəˈneɪ.səns/", "thời kỳ Phục Hưng, sự hồi sinh", 16],
   ["upheaval", "n", "C1", "/ʌpˈhiː.vəl/", "biến động lớn, đảo lộn xã hội", 16],
-  // 17. Logic & Analysis
   ["ambiguous", "adj", "C1", "/æmˈbɪɡ.ju.əs/", "mơ hồ, đa nghĩa", 17],
   ["arbitrary", "adj", "C1", "/ˈɑː.bɪ.trər.i/", "tùy tiện, độc đoán", 17],
   ["conjecture", "n", "C1", "/kənˈdʒek.tʃər/", "sự phỏng đoán", 17],
@@ -234,7 +216,6 @@ window.VOCAB_PARTS.push([
   ["plausible", "adj", "C1", "/ˈplɔː.zə.bəl/", "hợp lý, có vẻ đáng tin", 17],
   ["premise", "n", "C1", "/ˈprem.ɪs/", "tiền đề", 17],
   ["scrutinize", "v", "C1", "/ˈskruː.tɪ.naɪz/", "xem xét kỹ lưỡng, soi xét", 17],
-  // 18. Character & Emotion
   ["astute", "adj", "C1", "/əˈstjuːt/", "sắc sảo, tinh anh", 18],
   ["callous", "adj", "C1", "/ˈkæl.əs/", "nhẫn tâm, vô cảm", 18],
   ["charisma", "n", "C1", "/kəˈrɪz.mə/", "sức hút cá nhân, uy tín", 18],
@@ -246,8 +227,7 @@ window.VOCAB_PARTS.push([
   ["obstinate", "adj", "C1", "/ˈɒb.stɪ.nət/", "bướng bỉnh, ngoan cố", 18],
   ["tenacious", "adj", "C1", "/təˈneɪ.ʃəs/", "kiên trì, bền bỉ", 18],
   ["versatile", "adj", "C1", "/ˈvɜː.sə.taɪl/", "đa năng, linh hoạt", 18],
-  ["zealous", "adj", "C1", "/ˈzel.əs/", "nhiệt thành, sùng bái", 18],
-  // 19. Action & Change
+  ["zealous", "adj", "C1", "/ˈzel.əs/", "nhiệt thành, hăng hái", 18],
   ["bolster", "v", "C1", "/ˈbəʊl.stər/", "củng cố, tăng cường", 19],
   ["curtail", "v", "C1", "/kɜːˈteɪl/", "cắt giảm, hạn chế", 19],
   ["eradicate", "v", "C1", "/ɪˈræd.ɪ.keɪt/", "xóa bỏ hoàn toàn, diệt trừ", 19],
@@ -260,7 +240,6 @@ window.VOCAB_PARTS.push([
   ["proliferate", "v", "C1", "/prəˈlɪf.ər.eɪt/", "gia tăng nhanh chóng, sinh sôi", 19],
   ["rectify", "v", "C1", "/ˈrek.tɪ.faɪ/", "sửa chữa, khắc phục sai sót", 19],
   ["undermine", "v", "C1", "/ˌʌn.dəˈmaɪn/", "làm suy yếu, phá hoại ngầm", 19],
-  // 20. Academic & Rhetoric
   ["albeit", "conj", "C1", "/ɔːlˈbiː.ɪt/", "mặc dù, dẫu cho", 20],
   ["compelling", "adj", "C1", "/kəmˈpel.ɪŋ/", "thuyết phục mạnh mẽ, lôi cuốn", 20],
   ["comprehensive", "adj", "C1", "/ˌkɒm.prɪˈhen.sɪv/", "toàn diện, bao quát", 20],

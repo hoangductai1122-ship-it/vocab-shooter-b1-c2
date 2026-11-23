@@ -1,8 +1,6 @@
-// CEFR B2 Vocabulary (250 words across 20 thematic milestones)
-// Format: [word, pos, level, ipa, vietnamese_meaning, topicId]
+// CEFR B2 Vocabulary (audited & verified)
 window.VOCAB_PARTS = window.VOCAB_PARTS || [];
 window.VOCAB_PARTS.push([
-  // 1. Technology
   ["algorithm", "n", "B2", "/ˈæl.ɡə.rɪ.ðəm/", "thuật toán", 1],
   ["artificial", "adj", "B2", "/ˌɑː.tɪˈfɪʃ.əl/", "nhân tạo", 1],
   ["automate", "v", "B2", "/ˈɔː.tə.meɪt/", "tự động hóa", 1],
@@ -15,8 +13,7 @@ window.VOCAB_PARTS.push([
   ["interface", "n", "B2", "/ˈɪn.tə.feɪs/", "giao diện", 1],
   ["portable", "adj", "B2", "/ˈpɔː.tə.bəl/", "di động, dễ mang theo", 1],
   ["simulate", "v", "B2", "/ˈsɪm.jə.leɪt/", "mô phỏng", 1],
-  ["virtual", "adj", "B2", "/ˈvɜː.tʃu.əl/", "ảo, hầu như", 1],
-  // 2. Science & Research
+  ["virtual", "adj", "B2", "/ˈvɜː.tʃu.əl/", "ảo, gần như", 1],
   ["accurate", "adj", "B2", "/ˈæk.jə.rət/", "chính xác, đúng đắn", 2],
   ["bacteria", "n", "B2", "/bækˈtɪə.ri.ə/", "vi khuẩn", 2],
   ["compound", "n", "B2", "/ˈkɒm.paʊnd/", "hợp chất", 2],
@@ -27,10 +24,9 @@ window.VOCAB_PARTS.push([
   ["hypothesis", "n", "B2", "/haɪˈpɒθ.ə.sɪs/", "giả thuyết", 2],
   ["molecule", "n", "B2", "/ˈmɒl.ɪ.kjuːl/", "phân tử", 2],
   ["observe", "v", "B2", "/əbˈzɜːv/", "quan sát, tuân thủ", 2],
-  ["particle", "n", "B2", "/ˈpɑː.tɪ.kəl/", "hạt nhỏ, phân tử", 2],
+  ["particle", "n", "B2", "/ˈpɑː.tɪ.kəl/", "hạt, hạt nhỏ", 2],
   ["radiation", "n", "B2", "/ˌreɪ.diˈeɪ.ʃən/", "bức xạ, phóng xạ", 2],
   ["specimen", "n", "B2", "/ˈspes.ɪ.mən/", "mẫu vật", 2],
-  // 3. Business & Work
   ["acquire", "v", "B2", "/əˈkwaɪər/", "đạt được, mua lại", 3],
   ["allocate", "v", "B2", "/ˈæl.ə.keɪt/", "phân bổ", 3],
   ["assess", "v", "B2", "/əˈses/", "đánh giá, định giá", 3],
@@ -44,7 +40,6 @@ window.VOCAB_PARTS.push([
   ["negotiate", "v", "B2", "/nəˈɡəʊ.ʃi.eɪt/", "đàm phán, thương lượng", 3],
   ["productivity", "n", "B2", "/ˌprɒd.ʌkˈtɪv.ə.ti/", "năng suất", 3],
   ["strategy", "n", "B2", "/ˈstræt.ə.dʒi/", "chiến lược", 3],
-  // 4. Education & Study
   ["comprehend", "v", "B2", "/ˌkɒm.prɪˈhend/", "hiểu thấu, lĩnh hội", 4],
   ["curriculum", "n", "B2", "/kəˈrɪk.jə.ləm/", "chương trình giảng dạy", 4],
   ["discipline", "n", "B2", "/ˈdɪs.ə.plɪn/", "kỷ luật, ngành học", 4],
@@ -54,11 +49,10 @@ window.VOCAB_PARTS.push([
   ["literacy", "n", "B2", "/ˈlɪt.ər.ə.si/", "khả năng đọc viết, trình độ học vấn", 4],
   ["mentor", "n", "B2", "/ˈmen.tɔːr/", "người cố vấn, hướng dẫn", 4],
   ["proficient", "adj", "B2", "/prəˈfɪʃ.ənt/", "thành thạo, giỏi giang", 4],
-  ["scholarship", "n", "B2", "/ˈskɒl.ə.ʃɪp/", "học bổng, uyên bác", 4],
+  ["scholarship", "n", "B2", "/ˈskɒl.ə.ʃɪp/", "học bổng, sự uyên bác", 4],
   ["seminar", "n", "B2", "/ˈsem.ɪ.nɑːr/", "hội thảo chuyên đề", 4],
   ["thesis", "n", "B2", "/ˈθiː.sɪs/", "luận văn, luận điểm", 4],
   ["tuition", "n", "B2", "/tjuːˈɪʃ.ən/", "học phí, sự giảng dạy", 4],
-  // 5. Environment & Nature
   ["biodiversity", "n", "B2", "/ˌbaɪ.əʊ.daɪˈvɜː.sə.ti/", "đa dạng sinh học", 5],
   ["conserve", "v", "B2", "/kənˈsɜːv/", "bảo tồn, giữ gìn", 5],
   ["contaminate", "v", "B2", "/kənˈtæm.ɪ.neɪt/", "làm ô nhiễm, nhiễm bẩn", 5],
@@ -72,7 +66,6 @@ window.VOCAB_PARTS.push([
   ["preserve", "v", "B2", "/prɪˈzɜːv/", "bảo quản, bảo tồn", 5],
   ["renewable", "adj", "B2", "/rɪˈnjuː.ə.bəl/", "có thể tái tạo", 5],
   ["sustainable", "adj", "B2", "/səˈsteɪ.nə.bəl/", "bền vững", 5],
-  // 6. Health & Medicine
   ["antibiotic", "n", "B2", "/ˌæn.ti.baɪˈɒt.ɪk/", "thuốc kháng sinh", 6],
   ["chronic", "adj", "B2", "/ˈkrɒn.ɪk/", "mãn tính, kéo dài", 6],
   ["diagnose", "v", "B2", "/ˌdaɪ.əɡˈnəʊz/", "chẩn đoán", 6],
@@ -86,7 +79,6 @@ window.VOCAB_PARTS.push([
   ["surgery", "n", "B2", "/ˈsɜː.dʒər.i/", "phẫu thuật", 6],
   ["therapy", "n", "B2", "/ˈθer.ə.pi/", "liệu pháp điều trị", 6],
   ["vaccine", "n", "B2", "/ˈvæk.siːn/", "vắc-xin", 6],
-  // 7. Society & Culture
   ["assimilation", "n", "B2", "/əˌsɪm.ɪˈleɪ.ʃən/", "sự đồng hóa", 7],
   ["civic", "adj", "B2", "/ˈsɪv.ɪk/", "thuộc công dân, đô thị", 7],
   ["demographic", "adj", "B2", "/ˌdem.əˈɡræf.ɪk/", "thuộc nhân khẩu học", 7],
@@ -100,7 +92,6 @@ window.VOCAB_PARTS.push([
   ["prejudice", "n", "B2", "/ˈpredʒ.ə.dɪs/", "định kiến, thành kiến", 7],
   ["stereotype", "n", "B2", "/ˈster.i.ə.taɪp/", "khuôn mẫu, định kiến", 7],
   ["welfare", "n", "B2", "/ˈwel.feər/", "phúc lợi xã hội", 7],
-  // 8. Law & Politics
   ["advocate", "v", "B2", "/ˈæd.və.keɪt/", "ủng hộ, biện hộ", 8],
   ["amendment", "n", "B2", "/əˈmend.mənt/", "sự sửa đổi (luật)", 8],
   ["constitution", "n", "B2", "/ˌkɒn.stɪˈtjuː.ʃən/", "hiến pháp", 8],
@@ -114,13 +105,12 @@ window.VOCAB_PARTS.push([
   ["regulation", "n", "B2", "/ˌreɡ.jəˈleɪ.ʃən/", "quy định, quy chế", 8],
   ["verdict", "n", "B2", "/ˈvɜː.dɪkt/", "phán quyết của tòa án", 8],
   ["violate", "v", "B2", "/ˈvaɪ.ə.leɪt/", "vi phạm, xâm phạm", 8],
-  // 9. Psychology & Mind
   ["cognitive", "adj", "B2", "/ˈkɒɡ.nə.tɪv/", "thuộc nhận thức", 9],
   ["conscious", "adj", "B2", "/ˈkɒn.ʃəs/", "có ý thức, tỉnh táo", 9],
   ["empathy", "n", "B2", "/ˈem.pə.θi/", "sự đồng cảm, thấu cảm", 9],
   ["instinct", "n", "B2", "/ˈɪn.stɪŋkt/", "bản năng", 9],
   ["intuition", "n", "B2", "/ˌɪn.tjuːˈɪʃ.ən/", "trực giác", 9],
-  ["mindset", "n", "B2", "/ˈmaɪnd.set/", "tư duy, định kiến tâm lý", 9],
+  ["mindset", "n", "B2", "/ˈmaɪnd.set/", "tư duy, lối suy nghĩ", 9],
   ["perceive", "v", "B2", "/pəˈsiːv/", "nhận thức, cảm nhận", 9],
   ["perception", "n", "B2", "/pəˈsep.ʃən/", "sự nhận thức, quan niệm", 9],
   ["rational", "adj", "B2", "/ˈræʃ.ən.əl/", "hợp lý, có lý trí", 9],
@@ -128,7 +118,6 @@ window.VOCAB_PARTS.push([
   ["stimulus", "n", "B2", "/ˈstɪm.jə.ləs/", "tác nhân kích thích", 9],
   ["subconscious", "adj", "B2", "/ˌsʌbˈkɒn.ʃəs/", "thuộc tiềm thức", 9],
   ["trauma", "n", "B2", "/ˈtrɔː.mə/", "chấn thương tâm lý", 9],
-  // 10. Media & Communication
   ["bias", "n", "B2", "/ˈbaɪ.əs/", "thiên vị, sự thiên lệch", 10],
   ["censor", "v", "B2", "/ˈsen.sər/", "kiểm duyệt", 10],
   ["clarify", "v", "B2", "/ˈklær.ə.faɪ/", "làm rõ, giải thích rõ", 10],
@@ -142,7 +131,6 @@ window.VOCAB_PARTS.push([
   ["persuade", "v", "B2", "/pəˈsweɪd/", "thuyết phục", 10],
   ["propaganda", "n", "B2", "/ˌprɒp.əˈɡæn.də/", "sự tuyên truyền", 10],
   ["rumor", "n", "B2", "/ˈruː.mər/", "tin đồn", 10],
-  // 11. Economy & Finance
   ["asset", "n", "B2", "/ˈæs.et/", "tài sản, vốn quý", 11],
   ["bankrupt", "adj", "B2", "/ˈbæŋ.krʌpt/", "phá sản", 11],
   ["commerce", "n", "B2", "/ˈkɒm.ɜːs/", "thương mại, buôn bán", 11],
@@ -156,7 +144,6 @@ window.VOCAB_PARTS.push([
   ["revenue", "n", "B2", "/ˈrev.ə.njuː/", "doanh thu, thu nhập quốc gia", 11],
   ["subsidy", "n", "B2", "/ˈsʌb.sɪ.di/", "khoản trợ cấp", 11],
   ["transaction", "n", "B2", "/trænˈzæk.ʃən/", "giao dịch", 11],
-  // 12. Arts & Literature
   ["abstract", "adj", "B2", "/ˈæb.strækt/", "trừu tượng", 12],
   ["aesthetic", "adj", "B2", "/iːsˈθet.ɪk/", "thuộc thẩm mỹ", 12],
   ["biography", "n", "B2", "/baɪˈɒɡ.rə.fi/", "tiểu sử", 12],
@@ -170,7 +157,6 @@ window.VOCAB_PARTS.push([
   ["portrait", "n", "B2", "/ˈpɔː.trət/", "bức chân dung", 12],
   ["symbolism", "n", "B2", "/ˈsɪm.bəl.ɪ.zəm/", "chủ nghĩa tượng trưng, tính biểu tượng", 12],
   ["vivid", "adj", "B2", "/ˈvɪv.ɪd/", "sống động, rực rỡ", 12],
-  // 13. Travel & Globalism
   ["commute", "v", "B2", "/kəˈmjuːt/", "đi làm hằng ngày", 13],
   ["cruise", "n", "B2", "/kruːz/", "chuyến du ngoạn bằng tàu biển", 13],
   ["emigrate", "v", "B2", "/ˈem.ɪ.ɡreɪt/", "di cư ra nước ngoài", 13],
@@ -183,7 +169,6 @@ window.VOCAB_PARTS.push([
   ["navigate", "v", "B2", "/ˈnæv.ɪ.ɡeɪt/", "điều hướng, định vị", 13],
   ["remote", "adj", "B2", "/rɪˈməʊt/", "xa xôi, hẻo lánh", 13],
   ["transit", "n", "B2", "/ˈtræn.zɪt/", "sự quá cảnh, vận chuyển", 13],
-  // 14. Urban & Architecture
   ["blueprint", "n", "B2", "/ˈbluː.prɪnt/", "bản thiết kế chi tiết", 14],
   ["congestion", "n", "B2", "/kənˈdʒes.tʃən/", "sự tắc nghẽn giao thông", 14],
   ["demolish", "v", "B2", "/dɪˈmɒl.ɪʃ/", "phá hủy, dỡ bỏ", 14],
@@ -196,7 +181,6 @@ window.VOCAB_PARTS.push([
   ["renovate", "v", "B2", "/ˈren.ə.veɪt/", "cải tạo, nâng cấp", 14],
   ["residential", "adj", "B2", "/ˌrez.ɪˈden.ʃəl/", "thuộc khu dân cư", 14],
   ["skyscraper", "n", "B2", "/ˈskaɪˌskreɪ.pər/", "tòa nhà chọc trời", 14],
-  // 15. Ethics & Philosophy
   ["conscience", "n", "B2", "/ˈkɒn.ʃəns/", "lương tâm", 15],
   ["consent", "n", "B2", "/kənˈsent/", "sự đồng ý, chấp thuận", 15],
   ["dignity", "n", "B2", "/ˈdɪɡ.nə.ti/", "phẩm giá, nhân phẩm", 15],
@@ -209,7 +193,6 @@ window.VOCAB_PARTS.push([
   ["virtue", "n", "B2", "/ˈvɜː.tʃuː/", "đức hạnh, ưu điểm", 15],
   ["wisdom", "n", "B2", "/ˈwɪz.dəm/", "sự khôn ngoan, trí tuệ", 15],
   ["worthy", "adj", "B2", "/ˈwɜː.ði/", "xứng đáng", 15],
-  // 16. History & Heritage
   ["ancestor", "n", "B2", "/ˈæn.ses.tər/", "tổ tiên", 16],
   ["archive", "n", "B2", "/ˈɑː.kaɪv/", "kho lưu trữ", 16],
   ["artifact", "n", "B2", "/ˈɑː.tɪ.fækt/", "cổ vật, hiện vật", 16],
@@ -222,7 +205,6 @@ window.VOCAB_PARTS.push([
   ["medieval", "adj", "B2", "/ˌmed.iˈiː.vəl/", "thuộc thời trung cổ", 16],
   ["reign", "n", "B2", "/reɪn/", "triều đại, sự trị vì", 16],
   ["revolution", "n", "B2", "/ˌrev.əˈluː.ʃən/", "cuộc cách mạng", 16],
-  // 17. Logic & Analysis
   ["adequate", "adj", "B2", "/ˈæd.ə.kwət/", "đầy đủ, thỏa đáng", 17],
   ["apparent", "adj", "B2", "/əˈpær.ənt/", "rõ ràng, bề ngoài", 17],
   ["assume", "v", "B2", "/əˈsjuːm/", "giả định, cho rằng", 17],
@@ -235,7 +217,6 @@ window.VOCAB_PARTS.push([
   ["framework", "n", "B2", "/ˈfreɪm.wɜːk/", "khung làm việc, khuôn khổ", 17],
   ["relevant", "adj", "B2", "/ˈrel.ə.vənt/", "liên quan, thích đáng", 17],
   ["valid", "adj", "B2", "/ˈvæl.ɪd/", "hợp lệ, có căn cứ", 17],
-  // 18. Character & Emotion
   ["affection", "n", "B2", "/əˈfek.ʃən/", "tình cảm, sự yêu mến", 18],
   ["arrogant", "adj", "B2", "/ˈær.ə.ɡənt/", "kiêu ngạo, ngạo mạn", 18],
   ["compassion", "n", "B2", "/kəmˈpæʃ.ən/", "lòng trắc ẩn, sự thương cảm", 18],
@@ -248,7 +229,6 @@ window.VOCAB_PARTS.push([
   ["passionate", "adj", "B2", "/ˈpæʃ.ən.ət/", "đam mê, nồng nhiệt", 18],
   ["skeptical", "adj", "B2", "/ˈskep.tɪ.kəl/", "hoài nghi, nghi ngờ", 18],
   ["sincere", "adj", "B2", "/sɪnˈsɪər/", "chân thành", 18],
-  // 19. Action & Change
   ["accelerate", "v", "B2", "/əkˈsel.ə.reɪt/", "tăng tốc, đẩy nhanh", 19],
   ["accumulate", "v", "B2", "/əˈkjuː.mjə.leɪt/", "tích lũy, gom góp", 19],
   ["alter", "v", "B2", "/ˈɔːl.tər/", "thay đổi, sửa đổi", 19],
@@ -261,7 +241,6 @@ window.VOCAB_PARTS.push([
   ["overcome", "v", "B2", "/ˌəʊ.vəˈkʌm/", "vượt qua, khắc phục", 19],
   ["restore", "v", "B2", "/rɪˈstɔːr/", "khôi phục, phục hồi", 19],
   ["transform", "v", "B2", "/trænsˈfɔːm/", "biến đổi, chuyển hóa", 19],
-  // 20. Academic & Rhetoric
   ["assert", "v", "B2", "/əˈsɜːt/", "khẳng định, quả quyết", 20],
   ["cite", "v", "B2", "/saɪt/", "trích dẫn", 20],
   ["concise", "adj", "B2", "/kənˈsaɪs/", "ngắn gọn, súc tích", 20],

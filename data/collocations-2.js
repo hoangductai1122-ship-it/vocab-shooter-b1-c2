@@ -1,8 +1,6 @@
-// 250 B1–C2 English Collocations (Topics 11–20, 25 collocations per topic)
-// Format: [phrase, pattern, level, vietnamese_meaning, topicId]
+// 250 B1-C2 English Collocations (Topics 11-20, audited & verified)
 window.COLLOCATION_PARTS = window.COLLOCATION_PARTS || [];
 window.COLLOCATION_PARTS.push([
-  // 11. Economy & Finance (25)
   ["save for the future", "v + prep", "B1", "tiết kiệm cho tương lai", 11],
   ["pay off debt", "v + n", "B1", "trả hết nợ nần", 11],
   ["manage a tight budget", "v + n", "B1", "quản lý ngân sách eo hẹp", 11],
@@ -11,11 +9,11 @@ window.COLLOCATION_PARTS.push([
   ["exchange foreign currency", "v + n", "B1", "đổi ngoại tệ", 11],
   ["curb rising inflation", "v + n", "B2", "kiềm chế lạm phát gia tăng", 11],
   ["economic recession", "adj + n", "B2", "suy thoái kinh tế", 11],
-  ["fiscal deficit", "adj + n", "B2", "thâm hụt ngân sách tài khóa", 11],
-  ["stimulate consumer spending", "v + n", "B2", "kích thích chi tiêu tiêu dùng", 11],
+  ["fiscal deficit", "adj + n", "B2", "thâm hụt tài khóa", 11],
+  ["stimulate consumer spending", "v + n", "B2", "kích thích chi tiêu của người tiêu dùng", 11],
   ["government subsidy", "n + n", "B2", "khoản trợ cấp của chính phủ", 11],
   ["declare bankruptcy", "v + n", "B2", "tuyên bố phá sản", 11],
-  ["secure a mortgage loan", "v + n", "B2", "vay được khoản vay thế chấp", 11],
+  ["secure a mortgage loan", "v + n", "B2", "nhận được khoản vay thế chấp", 11],
   ["impose harsh tariffs", "v + n", "C1", "áp đặt mức thuế quan khắc nghiệt", 11],
   ["austerity measures", "n + n", "C1", "các biện pháp thắt lưng buộc bụng", 11],
   ["market liquidity crunch", "n + n", "C1", "khủng hoảng thanh khoản thị trường", 11],
@@ -25,11 +23,9 @@ window.COLLOCATION_PARTS.push([
   ["unexpected financial windfall", "adj + n", "C2", "khoản tiền bất ngờ từ trên trời rơi xuống", 11],
   ["profligate public spending", "adj + n", "C2", "chi tiêu công phung phí hoang tàng", 11],
   ["pecuniary self interest", "adj + n", "C2", "lợi ích cá nhân vì tiền bạc", 11],
-  ["sink into abject penury", "v + n", "C2", "rơi vào cảnh bần cùng khốn khổ", 11],
+  ["sink into abject penury", "v + prep", "C2", "rơi vào cảnh bần cùng khốn khổ", 11],
   ["exploit market arbitrage", "v + n", "C2", "tận dụng chênh lệch giá thị trường", 11],
   ["render a firm insolvent", "v + adj", "C2", "khiến công ty mất khả năng thanh toán", 11],
-
-  // 12. Arts & Literature (25)
   ["write a bestselling novel", "v + n", "B1", "viết cuốn tiểu thuyết bán chạy nhất", 12],
   ["paint a landscape", "v + n", "B1", "vẽ tranh phong cảnh", 12],
   ["live musical performance", "adj + n", "B1", "buổi biểu diễn âm nhạc trực tiếp", 12],
@@ -37,16 +33,16 @@ window.COLLOCATION_PARTS.push([
   ["classic love story", "adj + n", "B1", "câu chuyện tình kinh điển", 12],
   ["creative imagination", "adj + n", "B1", "trí tưởng tượng sáng tạo", 12],
   ["timeless masterpiece", "adj + n", "B2", "kiệt tác vượt thời gian", 12],
-  ["vivid visual imagery", "adj + n", "B2", "hình ảnh miêu tả sống động", 12],
+  ["vivid visual imagery", "adj + n", "B2", "hình ảnh trực quan sống động", 12],
   ["abstract contemporary art", "adj + n", "B2", "nghệ thuật trừu tượng đương đại", 12],
   ["compelling narrative arc", "adj + n", "B2", "mạch truyện lôi cuốn", 12],
-  ["rich literary symbolism", "adj + n", "B2", "tính biểu tượng văn học giàu có", 12],
+  ["rich literary symbolism", "adj + n", "B2", "tính biểu tượng văn học phong phú", 12],
   ["aesthetic appeal", "adj + n", "B2", "sức hấp dẫn thẩm mỹ", 12],
   ["critical acclaim", "adj + n", "B2", "sự tán dương từ giới phê bình", 12],
   ["poignant emotional resonance", "adj + n", "C1", "dư âm cảm xúc sâu lắng day dứt", 12],
   ["evocative poetic prose", "adj + n", "C1", "lối văn xuôi giàu chất thơ gợi cảm", 12],
   ["recurring thematic motif", "adj + n", "C1", "mô-típ chủ đề lặp đi lặp lại", 12],
-  ["subtle dramatic irony", "adj + n", "C1", "sự trớ trêu kịch tính tinh tế", 12],
+  ["subtle dramatic irony", "adj + n", "C1", "nét trớ trêu tinh tế trong tình huống kịch", 12],
   ["curate a major exhibition", "v + n", "C1", "phụ trách tuyển chọn triển lãm lớn", 12],
   ["royal artistic patronage", "adj + n", "C1", "sự bảo trợ nghệ thuật của hoàng gia", 12],
   ["sublime artistic transcendence", "adj + n", "C2", "vẻ đẹp siêu việt thăng hoa trong nghệ thuật", 12],
@@ -55,18 +51,16 @@ window.COLLOCATION_PARTS.push([
   ["deafening urban cacophony", "adj + n", "C2", "tạp âm hỗn độn chói tai nơi đô thị", 12],
   ["clever stylistic pastiche", "adj + n", "C2", "tác phẩm pha trộn nhiều phong cách tài tình", 12],
   ["entire literary oeuvre", "adj + n", "C2", "toàn bộ gia tài sáng tác văn chương", 12],
-
-  // 13. Travel & Globalism (25)
   ["book a direct flight", "v + n", "B1", "đặt chuyến bay thẳng", 13],
-  ["go through customs", "v + n", "B1", "làm thủ tục hải quan", 13],
-  ["travel off the beaten track", "v + n", "B1", "du lịch nơi hoang sơ ít người biết", 13],
-  ["broaden your horizons", "v + n", "B1", "mở mang tầm nhìn thế giới", 13],
+  ["go through customs", "v + prep", "B1", "làm thủ tục hải quan", 13],
+  ["travel off the beaten track", "v + prep", "B1", "du lịch đến những nơi ít người lui tới", 13],
+  ["broaden your horizons", "v + n", "B1", "mở mang tầm nhìn", 13],
   ["explore foreign cultures", "v + n", "B1", "khám phá văn hóa nước ngoài", 13],
   ["pack light luggage", "v + n", "B1", "đóng gói hành lý gọn nhẹ", 13],
   ["plan a detailed itinerary", "v + n", "B2", "lập lịch trình chi tiết", 13],
-  ["warm local hospitality", "adj + n", "B2", "lòng hiếu khách nồng hậu bản địa", 13],
-  ["embark on an expedition", "v + n", "B2", "khởi hành chuyến thám hiểm", 13],
-  ["remote exotic destination", "adj + n", "B2", "điểm đến kỳ lạ xa xôi", 13],
+  ["warm local hospitality", "adj + n", "B2", "lòng hiếu khách nồng hậu của người dân địa phương", 13],
+  ["embark on an expedition", "v + prep", "B2", "bắt đầu chuyến thám hiểm", 13],
+  ["remote exotic destination", "adj + n", "B2", "điểm đến xa xôi đầy mới lạ", 13],
   ["sustainable ecotourism", "adj + n", "B2", "du lịch sinh thái bền vững", 13],
   ["daily urban commute", "adj + n", "B2", "chuyến đi làm hằng ngày ở đô thị", 13],
   ["global supply chain", "adj + n", "B2", "chuỗi cung ứng toàn cầu", 13],
@@ -82,8 +76,6 @@ window.COLLOCATION_PARTS.push([
   ["peripatetic lifestyle", "adj + n", "C2", "lối sống nay đây mai đó không cố định", 13],
   ["economic autarky", "adj + n", "C2", "chính sách kinh tế tự cung tự cấp khép kín", 13],
   ["epic personal odyssey", "adj + n", "C2", "hành trình cuộc đời dài đầy biến cố", 13],
-
-  // 14. Urban & Architecture (25)
   ["affordable housing", "adj + n", "B1", "nhà ở giá phải chăng", 14],
   ["public transport network", "adj + n", "B1", "mạng lưới giao thông công cộng", 14],
   ["bustling city center", "adj + n", "B1", "trung tâm thành phố nhộn nhịp", 14],
@@ -109,8 +101,6 @@ window.COLLOCATION_PARTS.push([
   ["vernacular local architecture", "adj + n", "C2", "kiến trúc bản địa truyền thống", 14],
   ["impregnable stone bastion", "adj + n", "C2", "pháo đài đá bất khả xâm phạm", 14],
   ["urban historical palimpsest", "adj + n", "C2", "đô thị mang nhiều tầng dấu tích lịch sử", 14],
-
-  // 15. Ethics & Philosophy (25)
   ["tell the plain truth", "v + n", "B1", "nói sự thật thẳng thắn", 15],
   ["keep your promise", "v + n", "B1", "giữ lời hứa", 15],
   ["sense of fairness", "n + n", "B1", "ý thức về sự công bằng", 15],
@@ -123,7 +113,7 @@ window.COLLOCATION_PARTS.push([
   ["informed mutual consent", "adj + n", "B2", "sự đồng thuận có hiểu biết từ hai phía", 15],
   ["ethical obligation", "adj + n", "B2", "nghĩa vụ đạo đức", 15],
   ["justify questionable actions", "v + n", "B2", "biện minh cho hành động đáng ngờ", 15],
-  ["timeless moral virtue", "adj + n", "B2", "đức hạnh đạo đức trường tồn", 15],
+  ["timeless moral virtue", "adj + n", "B2", "phẩm hạnh đạo đức trường tồn", 15],
   ["inherent intrinsic value", "adj + n", "C1", "giá trị nội tại vốn có", 15],
   ["impartial ethical judgment", "adj + n", "C1", "phán xét đạo đức công tâm không thiên vị", 15],
   ["blatant moral hypocrisy", "adj + n", "C1", "thói đạo đức giả trắng trợn", 15],
@@ -132,14 +122,12 @@ window.COLLOCATION_PARTS.push([
   ["stoic calm endurance", "adj + n", "C1", "sự chịu đựng điềm tĩnh khắc kỷ", 15],
   ["unblemished moral probity", "adj + n", "C2", "đức tính liêm khiết không tì vết", 15],
   ["uncompromising ethical rectitude", "adj + n", "C2", "sự chính trực đạo đức không khoan nhượng", 15],
-  ["cynical philosophical nihilism", "adj + n", "C2", "chủ nghĩa hư vô hoài nghi", 15],
+  ["cynical philosophical nihilism", "adj + n", "C2", "chủ nghĩa hư vô triết học đầy hoài nghi", 15],
   ["self denying ascetic life", "adj + n", "C2", "lối sống khổ hạnh tiết chế", 15],
-  ["deceptive moral sophistry", "adj + n", "C2", "thuật ngụy biện đạo đức tinh vi", 15],
-  ["unbridled sensual hedonism", "adj + n", "C2", "chủ nghĩa khoái lạc buông thả không kiềm chế", 15],
-
-  // 16. History & Heritage (25)
+  ["deceptive moral sophistry", "adj + n", "C2", "thuật ngụy biện đạo đức đầy đánh lừa", 15],
+  ["unbridled sensual hedonism", "adj + n", "C2", "chủ nghĩa khoái lạc nhục dục buông thả không kiềm chế", 15],
   ["ancient civilization", "adj + n", "B1", "nền văn minh cổ đại", 16],
-  ["historical monument", "adj + n", "B1", "di tích tưởng niệm lịch sử", 16],
+  ["historical monument", "adj + n", "B1", "di tích lịch sử", 16],
   ["decisive historic battle", "adj + n", "B1", "trận chiến lịch sử mang tính quyết định", 16],
   ["trace family origins", "v + n", "B1", "truy tìm nguồn gốc gia đình", 16],
   ["royal palace ruins", "adj + n", "B1", "tàn tích cung điện hoàng gia", 16],
@@ -156,15 +144,13 @@ window.COLLOCATION_PARTS.push([
   ["cultural renaissance", "adj + n", "C1", "thời kỳ phục hưng văn hóa", 16],
   ["sudden political upheaval", "adj + n", "C1", "biến động đảo lộn chính trị đột ngột", 16],
   ["archaeological excavation", "adj + n", "C1", "cuộc khai quật khảo cổ học", 16],
-  ["feudal social hierarchy", "adj + n", "C1", "hệ thống đẳng cấp phong kiến", 16],
+  ["feudal social hierarchy", "adj + n", "C1", "hệ thống phân tầng xã hội phong kiến", 16],
   ["since time immemorial", "prep + n", "C2", "từ thời xa xưa không ai còn nhớ nổi", 16],
   ["faint surviving vestige", "adj + n", "C2", "dấu vết tàn dư mờ nhạt còn sót lại", 16],
   ["epochal historical transformation", "adj + n", "C2", "cuộc biến đổi mang tính bước ngoặt lịch sử", 16],
   ["glaring historical anachronism", "adj + n", "C2", "chi tiết sai lệch niên đại rõ rệt", 16],
-  ["chaotic power interregnum", "adj + n", "C2", "giai đoạn trống ngôi hỗn loạn quyền lực", 16],
+  ["chaotic power interregnum", "adj + n", "C2", "giai đoạn trống ngôi quyền lực đầy hỗn loạn", 16],
   ["primordial human instincts", "adj + n", "C2", "những bản năng nguyên sơ thuở hồng hoang", 16],
-
-  // 17. Logic & Analysis (25)
   ["solve a complex problem", "v + n", "B1", "giải quyết vấn đề phức tạp", 17],
   ["spot a clear pattern", "v + n", "B1", "nhận ra quy luật rõ ràng", 17],
   ["compare two options", "v + n", "B1", "so sánh hai lựa chọn", 17],
@@ -175,7 +161,7 @@ window.COLLOCATION_PARTS.push([
   ["meet strict criteria", "v + n", "B2", "đáp ứng các tiêu chí nghiêm ngặt", 17],
   ["coherent analytical framework", "adj + n", "B2", "khung phân tích mạch lạc", 17],
   ["make a rough estimate", "v + n", "B2", "đưa ra ước tính sơ bộ", 17],
-  ["highly relevant details", "adv + adj", "B2", "những chi tiết cực kỳ liên quan", 17],
+  ["highly relevant details", "adv + adj", "B2", "những chi tiết có tính liên quan rất cao", 17],
   ["consistent clear reasoning", "adj + n", "B2", "lập luận rõ ràng nhất quán", 17],
   ["challenge basic assumptions", "v + n", "B2", "thách thức các giả định cơ bản", 17],
   ["scrutinize every detail", "v + n", "C1", "soi xét kỹ lưỡng từng chi tiết", 17],
@@ -190,8 +176,6 @@ window.COLLOCATION_PARTS.push([
   ["baffling intellectual conundrum", "adj + n", "C2", "bài toán trí tuệ hóc búa nan giải", 17],
   ["myopic short term view", "adj + n", "C2", "cái nhìn thiển cận ngắn hạn", 17],
   ["indubitable proven fact", "adj + n", "C2", "sự thật hiển nhiên không thể nghi ngờ", 17],
-
-  // 18. Character & Emotion (25)
   ["stay calm under pressure", "v + adj", "B1", "giữ bình tĩnh dưới áp lực", 18],
   ["deeply grateful for", "adv + adj", "B1", "vô cùng biết ơn về", 18],
   ["loyal lifelong friend", "adj + n", "B1", "người bạn trung thành suốt đời", 18],
@@ -217,8 +201,6 @@ window.COLLOCATION_PARTS.push([
   ["sanguine hopeful outlook", "adj + n", "C2", "cái nhìn lạc quan giữa nghịch cảnh", 18],
   ["fastidious exacting standards", "adj + n", "C2", "những tiêu chuẩn cực kỳ khắt khe tỉ mỉ", 18],
   ["obsequious hollow flattery", "adj + n", "C2", "lời nịnh nọt khúm núm sáo rỗng", 18],
-
-  // 19. Action & Change (25)
   ["adapt quickly to change", "v + adv", "B1", "thích nghi nhanh với sự thay đổi", 19],
   ["make steady progress", "v + n", "B1", "đạt được tiến bộ đều đặn", 19],
   ["improve overall quality", "v + n", "B1", "cải thiện chất lượng tổng thể", 19],
@@ -240,12 +222,10 @@ window.COLLOCATION_PARTS.push([
   ["rectify costly mistakes", "v + n", "C1", "sửa chữa những sai lầm đắt giá", 19],
   ["galvanize immediate action", "v + n", "C2", "thúc đẩy hành động tức thì mạnh mẽ", 19],
   ["assuage lingering doubts", "v + n", "C2", "xoa dịu những nghi ngờ dai dẳng", 19],
-  ["coalesce into a unified force", "v + n", "C2", "hợp nhất thành một lực lượng thống nhất", 19],
+  ["coalesce into a unified force", "v + prep", "C2", "hợp nhất thành một lực lượng thống nhất", 19],
   ["mollify fierce critics", "v + n", "C2", "xoa dịu những nhà phê bình gay gắt", 19],
   ["extirpate deep rooted corruption", "v + n", "C2", "nhổ tận gốc nạn tham nhũng ăn sâu", 19],
   ["attenuate harmful impacts", "v + n", "C2", "làm suy giảm cường độ tác động có hại", 19],
-
-  // 20. Academic & Rhetoric (25)
   ["give a clear example", "v + n", "B1", "đưa ra một ví dụ rõ ràng", 20],
   ["summarize main points", "v + n", "B1", "tóm tắt các luận điểm chính", 20],
   ["in the wider context", "prep + n", "B1", "trong bối cảnh rộng hơn", 20],
@@ -262,7 +242,7 @@ window.COLLOCATION_PARTS.push([
   ["substantiate bold claims", "v + n", "C1", "chứng minh tuyên bố táo bạo bằng chứng cứ", 20],
   ["refute opposing arguments", "v + n", "C1", "bác bỏ các lập luận đối lập", 20],
   ["highly contentious issue", "adv + adj", "C1", "vấn đề gây nhiều tranh cãi", 20],
-  ["elaborate in great detail", "v + n", "C1", "trình bày giải thích hết sức chi tiết", 20],
+  ["elaborate in great detail", "v + prep", "C1", "trình bày giải thích hết sức chi tiết", 20],
   ["comprehensive thorough review", "adj + n", "C1", "bài đánh giá toàn diện kỹ lưỡng", 20],
   ["implicit hidden assumption", "adj + n", "C1", "giả định ngầm ẩn giấu", 20],
   ["incontrovertible hard proof", "adj + n", "C2", "bằng chứng chắc chắn không thể chối cãi", 20],

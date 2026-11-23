@@ -83,7 +83,7 @@
     "phrase": "streamline daily operations",
     "pattern": "v + n",
     "level": "B2",
-    "meaning": "tinh gọn quy trình hằng ngày",
+    "meaning": "tinh gọn hoạt động vận hành hằng ngày",
     "topicId": 1,
     "topic": "Technology"
   },
@@ -99,7 +99,7 @@
     "phrase": "user friendly interface",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "giao diện thân thiện người dùng",
+    "meaning": "giao diện thân thiện với người dùng",
     "topicId": 1,
     "topic": "Technology"
   },
@@ -219,7 +219,7 @@
     "phrase": "prove a theory",
     "pattern": "v + n",
     "level": "B1",
-    "meaning": "chứng minh một giả thuyết",
+    "meaning": "chứng minh một lý thuyết",
     "topicId": 2,
     "topic": "Science & Research"
   },
@@ -345,7 +345,7 @@
   },
   {
     "phrase": "act as a catalyst",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "C1",
     "meaning": "đóng vai trò chất xúc tác",
     "topicId": 2,
@@ -355,7 +355,7 @@
     "phrase": "paradigm shift",
     "pattern": "n + n",
     "level": "C2",
-    "meaning": "sự chuyển dịch hệ mẫu tư duy",
+    "meaning": "sự chuyển dịch hệ hình tư duy",
     "topicId": 2,
     "topic": "Science & Research"
   },
@@ -363,7 +363,7 @@
     "phrase": "falsifiable hypothesis",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "giả thuyết có thể kiểm chứng bác bỏ",
+    "meaning": "giả thuyết có thể bị bác bỏ",
     "topicId": 2,
     "topic": "Science & Research"
   },
@@ -379,7 +379,7 @@
     "phrase": "corroborate empirical data",
     "pattern": "v + n",
     "level": "C2",
-    "meaning": "củng cố bằng chứng thực nghiệm",
+    "meaning": "củng cố dữ liệu thực nghiệm",
     "topicId": 2,
     "topic": "Science & Research"
   },
@@ -395,7 +395,7 @@
     "phrase": "unexplained scientific anomaly",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "dị thường khoa học chưa lý giải được",
+    "meaning": "hiện tượng dị thường khoa học chưa lý giải được",
     "topicId": 2,
     "topic": "Science & Research"
   },
@@ -425,9 +425,9 @@
   },
   {
     "phrase": "apply for a promotion",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "B1",
-    "meaning": "ứng tuyển thăng chức",
+    "meaning": "nộp đơn xin thăng chức",
     "topicId": 3,
     "topic": "Business & Work"
   },
@@ -435,7 +435,7 @@
     "phrase": "heavy workload",
     "pattern": "adj + n",
     "level": "B1",
-    "meaning": "khối lượng công việc nặng",
+    "meaning": "khối lượng công việc nặng nề",
     "topicId": 3,
     "topic": "Business & Work"
   },
@@ -584,10 +584,10 @@
     "topic": "Business & Work"
   },
   {
-    "phrase": "extricate from a quagmire",
-    "pattern": "v + n",
+    "phrase": "extricate oneself from a quagmire",
+    "pattern": "v + prep",
     "level": "C2",
-    "meaning": "thoát khỏi tình thế sa lầy bế tắc",
+    "meaning": "tự thoát khỏi tình thế sa lầy bế tắc",
     "topicId": 3,
     "topic": "Business & Work"
   },
@@ -633,7 +633,7 @@
   },
   {
     "phrase": "pass with flying colors",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "B1",
     "meaning": "vượt qua kỳ thi xuất sắc",
     "topicId": 4,
@@ -723,7 +723,7 @@
     "phrase": "commit plagiarism",
     "pattern": "v + n",
     "level": "C1",
-    "meaning": "mắc lỗi đạo văn",
+    "meaning": "thực hiện hành vi đạo văn",
     "topicId": 4,
     "topic": "Education & Study"
   },
@@ -971,7 +971,7 @@
     "phrase": "pernicious industrial effluent",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "nước thải công nghiệp độc hại ngầm",
+    "meaning": "nước thải công nghiệp gây hại âm thầm",
     "topicId": 5,
     "topic": "Environment & Nature"
   },
@@ -984,10 +984,10 @@
     "topic": "Environment & Nature"
   },
   {
-    "phrase": "inclement atmospheric shifts",
+    "phrase": "inclement weather conditions",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "những biến đổi thời tiết khắc nghiệt",
+    "meaning": "điều kiện thời tiết khắc nghiệt",
     "topicId": 5,
     "topic": "Environment & Nature"
   },
@@ -1147,7 +1147,7 @@
     "phrase": "promote human longevity",
     "pattern": "v + n",
     "level": "C1",
-    "meaning": "thúc đẩy tuổi thọ con người",
+    "meaning": "kéo dài tuổi thọ con người",
     "topicId": 6,
     "topic": "Health & Medicine"
   },
@@ -1187,7 +1187,7 @@
     "phrase": "virulent infectious strain",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "chủng virus cực độc lây lan dữ dội",
+    "meaning": "chủng mầm bệnh truyền nhiễm cực độc",
     "topicId": 6,
     "topic": "Health & Medicine"
   },
@@ -1283,7 +1283,7 @@
     "phrase": "live in harmony",
     "pattern": "v + prep",
     "level": "B2",
-    "meaning": "sống hòa thuận hài hòa",
+    "meaning": "sống hòa thuận, hài hòa",
     "topicId": 7,
     "topic": "Society & Culture"
   },
@@ -1291,7 +1291,7 @@
     "phrase": "combat deep poverty",
     "pattern": "v + n",
     "level": "B2",
-    "meaning": "chống lại cảnh nghèo đói sâu sắc",
+    "meaning": "chống lại tình trạng nghèo đói cùng cực",
     "topicId": 7,
     "topic": "Society & Culture"
   },
@@ -1371,7 +1371,7 @@
     "phrase": "ostracize vocal dissenters",
     "pattern": "v + n",
     "level": "C2",
-    "meaning": "tẩy chay những người bất đồng quan điểm",
+    "meaning": "tẩy chay những người công khai bất đồng quan điểm",
     "topicId": 7,
     "topic": "Society & Culture"
   },
@@ -1387,7 +1387,7 @@
     "phrase": "widespread moral anomie",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "tình trạng hỗn loạn chuẩn mực xã hội",
+    "meaning": "tình trạng rối loạn chuẩn mực đạo đức lan rộng",
     "topicId": 7,
     "topic": "Society & Culture"
   },
@@ -1553,7 +1553,7 @@
   },
   {
     "phrase": "act with complete impunity",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "C2",
     "meaning": "hành động ngang nhiên không sợ bị trừng phạt",
     "topicId": 8,
@@ -1755,7 +1755,7 @@
     "phrase": "cognitive dissonance",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "sự bất hòa xung đột nhận thức",
+    "meaning": "sự bất hòa nhận thức",
     "topicId": 9,
     "topic": "Psychology & Mind"
   },
@@ -2067,7 +2067,7 @@
     "phrase": "fiscal deficit",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "thâm hụt ngân sách tài khóa",
+    "meaning": "thâm hụt tài khóa",
     "topicId": 11,
     "topic": "Economy & Finance"
   },
@@ -2075,7 +2075,7 @@
     "phrase": "stimulate consumer spending",
     "pattern": "v + n",
     "level": "B2",
-    "meaning": "kích thích chi tiêu tiêu dùng",
+    "meaning": "kích thích chi tiêu của người tiêu dùng",
     "topicId": 11,
     "topic": "Economy & Finance"
   },
@@ -2099,7 +2099,7 @@
     "phrase": "secure a mortgage loan",
     "pattern": "v + n",
     "level": "B2",
-    "meaning": "vay được khoản vay thế chấp",
+    "meaning": "nhận được khoản vay thế chấp",
     "topicId": 11,
     "topic": "Economy & Finance"
   },
@@ -2177,7 +2177,7 @@
   },
   {
     "phrase": "sink into abject penury",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "C2",
     "meaning": "rơi vào cảnh bần cùng khốn khổ",
     "topicId": 11,
@@ -2259,7 +2259,7 @@
     "phrase": "vivid visual imagery",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "hình ảnh miêu tả sống động",
+    "meaning": "hình ảnh trực quan sống động",
     "topicId": 12,
     "topic": "Arts & Literature"
   },
@@ -2283,7 +2283,7 @@
     "phrase": "rich literary symbolism",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "tính biểu tượng văn học giàu có",
+    "meaning": "tính biểu tượng văn học phong phú",
     "topicId": 12,
     "topic": "Arts & Literature"
   },
@@ -2331,7 +2331,7 @@
     "phrase": "subtle dramatic irony",
     "pattern": "adj + n",
     "level": "C1",
-    "meaning": "sự trớ trêu kịch tính tinh tế",
+    "meaning": "nét trớ trêu tinh tế trong tình huống kịch",
     "topicId": 12,
     "topic": "Arts & Literature"
   },
@@ -2409,7 +2409,7 @@
   },
   {
     "phrase": "go through customs",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "B1",
     "meaning": "làm thủ tục hải quan",
     "topicId": 13,
@@ -2417,9 +2417,9 @@
   },
   {
     "phrase": "travel off the beaten track",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "B1",
-    "meaning": "du lịch nơi hoang sơ ít người biết",
+    "meaning": "du lịch đến những nơi ít người lui tới",
     "topicId": 13,
     "topic": "Travel & Globalism"
   },
@@ -2427,7 +2427,7 @@
     "phrase": "broaden your horizons",
     "pattern": "v + n",
     "level": "B1",
-    "meaning": "mở mang tầm nhìn thế giới",
+    "meaning": "mở mang tầm nhìn",
     "topicId": 13,
     "topic": "Travel & Globalism"
   },
@@ -2459,15 +2459,15 @@
     "phrase": "warm local hospitality",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "lòng hiếu khách nồng hậu bản địa",
+    "meaning": "lòng hiếu khách nồng hậu của người dân địa phương",
     "topicId": 13,
     "topic": "Travel & Globalism"
   },
   {
     "phrase": "embark on an expedition",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "B2",
-    "meaning": "khởi hành chuyến thám hiểm",
+    "meaning": "bắt đầu chuyến thám hiểm",
     "topicId": 13,
     "topic": "Travel & Globalism"
   },
@@ -2475,7 +2475,7 @@
     "phrase": "remote exotic destination",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "điểm đến kỳ lạ xa xôi",
+    "meaning": "điểm đến xa xôi đầy mới lạ",
     "topicId": 13,
     "topic": "Travel & Globalism"
   },
@@ -2899,7 +2899,7 @@
     "phrase": "timeless moral virtue",
     "pattern": "adj + n",
     "level": "B2",
-    "meaning": "đức hạnh đạo đức trường tồn",
+    "meaning": "phẩm hạnh đạo đức trường tồn",
     "topicId": 15,
     "topic": "Ethics & Philosophy"
   },
@@ -2971,7 +2971,7 @@
     "phrase": "cynical philosophical nihilism",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "chủ nghĩa hư vô hoài nghi",
+    "meaning": "chủ nghĩa hư vô triết học đầy hoài nghi",
     "topicId": 15,
     "topic": "Ethics & Philosophy"
   },
@@ -2987,7 +2987,7 @@
     "phrase": "deceptive moral sophistry",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "thuật ngụy biện đạo đức tinh vi",
+    "meaning": "thuật ngụy biện đạo đức đầy đánh lừa",
     "topicId": 15,
     "topic": "Ethics & Philosophy"
   },
@@ -2995,7 +2995,7 @@
     "phrase": "unbridled sensual hedonism",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "chủ nghĩa khoái lạc buông thả không kiềm chế",
+    "meaning": "chủ nghĩa khoái lạc nhục dục buông thả không kiềm chế",
     "topicId": 15,
     "topic": "Ethics & Philosophy"
   },
@@ -3011,7 +3011,7 @@
     "phrase": "historical monument",
     "pattern": "adj + n",
     "level": "B1",
-    "meaning": "di tích tưởng niệm lịch sử",
+    "meaning": "di tích lịch sử",
     "topicId": 16,
     "topic": "History & Heritage"
   },
@@ -3147,7 +3147,7 @@
     "phrase": "feudal social hierarchy",
     "pattern": "adj + n",
     "level": "C1",
-    "meaning": "hệ thống đẳng cấp phong kiến",
+    "meaning": "hệ thống phân tầng xã hội phong kiến",
     "topicId": 16,
     "topic": "History & Heritage"
   },
@@ -3187,7 +3187,7 @@
     "phrase": "chaotic power interregnum",
     "pattern": "adj + n",
     "level": "C2",
-    "meaning": "giai đoạn trống ngôi hỗn loạn quyền lực",
+    "meaning": "giai đoạn trống ngôi quyền lực đầy hỗn loạn",
     "topicId": 16,
     "topic": "History & Heritage"
   },
@@ -3283,7 +3283,7 @@
     "phrase": "highly relevant details",
     "pattern": "adv + adj",
     "level": "B2",
-    "meaning": "những chi tiết cực kỳ liên quan",
+    "meaning": "những chi tiết có tính liên quan rất cao",
     "topicId": 17,
     "topic": "Logic & Analysis"
   },
@@ -3769,7 +3769,7 @@
   },
   {
     "phrase": "coalesce into a unified force",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "C2",
     "meaning": "hợp nhất thành một lực lượng thống nhất",
     "topicId": 19,
@@ -3929,7 +3929,7 @@
   },
   {
     "phrase": "elaborate in great detail",
-    "pattern": "v + n",
+    "pattern": "v + prep",
     "level": "C1",
     "meaning": "trình bày giải thích hết sức chi tiết",
     "topicId": 20,
