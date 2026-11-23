@@ -51,7 +51,7 @@
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
           </svg>
           <span>Sổ từ vựng</span>
-          <span class="notebook-count" id="notebook-count">0/1508</span>
+          <span class="notebook-count" id="notebook-count">0/4758</span>
         </button>
 
         <button class="icon-btn" id="btn-fullscreen" title="Toàn màn hình" aria-label="Toàn màn hình">
@@ -73,6 +73,29 @@
 
         <!-- Boss Alert Vignette -->
         <div class="boss-vignette" aria-hidden="true"></div>
+
+        <!-- Distant Glowing Ice Moon (Top Left) -->
+        <div class="planet-ice" aria-hidden="true">
+          <svg viewBox="0 0 120 120" fill="none">
+            <defs>
+              <radialGradient id="iceGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45"/>
+                <stop offset="60%" stop-color="#6366f1" stop-opacity="0.16"/>
+                <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="iceBody" cx="32%" cy="28%" r="72%">
+                <stop offset="0%" stop-color="#bae6fd"/>
+                <stop offset="48%" stop-color="#38bdf8"/>
+                <stop offset="100%" stop-color="#1e3a8a"/>
+              </radialGradient>
+            </defs>
+            <circle cx="60" cy="60" r="56" fill="url(#iceGlow)"/>
+            <circle cx="60" cy="60" r="24" fill="url(#iceBody)"/>
+            <circle cx="52" cy="54" r="4.2" fill="#0284c7" opacity="0.35"/>
+            <circle cx="68" cy="65" r="5.5" fill="#1e3a8a" opacity="0.3"/>
+            <circle cx="63" cy="49" r="2.6" fill="#0284c7" opacity="0.3"/>
+          </svg>
+        </div>
 
         <!-- Decorative Ringed Planet (Top Right) -->
         <div class="planet-saturn" aria-hidden="true">
@@ -147,15 +170,6 @@
 
           <!-- Lives pill (Top Right) -->
           <div class="hud-pill hud-lives" id="hearts-container" aria-label="Mạng sống"></div>
-        </div>
-
-        <!-- Boss Incoming Dramatic Banner -->
-        <div class="boss-warning hidden" id="boss-warning" aria-live="assertive">
-          <div class="boss-warning-inner">
-            <span class="bw-kicker">⚠️ CẢNH BÁO BOSS CUỐI MÀN ⚠️</span>
-            <strong class="bw-title" id="bw-title">BOSS COLLOCATION · TECHNOLOGY</strong>
-            <span class="bw-sub" id="bw-sub">Gõ chuẩn 3 cụm Collocation (có dấu Cách) để tiêu diệt Boss · Gõ sai Boss sẽ lao xuống nhanh hơn!</span>
-          </div>
         </div>
 
         <!-- Right Vertical Floating Controls -->
@@ -266,22 +280,6 @@
             <ellipse cx="67" cy="54" rx="4.5" ry="2.6" fill="#ff8fab" opacity="0.55"/>
             <path d="M44 51 L52 51 L48 58 Z" fill="#f59e0b" stroke="#d97706" stroke-width="1" stroke-linejoin="round"/>
           </svg>
-        </div>
-
-        <!-- Live In-Arena Arsenal Quick Switcher (Next to Mascot) -->
-        <div class="arsenal-dock" id="arsenal-dock" aria-label="Đổi vũ khí & loại đạn nhanh">
-          <div class="arsenal-group" id="dock-weapon-group" title="Đổi vũ khí (Xe tăng / Súng máy / Pháo)">
-            <button class="ars-btn active" data-weapon="tank" title="Xe Tăng">🛡️<span>Tăng</span></button>
-            <button class="ars-btn" data-weapon="gun" title="Súng Máy">🔫<span>Súng</span></button>
-            <button class="ars-btn" data-weapon="cannon" title="Pháo Phòng Không">🎯<span>Pháo</span></button>
-          </div>
-          <span class="arsenal-sep"></span>
-          <div class="arsenal-group" id="dock-ammo-group" title="Đổi loại đạn (Phím 1-4)">
-            <button class="ars-btn active" data-ammo="bullet" title="Đạn thường (Phím 1)"><kbd>1</kbd>💥</button>
-            <button class="ars-btn" data-ammo="laser" title="Tia Laze (Phím 2)"><kbd>2</kbd>⚡</button>
-            <button class="ars-btn" data-ammo="missile" title="Tên lửa tầm nhiệt (Phím 3)"><kbd>3</kbd>🚀</button>
-            <button class="ars-btn" data-ammo="plasma" title="Cầu Plasma (Phím 4)"><kbd>4</kbd>🔮</button>
-          </div>
         </div>
 
         <!-- Weapon Turret (Bottom Center: Heavy Tank / Assault Gun / Plasma Cannon) -->
@@ -405,7 +403,7 @@
 
         <!-- Bottom Deck Pill -->
         <button class="deck-pill" id="deck-pill" title="Nhấn để chọn mốc chủ đề & cấp độ">
-          <span id="deck-pill-text">1,008 từ vựng + 500 Boss Collocations · B1–C2</span>
+          <span id="deck-pill-text">4,258 từ vựng + 500 Boss Collocations · B1–C2</span>
         </button>
 
         <!-- Hidden mobile input -->
@@ -421,12 +419,12 @@
               <div class="start-rocket-badge">🛡️</div>
               <div>
                 <h2>Từ Vựng B1–C2 &amp; Boss Collocations</h2>
-                <p><strong>1.008 từ đơn</strong> + <strong>500 Collocations Boss</strong> cuối mỗi màn — bắn hạ để hiện <strong>nghĩa tiếng Việt &amp; từ loại</strong>!</p>
+                <p><strong>4.258 từ đơn</strong> + <strong>500 Collocations Boss</strong> cuối mỗi màn — bắn hạ để hiện <strong>nghĩa tiếng Việt &amp; từ loại</strong>!</p>
               </div>
             </div>
 
             <div class="setup-section">
-              <label class="setup-label">Cấp độ CEFR <span class="setup-hint" id="pool-count-hint">(1,008 từ + 500 Boss Collocations)</span></label>
+              <label class="setup-label">Cấp độ CEFR <span class="setup-hint" id="pool-count-hint">(4,258 từ + 500 Boss Collocations)</span></label>
               <div class="chip-group" id="start-level-group">
                 <button class="chip active" data-level="ALL">Tất cả B1–C2</button>
                 <button class="chip chip-b1" data-level="B1">B1 · Trung cấp</button>
@@ -448,7 +446,7 @@
               </div>
 
               <div class="setup-section">
-                <label class="setup-label">Loại đạn (Đổi nhanh phím 1–4)</label>
+                <label class="setup-label">Loại đạn</label>
                 <div class="chip-group compact" id="start-ammo-group">
                   <button class="chip active" data-ammo="bullet">💥 Đạn</button>
                   <button class="chip" data-ammo="laser">⚡ Laze</button>
@@ -495,7 +493,7 @@
               </div>
             </div>
 
-            <div class="ime-tip">💡 Chuyển bộ gõ sang <strong>EN</strong> khi chơi · Gặp <strong>Boss Collocation</strong> nhớ bấm phím <strong>Space (Cách)</strong> giữa các từ · Nhấn <strong>1–4</strong> để đổi loại đạn ngay trong trận!</div>
+            <div class="ime-tip">💡 Chuyển bộ gõ sang <strong>EN</strong> khi chơi · Gặp <strong>Boss Collocation</strong> ở cuối mốc nhớ bấm phím <strong>Space (Cách)</strong> giữa các từ.</div>
 
             <div class="start-actions">
               <button class="btn-primary btn-glow" id="btn-start-game">
@@ -503,7 +501,7 @@
                 <span class="btn-arrow">→</span>
               </button>
               <button class="btn-secondary" id="btn-open-notebook-start">
-                📚 Kho 1,508 từ &amp; Boss
+                📚 Kho 4,758 từ &amp; Boss
               </button>
             </div>
           </div>
@@ -576,7 +574,7 @@
       <div class="modal-head">
         <div>
           <h3>🚩 Chọn Mốc Chủ Đề (20 Mốc · Từ đơn + Boss Collocations)</h3>
-          <p class="muted-text">Mỗi mốc gồm ~50 từ vựng đơn + 25 Boss Collocations trải dài từ B1 đến C2</p>
+          <p class="muted-text">Mỗi mốc gồm ~200 từ vựng đơn + 25 Boss Collocations trải dài từ B1 đến C2</p>
         </div>
         <button class="close-x" id="close-milestones" aria-label="Đóng">✕</button>
       </div>
@@ -589,8 +587,8 @@
     <div class="glass-card modal-xl">
       <div class="modal-head">
         <div>
-          <h3>📚 Kho 1,008 Từ Vựng &amp; 500 Boss Collocations (B1–C2)</h3>
-          <p class="muted-text" id="nb-summary-text">1,508 mục · 0 đã bắn hạ · 0 cần ôn lại</p>
+          <h3>📚 Kho 4,258 Từ Vựng &amp; 500 Boss Collocations (B1–C2)</h3>
+          <p class="muted-text" id="nb-summary-text">4,758 mục · 0 đã bắn hạ · 0 cần ôn lại</p>
         </div>
         <div class="modal-tabs">
           <button class="tab-btn active" data-tab="browse">Tra cứu bộ từ</button>
@@ -604,8 +602,8 @@
         <div class="nb-filters nb-filters-5">
           <input type="search" id="nb-search" class="glass-input" placeholder="Tìm từ, collocation hoặc nghĩa..." />
           <select id="nb-kind" class="glass-select">
-            <option value="ALL">Tất cả (Từ + Collocations)</option>
-            <option value="WORD">Từ đơn (1,008)</option>
+            <option value="ALL">Tất cả (4,758 mục)</option>
+            <option value="WORD">Từ đơn (4,258)</option>
             <option value="COLLOC">👑 Boss Collocations (500)</option>
           </select>
           <select id="nb-level" class="glass-select">
@@ -655,7 +653,7 @@ take into account,v + n,B2,,xem xét tính đến</pre>
               📁 Chọn file .CSV / .JSON
               <input type="file" id="import-file" accept=".csv,.json,.txt" class="sr-only" />
             </label>
-            <button class="btn-ghost" id="btn-export-json">⬇️ Tải toàn bộ 1,508 từ &amp; Boss (JSON)</button>
+            <button class="btn-ghost" id="btn-export-json">⬇️ Tải toàn bộ 4,758 từ &amp; Boss (JSON)</button>
             <button class="btn-ghost danger-text" id="btn-reset-progress">🗑️ Đặt lại tiến độ học</button>
           </div>
           <textarea id="import-textarea" class="glass-textarea" rows="6" placeholder="Dán danh sách từ hoặc collocations (CSV / JSON) vào đây..."></textarea>
@@ -674,6 +672,7 @@ take into account,v + n,B2,,xem xét tính đến</pre>
   <script src="data/vocab-b2.js"></script>
   <script src="data/vocab-c1.js"></script>
   <script src="data/vocab-c2.js"></script>
+  <script src="data/vocab-extra-b1-c2.js"></script>
   <script src="data/collocations-1.js"></script>
   <script src="data/collocations-2.js"></script>
 

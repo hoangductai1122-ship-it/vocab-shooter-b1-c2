@@ -82,7 +82,6 @@
 
     // Boss Collocation Phase state
     inBossPhase: false,
-    bossWarningActive: false,
     bossTotalWaves: BOSS_PHASES_PER_MILESTONE,
     bossWavesDefeated: 0,
     bossQueue: [],
@@ -102,11 +101,15 @@
     lastDockWord: null
   };
 
-  // Canvas visual effects state
+  // Canvas visual effects state (lively deep space + weapons)
   const fx = {
     width: 1000,
     height: 600,
     stars: [],
+    nebulae: [],
+    meteors: [],
+    asteroids: [],
+    meteorTimer: 1.4,
     lasers: [],
     projectiles: [], // bullets, homing missiles, plasma orbs
     casings: [],     // ejected brass casings
@@ -140,18 +143,11 @@
     mascot: document.getElementById("mascot"),
     mascotBubble: document.getElementById("mascot-bubble"),
 
-    // Arsenal Dock
-    dockWeaponGroup: document.getElementById("dock-weapon-group"),
-    dockAmmoGroup: document.getElementById("dock-ammo-group"),
-
-    // Boss HUD & Warning
+    // Boss HUD
     bossHud: document.getElementById("boss-hud"),
     bossHudTitle: document.getElementById("boss-hud-title"),
     bossHudPhase: document.getElementById("boss-hud-phase"),
     bossHpSegments: document.getElementById("boss-hp-segments"),
-    bossWarning: document.getElementById("boss-warning"),
-    bwTitle: document.getElementById("bw-title"),
-    bwSub: document.getElementById("bw-sub"),
 
     // Header & HUD
     btnHome: document.getElementById("btn-home"),
@@ -576,7 +572,6 @@
     el.weaponCannon.classList.toggle("hidden", type !== "cannon");
 
     el.startWeaponGroup.querySelectorAll(".chip").forEach(b => b.classList.toggle("active", b.dataset.weapon === type));
-    el.dockWeaponGroup.querySelectorAll(".ars-btn").forEach(b => b.classList.toggle("active", b.dataset.weapon === type));
 
     getActiveRotator().style.transform = `rotate(${game.turretAngle.toFixed(1)}deg)`;
   }
@@ -587,7 +582,6 @@
     savePrefs();
 
     el.startAmmoGroup.querySelectorAll(".chip").forEach(b => b.classList.toggle("active", b.dataset.ammo === type));
-    el.dockAmmoGroup.querySelectorAll(".ars-btn").forEach(b => b.classList.toggle("active", b.dataset.ammo === type));
   }
 
   function getTurretMuzzlePoint() {
@@ -641,30 +635,91 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     if (!fx.stars.length) {
-      initStars();
+      initSpaceBackdrop();
     } else {
       fx.stars.forEach(s => {
         s.x = Math.random() * fx.width;
         s.y = Math.random() * fx.height;
       });
+      fx.nebulae.forEach(n => {
+        n.x = Math.random() * fx.width;
+        n.y = Math.random() * fx.height;
+      });
+      fx.asteroids.forEach(a => {
+        a.x = Math.random() * fx.width;
+        a.y = Math.random() * fx.height;
+      });
     }
   }
 
-  function initStars() {
+  function initSpaceBackdrop() {
+    // 1. 3-Layer Parallax Starfield (175 stars)
     fx.stars = [];
-    for (let i = 0; i < 115; i++) {
+    const palette = ["#ffffff", "#ffffff", "#bfdbfe", "#e9d5ff", "#fde68a", "#a5f3fc"];
+    for (let i = 0; i < 175; i++) {
+      const layer = i < 95 ? 0 : i < 148 ? 1 : 2;
       fx.stars.push({
         x: Math.random() * fx.width,
         y: Math.random() * fx.height,
-        r: Math.random() < 0.12 ? 1.8 + Math.random() * 1.1 : 0.6 + Math.random() * 1.1,
-        sparkle: Math.random() < 0.08,
-        alpha: 0.25 + Math.random() * 0.65,
-        speed: 0.7 + Math.random() * 2.1,
+        r: layer === 0 ? 0.55 + Math.random() * 0.7 : layer === 1 ? 1.0 + Math.random() * 0.9 : 1.7 + Math.random() * 1.1,
+        sparkle: layer === 2 && Math.random() < 0.45,
+        alpha: layer === 0 ? 0.25 + Math.random() * 0.4 : 0.45 + Math.random() * 0.5,
+        speed: 0.9 + Math.random() * 2.6,
         phase: Math.random() * Math.PI * 2,
-        drift: 3 + Math.random() * 7,
-        hue: Math.random() < 0.25 ? "#bfdbfe" : Math.random() < 0.15 ? "#e9d5ff" : "#ffffff"
+        drift: layer === 0 ? 4 : layer === 1 ? 10 : 19,
+        hue: palette[Math.floor(Math.random() * palette.length)]
       });
     }
+
+    // 2. Drifting Luminous Nebula Clouds
+    fx.nebulae = [
+      { x: fx.width * 0.2, y: fx.height * 0.35, r: 290, vx: 6, vy: 3, color: "124, 58, 237", baseA: 0.14, phase: 0 },
+      { x: fx.width * 0.78, y: fx.height * 0.48, r: 260, vx: -5, vy: 4, color: "14, 165, 233", baseA: 0.13, phase: 1.7 },
+      { x: fx.width * 0.52, y: fx.height * 0.22, r: 240, vx: 4, vy: -3, color: "236, 72, 153", baseA: 0.10, phase: 3.1 },
+      { x: fx.width * 0.36, y: fx.height * 0.78, r: 270, vx: -4, vy: -2, color: "99, 102, 241", baseA: 0.13, phase: 4.5 },
+      { x: fx.width * 0.85, y: fx.height * 0.76, r: 210, vx: -6, vy: 2, color: "45, 212, 191", baseA: 0.09, phase: 2.3 }
+    ];
+
+    // 3. Subtle Deep-Space Drifting Asteroids
+    fx.asteroids = [];
+    for (let i = 0; i < 6; i++) {
+      const sides = 6 + Math.floor(Math.random() * 3);
+      const pts = [];
+      for (let k = 0; k < sides; k++) {
+        const ang = (Math.PI * 2 * k) / sides;
+        const rad = 0.72 + Math.random() * 0.32;
+        pts.push({ ang, rad });
+      }
+      fx.asteroids.push({
+        x: Math.random() * fx.width,
+        y: Math.random() * fx.height,
+        size: 7 + Math.random() * 11,
+        vx: (Math.random() < 0.5 ? -1 : 1) * (4 + Math.random() * 8),
+        vy: 5 + Math.random() * 9,
+        rot: Math.random() * Math.PI * 2,
+        vrot: (Math.random() - 0.5) * 0.65,
+        pts,
+        alpha: 0.11 + Math.random() * 0.09
+      });
+    }
+  }
+
+  function spawnMeteor() {
+    const startX = fx.width * (0.15 + Math.random() * 0.85);
+    const startY = -10 + Math.random() * (fx.height * 0.35);
+    const angle = (128 + Math.random() * 28) * (Math.PI / 180); // diagonal down-left
+    const speed = 520 + Math.random() * 360;
+    const colors = ["#7dd3fc", "#fde68a", "#e9d5ff", "#ffffff"];
+    fx.meteors.push({
+      x: startX,
+      y: startY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      len: 75 + Math.random() * 75,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      life: 0.55 + Math.random() * 0.45,
+      maxLife: 1.0
+    });
   }
 
   function fireAmmoAt(tx, ty, accentColor, isFinishingShot = false) {
@@ -833,28 +888,102 @@
   function renderCanvas(dt, nowSec) {
     ctx.clearRect(0, 0, fx.width, fx.height);
 
-    // 1. Stars
+    // 0. Drifting Breathing Nebula Clouds
+    for (const n of fx.nebulae) {
+      n.x += n.vx * dt;
+      n.y += n.vy * dt;
+      if (n.x < -n.r) n.x = fx.width + n.r;
+      if (n.x > fx.width + n.r) n.x = -n.r;
+      if (n.y < -n.r) n.y = fx.height + n.r;
+      if (n.y > fx.height + n.r) n.y = -n.r;
+
+      const a = n.baseA * (0.72 + 0.28 * Math.sin(nowSec * 0.65 + n.phase));
+      const grad = ctx.createRadialGradient(n.x, n.y, 10, n.x, n.y, n.r);
+      grad.addColorStop(0, `rgba(${n.color}, ${a.toFixed(3)})`);
+      grad.addColorStop(0.55, `rgba(${n.color}, ${(a * 0.35).toFixed(3)})`);
+      grad.addColorStop(1, `rgba(${n.color}, 0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 0b. Subtle Perspective Sci-Fi Defense Grid above bottom horizon
+    const horizonTop = fx.height - 110;
+    const horizonBot = fx.height - 24;
+    ctx.save();
+    ctx.strokeStyle = game.inBossPhase ? "rgba(244, 63, 94, 0.13)" : "rgba(56, 189, 248, 0.10)";
+    ctx.lineWidth = 1;
+    const gridScroll = (nowSec * 18) % 22;
+    for (let row = 0; row < 5; row++) {
+      const t = (row * 22 + gridScroll) / 110;
+      const y = horizonTop + Math.pow(t, 1.55) * (horizonBot - horizonTop);
+      ctx.globalAlpha = t * 0.7;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(fx.width, y);
+      ctx.stroke();
+    }
+    const cxGrid = fx.width / 2;
+    ctx.globalAlpha = 0.45;
+    for (let col = -7; col <= 7; col++) {
+      ctx.beginPath();
+      ctx.moveTo(cxGrid + col * 56, horizonTop);
+      ctx.lineTo(cxGrid + col * 145, horizonBot);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // 0c. Distant Drifting Space Asteroids
+    for (const ast of fx.asteroids) {
+      ast.x += ast.vx * dt;
+      ast.y += ast.vy * dt;
+      ast.rot += ast.vrot * dt;
+      if (ast.y > fx.height + 30) { ast.y = -30; ast.x = Math.random() * fx.width; }
+      if (ast.x < -30) ast.x = fx.width + 30;
+      if (ast.x > fx.width + 30) ast.x = -30;
+
+      ctx.save();
+      ctx.translate(ast.x, ast.y);
+      ctx.rotate(ast.rot);
+      ctx.globalAlpha = ast.alpha;
+      ctx.fillStyle = "#94a3b8";
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ast.pts.forEach((pt, idx) => {
+        const px = Math.cos(pt.ang) * ast.size * pt.rad;
+        const py = Math.sin(pt.ang) * ast.size * pt.rad;
+        if (idx === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 1. 3-Layer Parallax Stars
     for (const s of fx.stars) {
-      if (game.status === "playing") {
-        s.y += s.drift * (game.inBossPhase ? 2.1 : 1) * dt;
-        if (s.y > fx.height) {
-          s.y = -2;
-          s.x = Math.random() * fx.width;
-        }
+      const speedMult = game.status === "playing" ? (game.inBossPhase ? 1.8 : 1.0) : 0.45;
+      s.y += s.drift * speedMult * dt;
+      if (s.y > fx.height) {
+        s.y = -2;
+        s.x = Math.random() * fx.width;
       }
-      const tw = 0.55 + 0.45 * Math.sin(nowSec * s.speed + s.phase);
+      const tw = 0.52 + 0.48 * Math.sin(nowSec * s.speed + s.phase);
       ctx.globalAlpha = s.alpha * tw;
       ctx.fillStyle = s.hue;
 
       if (s.sparkle) {
-        const len = s.r * 3.2;
+        const len = s.r * 3.1;
         ctx.beginPath();
         ctx.moveTo(s.x - len, s.y);
         ctx.lineTo(s.x + len, s.y);
         ctx.moveTo(s.x, s.y - len);
         ctx.lineTo(s.x, s.y + len);
         ctx.strokeStyle = s.hue;
-        ctx.lineWidth = 1.1;
+        ctx.lineWidth = 1.05;
         ctx.stroke();
       }
       ctx.beginPath();
@@ -862,6 +991,46 @@
       ctx.fill();
     }
     ctx.globalAlpha = 1;
+
+    // 1b. Shooting Stars / Meteors
+    fx.meteorTimer -= dt;
+    if (fx.meteorTimer <= 0) {
+      spawnMeteor();
+      fx.meteorTimer = 2.0 + Math.random() * 2.8;
+    }
+    for (let i = fx.meteors.length - 1; i >= 0; i--) {
+      const m = fx.meteors[i];
+      m.life -= dt;
+      m.x += m.vx * dt;
+      m.y += m.vy * dt;
+      if (m.life <= 0 || m.x < -120 || m.y > fx.height + 120) {
+        fx.meteors.splice(i, 1);
+        continue;
+      }
+      const mag = Math.hypot(m.vx, m.vy) || 1;
+      const tailX = m.x - (m.vx / mag) * m.len;
+      const tailY = m.y - (m.vy / mag) * m.len;
+      const a = Math.min(1, m.life * 2.2);
+
+      ctx.save();
+      const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+      grad.addColorStop(0, m.color);
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.globalAlpha = a * 0.85;
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2.1;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(m.x, m.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
 
     // 2. Shockwave rings
     for (let i = fx.rings.length - 1; i >= 0; i--) {
@@ -1236,38 +1405,36 @@
   }
 
   // --------------------------------------------------------------------------
-  // Vietnamese Meaning + Part of Speech / Collocation Pattern Popups
+  // Compact Vietnamese Meaning + Part of Speech Reveal (won't cover falling words)
   // --------------------------------------------------------------------------
   function showMeaningPopup(entry, x, y, missed = false) {
     const popup = document.createElement("div");
     popup.className = `meaning-popup${missed ? " missed" : ""}`;
 
-    const clampedX = Math.max(175, Math.min(fx.width - 190, x));
-    const clampedY = Math.max(104, Math.min(fx.height - 140, y));
+    const clampedX = Math.max(125, Math.min(fx.width - 140, x));
+    const clampedY = Math.max(88, Math.min(fx.height - 115, y));
     popup.style.left = `${clampedX}px`;
     popup.style.top = `${clampedY}px`;
 
     const prefix = missed ? "✕ " : entry.isColloc ? "👑 " : "✓ ";
+    const posCompact = entry.isColloc ? entry.pattern : entry.pos;
     popup.innerHTML = `
       <div class="mp-top">
         <span class="mp-word">${prefix}${escapeHtml(entry.word)}</span>
-        ${entry.ipa ? `<span class="mp-ipa">${escapeHtml(entry.ipa)}</span>` : ""}
+        <span class="pos-pill pos-${escapeHtml(entry.pos)}">${escapeHtml(posCompact)}</span>
       </div>
       <div class="mp-body">
-        <span class="pos-pill pos-${escapeHtml(entry.pos)}">${escapeHtml(entry.posShort)}</span>
-        <span class="cefr-tag ${escapeHtml(entry.level)}">${escapeHtml(entry.level)}</span>
         <span class="mp-vi">${escapeHtml(entry.meaning)}</span>
       </div>
     `;
 
     el.popupsLayer.appendChild(popup);
-    setTimeout(() => popup.remove(), entry.isColloc ? 4100 : 3350);
+    setTimeout(() => popup.remove(), entry.isColloc ? 2600 : 2200);
   }
 
   function updateMeaningDock(entry, missed = false) {
     if (game.lastDockWord) {
-      game.recentMeanings.unshift(game.lastDockWord);
-      if (game.recentMeanings.length > 2) game.recentMeanings.pop();
+      game.recentMeanings = [game.lastDockWord]; // keep only 1 ultra-compact previous item
     }
     game.lastDockWord = { entry, missed };
 
@@ -1328,7 +1495,7 @@
   }
 
   function spawnWord() {
-    if (game.inBossPhase || game.bossWarningActive) return;
+    if (game.inBossPhase) return;
 
     const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
     if (game.activeWords.length >= preset.maxActive) return;
@@ -1395,16 +1562,9 @@
     game.activeWords.push(wordObj);
   }
 
-  function triggerBossPhase(wavesCount, isEndlessMiniBoss = false) {
-    // Clear any remaining non-boss pills into harmless sparkles
-    for (let i = game.activeWords.length - 1; i >= 0; i--) {
-      const w = game.activeWords[i];
-      spawnImpactSparks(w.x + w.w / 2, w.y + w.h / 2, "#38bdf8", 8);
-      removeWordObj(w);
-    }
-
+  function triggerBossPhase(wavesCount) {
+    // Seamless natural Boss transition — no warning banner or pause!
     game.inBossPhase = true;
-    game.bossWarningActive = true;
     game.bossTotalWaves = wavesCount;
     game.bossWavesDefeated = 0;
 
@@ -1412,26 +1572,13 @@
       game.bossQueue = buildBossQueue(!game.endless);
     }
 
-    const topic = topicMap.get(game.milestoneId) || topics[0];
-    el.bwTitle.textContent = isEndlessMiniBoss
-      ? "MINI-BOSS COLLOCATION XUẤT HIỆN!"
-      : `BOSS COLLOCATION · ${topic.name.toUpperCase()}`;
-    el.bwSub.textContent = isEndlessMiniBoss
-      ? "Bắn hạ cụm Collocation để nhận điểm thưởng lớn! Nhớ bấm Space (Cách) giữa các từ."
-      : `Hạ gục ${wavesCount} cụm Collocation (có dấu Cách) để tiêu diệt Boss · Gõ sai Boss sẽ lao xuống nhanh hơn!`;
-
-    el.bossWarning.classList.remove("hidden");
-    audio.playBossAlert();
-    triggerMascot("shock", "Cẩn thận! BOSS tới! 👑");
     updateHUD();
 
     setTimeout(() => {
-      el.bossWarning.classList.add("hidden");
-      game.bossWarningActive = false;
-      if (game.status === "playing" && game.inBossPhase) {
+      if (game.status === "playing" && game.inBossPhase && !game.activeWords.some(w => w.isBoss)) {
         spawnNextBossWave();
       }
-    }, 2050);
+    }, 520);
   }
 
   function spawnNextBossWave() {
@@ -1466,12 +1613,10 @@
     const pillW = node.offsetWidth || 320;
     const pillH = node.offsetHeight || 78;
 
-    // Centered with slight horizontal variety, safely clamped
     const minX = 32;
     const maxX = Math.max(minX + 20, fx.width - pillW - 78);
     const centerX = Math.max(minX, Math.min(maxX, (fx.width - pillW) / 2 + (Math.random() - 0.5) * 140));
 
-    // Challenging but fair speed scaling by phrase length & boss wave number
     const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
     const waveEscalation = 1 + Math.min(game.bossWavesDefeated, 4) * 0.1;
     const lengthScale = Math.max(0.62, Math.min(1.05, 19 / Math.max(12, entry.word.length)));
@@ -1485,7 +1630,7 @@
       charsEl: node.querySelector(".word-chars"),
       hpFillEl: node.querySelector(".boss-pill-hp-fill"),
       x: centerX,
-      y: 78, // emerge just below HUD pills
+      y: -pillH - 4, // glides in naturally from top like regular words
       w: pillW,
       h: pillH,
       speed,
@@ -1495,11 +1640,6 @@
     node.style.transform = `translate3d(${bossObj.x}px, ${bossObj.y}px, 0)`;
     node.style.visibility = "visible";
     game.activeWords.push(bossObj);
-
-    // Auto-lock onto the Boss immediately so the player can start firing right away!
-    game.lockedWord = bossObj;
-    bossObj.el.classList.add("locked");
-    updateTypingIndicator();
     updateHUD();
   }
 
@@ -1520,7 +1660,6 @@
     game.activeWords = [];
     game.lockedWord = null;
     el.popupsLayer.innerHTML = "";
-    el.bossWarning.classList.add("hidden");
     updateTypingIndicator();
   }
 
@@ -1528,7 +1667,7 @@
   // Typing Mechanics, Weapon Firing & Scoring
   // --------------------------------------------------------------------------
   function handleCharInput(char) {
-    if (game.status !== "playing" || game.bossWarningActive) return;
+    if (game.status !== "playing") return;
     const ch = char.toLowerCase();
     if (!/^[a-z ]$/.test(ch)) return;
 
@@ -1727,15 +1866,15 @@
 
     updateHUD();
 
-    // Check if ready to summon End-of-Milestone BOSS!
+    // Check if ready to summon End-of-Milestone BOSS naturally
     if (!game.endless && game.regularDestroyed >= game.milestoneGoal) {
-      triggerBossPhase(BOSS_PHASES_PER_MILESTONE, false);
+      triggerBossPhase(BOSS_PHASES_PER_MILESTONE);
       return;
     }
 
     // Endless Mode Mini-Boss every 10 regular words
     if (game.endless && !game.bossOnly && game.regularDestroyed >= game.nextEndlessBossAt) {
-      triggerBossPhase(1, true);
+      triggerBossPhase(1);
       return;
     }
 
@@ -1814,7 +1953,6 @@
     game.regularDestroyed = 0;
 
     game.inBossPhase = false;
-    game.bossWarningActive = false;
     game.bossWavesDefeated = 0;
     game.bossTotalWaves = game.bossOnly ? BOSS_ONLY_GOAL : BOSS_PHASES_PER_MILESTONE;
     game.nextEndlessBossAt = 10;
@@ -1845,7 +1983,7 @@
     updateHUD();
 
     if (game.bossOnly) {
-      triggerBossPhase(game.endless ? 999 : BOSS_ONLY_GOAL, false);
+      triggerBossPhase(game.endless ? 999 : BOSS_ONLY_GOAL);
     } else {
       spawnWord();
       setTimeout(() => {
@@ -1880,7 +2018,6 @@
   function returnToMenu() {
     game.status = "menu";
     game.inBossPhase = false;
-    game.bossWarningActive = false;
     clearArenaWords();
     el.arena.classList.remove("boss-mode");
     el.bossHud.classList.add("hidden");
@@ -1895,7 +2032,6 @@
   function finishRun(victory) {
     game.status = "result";
     game.inBossPhase = false;
-    game.bossWarningActive = false;
     clearArenaWords();
     el.arena.classList.remove("boss-mode");
     el.bossHud.classList.add("hidden");
@@ -1970,7 +2106,7 @@
 
     if (game.status === "playing") {
       game.elapsed += dt;
-      if (!game.inBossPhase && !game.bossWarningActive) {
+      if (!game.inBossPhase) {
         const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
         const dynInterval = Math.max(
           preset.minSpawn,
@@ -2290,12 +2426,6 @@
 
       if (e.ctrlKey || e.metaKey || e.altKey) return;
 
-      // Quick Ammo Switch hotkeys (1 = Bullet, 2 = Laser, 3 = Missile, 4 = Plasma)
-      if (e.key === "1") { setAmmoType("bullet"); return; }
-      if (e.key === "2") { setAmmoType("laser"); return; }
-      if (e.key === "3") { setAmmoType("missile"); return; }
-      if (e.key === "4") { setAmmoType("plasma"); return; }
-
       if (e.key === "Escape") {
         e.preventDefault();
         if (game.status === "paused") resumeGame();
@@ -2384,7 +2514,7 @@
       if (game.lastDockWord) audio.speakWord(game.lastDockWord.entry.word, true);
     });
 
-    // Weapon & Ammo switchers (Start menu + Live Arsenal Dock)
+    // Weapon & Ammo switchers (Start menu only — hidden during battle)
     el.startWeaponGroup.addEventListener("click", e => {
       const btn = e.target.closest(".chip");
       if (btn) setWeaponType(btn.dataset.weapon);
@@ -2392,18 +2522,6 @@
     el.startAmmoGroup.addEventListener("click", e => {
       const btn = e.target.closest(".chip");
       if (btn) setAmmoType(btn.dataset.ammo);
-    });
-    el.dockWeaponGroup.addEventListener("click", e => {
-      const btn = e.target.closest(".ars-btn");
-      if (!btn) return;
-      btn.blur();
-      setWeaponType(btn.dataset.weapon);
-    });
-    el.dockAmmoGroup.addEventListener("click", e => {
-      const btn = e.target.closest(".ars-btn");
-      if (!btn) return;
-      btn.blur();
-      setAmmoType(btn.dataset.ammo);
     });
 
     // Level & Speed setup
