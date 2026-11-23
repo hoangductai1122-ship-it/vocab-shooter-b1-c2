@@ -2746,6 +2746,100 @@ button, select, input, textarea {
   border-color: rgba(56, 189, 248, 0.35);
 }
 
+/* ==========================================================================
+   Combo Reward Power-Ups (Freeze / Heal / Gem) & Ambient Rain Toggle
+   ========================================================================== */
+
+.buff-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: #e0f2fe;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.36), rgba(56, 189, 248, 0.24));
+  border: 1px solid rgba(125, 211, 252, 0.65);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.38);
+  animation: popIn 0.2s ease;
+}
+
+#btn-rain-ambience.active {
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.65);
+  background: rgba(14, 116, 144, 0.36);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+}
+
+.arena.freeze-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: inset 0 0 54px rgba(56, 189, 248, 0.28);
+  border: 1.5px solid rgba(125, 211, 252, 0.32);
+  border-radius: inherit;
+  animation: frostPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes frostPulse {
+  from { opacity: 0.65; }
+  to { opacity: 1; }
+}
+
+.arena.freeze-active .word-pill {
+  filter: drop-shadow(0 0 8px rgba(125, 211, 252, 0.35));
+}
+
+.word-pill.has-item {
+  position: absolute;
+}
+
+.word-pill.item-freeze {
+  border-color: #7dd3fc !important;
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.word-pill.item-heal {
+  border-color: #fda4af !important;
+  box-shadow: 0 0 22px rgba(244, 63, 94, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.word-pill.item-gem {
+  border-color: #fde047 !important;
+  box-shadow: 0 0 22px rgba(250, 204, 21, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.item-badge {
+  position: absolute;
+  top: -11px;
+  right: -8px;
+  width: 23px;
+  height: 23px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1.5px solid rgba(253, 224, 71, 0.72);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+  animation: itemFloat 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.item-freeze .item-badge { border-color: #7dd3fc; }
+.item-heal .item-badge { border-color: #fda4af; }
+.item-gem .item-badge { border-color: #fde047; }
+
+@keyframes itemFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.08); }
+}
+
 @media (max-width: 1120px) {
   .quick-level-bar { display: none; }
 }

@@ -163,6 +163,7 @@
             </svg>
             <span class="score-num" id="score-value">0</span>
             <span class="combo-chip hidden" id="combo-badge">x2</span>
+            <span class="buff-chip hidden" id="active-buff-pill">❄️ 4.5s</span>
           </div>
 
           <!-- Center Stack: Compact Milestone pill + Slim Boss HP Strip -->
@@ -217,6 +218,14 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="5" width="20" height="14" rx="2"></rect>
               <path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M8 13h.01M12 13h.01M16 13h.01M7 16h10"></path>
+            </svg>
+          </button>
+          <button class="ctrl-circle" id="btn-rain-ambience" title="Bật/tắt tiếng mưa rơi thư giãn" aria-label="Tiếng mưa rơi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+              <path d="M8 19v2"></path>
+              <path d="M12 17v4"></path>
+              <path d="M16 19v2"></path>
             </svg>
           </button>
           <button class="ctrl-circle active" id="btn-sound" title="Bật/tắt âm thanh & phát âm tiếng Anh" aria-label="Âm thanh">
@@ -624,6 +633,10 @@
                 <span>🔊 Phát âm</span>
               </label>
               <label class="pill-toggle">
+                <input type="checkbox" id="opt-rain-ambience-1" />
+                <span>🌧️ Tiếng mưa</span>
+              </label>
+              <label class="pill-toggle">
                 <input type="checkbox" id="opt-show-level" checked />
                 <span>🏷️ Nhãn level</span>
               </label>
@@ -708,11 +721,15 @@
                   <span>🔊 Phát âm</span>
                 </label>
                 <label class="pill-toggle">
+                  <input type="checkbox" id="rain-opt-ambience" checked />
+                  <span>🌧️ Tiếng mưa</span>
+                </label>
+                <label class="pill-toggle">
                   <input type="checkbox" id="rain-opt-pos" checked />
-                  <span>🏷️ Gợi ý từ loại (n/v/adj)</span>
+                  <span>🏷️ Gợi ý từ loại</span>
                 </label>
                 <button type="button" class="speak-test-chip" id="btn-test-voice-2" title="Nghe thử giọng đọc">🔊 Thử âm</button>
-                <span class="micro-tip">💡 Bấm <kbd>?</kbd> khi quên chữ</span>
+                <span class="micro-tip">💡 Bấm <kbd>?</kbd> mở chữ</span>
               </div>
 
               <div class="start-actions" style="margin-top:14px;">

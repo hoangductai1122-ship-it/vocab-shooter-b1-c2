@@ -88,6 +88,8 @@
     rainSource: prefs.rainSource || "due",       // due | session | recent20 | all
     rainKind: prefs.rainKind || "WORDS_ONLY",    // WORDS_ONLY | ALL | COLLOCS_ONLY
     rainShowPos: prefs.rainShowPos !== false,
+    rainAmbienceInRain: prefs.rainAmbienceInRain !== false,
+    rainAmbienceInShooter: Boolean(prefs.rainAmbienceInShooter),
 
     score: 0,
     lives: 3,
@@ -96,6 +98,8 @@
     bestCombo: 0,
     correctChars: 0,
     wrongChars: 0,
+    freezeTimer: 0,
+    spawnCountThisRun: 0,
 
     milestoneGoal: 12,
     wordsDestroyed: 0,
@@ -188,6 +192,7 @@
 
     scoreValue: document.getElementById("score-value"),
     comboBadge: document.getElementById("combo-badge"),
+    activeBuffPill: document.getElementById("active-buff-pill"),
     btnMilestones: document.getElementById("btn-milestones"),
     milestoneLabel: document.getElementById("milestone-label"),
     milestoneTopic: document.getElementById("milestone-topic"),
@@ -202,6 +207,7 @@
     iconPause: document.getElementById("icon-pause"),
     iconPlay: document.getElementById("icon-play"),
     btnKeyboard: document.getElementById("btn-keyboard"),
+    btnRainAmbience: document.getElementById("btn-rain-ambience"),
     btnSound: document.getElementById("btn-sound"),
     iconSoundOn: document.getElementById("icon-sound-on"),
     iconSoundOff: document.getElementById("icon-sound-off"),
@@ -245,6 +251,7 @@
     selectMilestone: document.getElementById("select-milestone"),
     speedGroup: document.getElementById("speed-group"),
     optSpeak: document.getElementById("opt-speak"),
+    optRainAmbience1: document.getElementById("opt-rain-ambience-1"),
     btnTestVoice1: document.getElementById("btn-test-voice-1"),
     optShowLevel: document.getElementById("opt-show-level"),
     optBossOnly: document.getElementById("opt-boss-only"),
@@ -263,6 +270,7 @@
     rainKindSelect: document.getElementById("rain-kind-select"),
     rainSpeedGroup: document.getElementById("rain-speed-group"),
     rainOptSpeak: document.getElementById("rain-opt-speak"),
+    rainOptAmbience: document.getElementById("rain-opt-ambience"),
     btnTestVoice2: document.getElementById("btn-test-voice-2"),
     rainOptPos: document.getElementById("rain-opt-pos"),
     btnStartRain: document.getElementById("btn-start-rain"),
@@ -569,7 +577,9 @@
       bossOnly: false,
       rainSource: "due",
       rainKind: "WORDS_ONLY",
-      rainShowPos: true
+      rainShowPos: true,
+      rainAmbienceInRain: true,
+      rainAmbienceInShooter: false
     };
   }
 
@@ -590,7 +600,9 @@
           bossOnly: game.bossOnly,
           rainSource: game.rainSource,
           rainKind: game.rainKind,
-          rainShowPos: game.rainShowPos
+          rainShowPos: game.rainShowPos,
+          rainAmbienceInRain: game.rainAmbienceInRain,
+          rainAmbienceInShooter: game.rainAmbienceInShooter
         })
       );
     } catch (_) {}
@@ -862,6 +874,18 @@
   // --------------------------------------------------------------------------
   // Mode Switching (Hub <-> Space Shooter <-> Rain Spelling Review)
   // --------------------------------------------------------------------------
+  function syncRainAmbienceState() {
+    const enabledForMode = game.mode === "rain" ? game.rainAmbienceInRain : game.rainAmbienceInShooter;
+    audio.rainAmbienceEnabled = enabledForMode;
+    if (el.optRainAmbience1) el.optRainAmbience1.checked = game.rainAmbienceInShooter;
+    if (el.rainOptAmbience) el.rainOptAmbience.checked = game.rainAmbienceInRain;
+    if (el.btnRainAmbience) {
+      el.btnRainAmbience.classList.toggle("active", Boolean(enabledForMode && audio.soundEnabled));
+    }
+    const shouldPlay = game.status !== "hub" && enabledForMode && audio.soundEnabled;
+    audio.syncRainAmbience(shouldPlay);
+  }
+
   function applyModeTheme() {
     const isRain = game.mode === "rain";
     el.arena.classList.toggle("rain-mode", isRain);
@@ -871,20 +895,23 @@
     el.brandTitle.textContent = isRain ? "Mưa Từ Vựng" : "Luyện Gõ";
     el.brandSubtitle.textContent = "";
     el.brandSubtitle.classList.add("hidden");
+    syncRainAmbienceState();
   }
 
   function openHub() {
     game.status = "hub";
     game.inBossPhase = false;
+    game.freezeTimer = 0;
     clearArenaWords();
     closeAllModals();
-    el.arena.classList.remove("boss-mode");
+    el.arena.classList.remove("boss-mode", "freeze-active");
     el.bossHud.classList.add("hidden");
     el.startOverlay.classList.add("hidden");
     el.rainStartOverlay.classList.add("hidden");
     el.pauseOverlay.classList.add("hidden");
     el.resultOverlay.classList.add("hidden");
     el.hubOverlay.classList.remove("hidden");
+    syncRainAmbienceState();
     updateProgressBadges();
     syncPauseIcon();
     updateHUD();
@@ -1817,15 +1844,31 @@
     const entry = pickNextWordEntry();
     if (!entry) return;
 
+    game.spawnCountThisRun = (game.spawnCountThisRun || 0) + 1;
+    let bonusItem = null;
+    if (game.spawnCountThisRun % 5 === 0 || (game.spawnCountThisRun > 2 && Math.random() < 0.16)) {
+      if (game.lives < game.maxLives && Math.random() < 0.5) {
+        bonusItem = "heal";
+      } else {
+        bonusItem = (game.spawnCountThisRun % 2 === 0) ? "freeze" : "gem";
+      }
+    }
+    const itemIcon = bonusItem === "freeze" ? "❄️" : bonusItem === "heal" ? "💖" : bonusItem === "gem" ? "💎" : "";
+    const itemBadgeHtml = bonusItem
+      ? `<span class="item-badge" title="Vật phẩm thưởng">${itemIcon}</span>`
+      : "";
+    const itemClasses = bonusItem ? ` has-item item-${bonusItem}` : "";
+
     const node = document.createElement("div");
     let charsEl;
 
     if (game.mode === "rain") {
-      node.className = "word-pill rain-card";
+      node.className = `word-pill rain-card${itemClasses}`;
       const posBadge = game.rainShowPos
         ? `<span class="rain-pos-mini">${escapeHtml(entry.isColloc ? entry.pattern : entry.pos)}</span>`
         : "";
       node.innerHTML = `
+        ${itemBadgeHtml}
         <div class="rain-meaning-row">
           <span>${escapeHtml(entry.meaning)}</span>
           ${posBadge}
@@ -1834,8 +1877,9 @@
       `;
       charsEl = node.querySelector(".rain-mask");
     } else {
-      node.className = `word-pill lvl-${entry.level}`;
+      node.className = `word-pill lvl-${entry.level}${itemClasses}`;
       node.innerHTML = `
+        ${itemBadgeHtml}
         <span class="word-chars">${formatPhraseCharsHtml(entry.word, 0)}</span>
         <span class="pill-cefr">${entry.level}</span>
       `;
@@ -1864,6 +1908,7 @@
       id: ++game.wordUid,
       entry,
       isBoss: false,
+      bonusItem,
       el: node,
       charsEl,
       hpFillEl: null,
@@ -2107,10 +2152,41 @@
     updateTypingIndicator();
   }
 
+  function applyBonusReward(type, cx, cy, prefixMsg = "") {
+    const tag = prefixMsg ? `${prefixMsg} · ` : "";
+    if (type === "heal") {
+      if (game.lives < game.maxLives) {
+        game.lives++;
+        audio.playPowerUp("heal");
+        spawnExplosion(cx, cy, "#fb7185", false);
+        triggerMascot("cheer", `${tag}💖 Hồi +1 Tim!`);
+      } else {
+        game.score += 150;
+        game.freezeTimer = Math.min(8, game.freezeTimer + 3.2);
+        audio.playPowerUp("freeze");
+        spawnExplosion(cx, cy, "#7dd3fc", false);
+        triggerMascot("cheer", `${tag}❄️ Làm chậm 3s +150đ!`);
+      }
+    } else if (type === "gem") {
+      game.score += 180;
+      if (game.score > progress.highScore) progress.highScore = game.score;
+      audio.playPowerUp("gem");
+      spawnExplosion(cx, cy, "#fde047", false);
+      triggerMascot("cheer", `${tag}💎 Kho báu +180 điểm!`);
+    } else {
+      // freeze
+      game.freezeTimer = Math.min(8.5, game.freezeTimer + 4.5);
+      audio.playPowerUp("freeze");
+      spawnExplosion(cx, cy, "#7dd3fc", false);
+      triggerMascot("cheer", `${tag}❄️ Làm chậm 4.5 giây!`);
+    }
+  }
+
   function destroyWord(target, cx, cy, color) {
     const entry = target.entry;
     const wasBoss = target.isBoss;
     const usedHint = Boolean(target.usedHint);
+    const bonusItem = target.bonusItem || null;
     removeWordObj(target);
 
     game.wordsDestroyed++;
@@ -2136,11 +2212,34 @@
     audio.playExplosion(game.combo, wasBoss);
     audio.speakWord(entry.word, false, 120);
 
+    // 1. Trigger item attached directly to this falling word/card
+    let triggeredReward = false;
+    if (bonusItem) {
+      applyBonusReward(bonusItem, cx, cy);
+      triggeredReward = true;
+    }
+
+    // 2. Trigger automatic Combo Milestone Reward every 5 combo (x5, x10, x15...)
+    if (game.combo > 0 && game.combo % 5 === 0) {
+      if (game.combo % 10 === 0) {
+        if (game.lives < game.maxLives) game.lives++;
+        game.score += 200;
+        game.freezeTimer = Math.min(9, game.freezeTimer + 5.0);
+        audio.playPowerUp("freeze");
+        spawnExplosion(cx, cy, "#fde047", true);
+        triggerMascot("cheer", `⚡ Combo x${game.combo} · ❄️ Làm chậm 5s +200đ!`);
+      } else {
+        const rewardType = game.lives < game.maxLives ? "heal" : "freeze";
+        applyBonusReward(rewardType, cx, cy, `Combo x${game.combo}`);
+      }
+      triggeredReward = true;
+    }
+
     showMeaningPopup(entry, cx, cy, false);
     updateMeaningDock(entry, false);
 
     if (game.mode === "rain") {
-      if (game.combo > 0 && game.combo % 3 === 0) {
+      if (!triggeredReward && game.combo > 0 && game.combo % 3 === 0) {
         triggerMascot("cheer", `Nhớ chuẩn x${game.combo}! ⛵`);
       }
       updateHUD();
@@ -2188,12 +2287,14 @@
       return;
     }
 
-    if (game.combo > 0 && game.combo % 4 === 0) {
-      triggerMascot("cheer", `Combo x${game.combo}! 🔥`);
-    } else if (entry.level === "C2") {
-      triggerMascot("cheer", "Hạ gục từ C2! ⚡");
-    } else if (game.wordsDestroyed % 5 === 0) {
-      triggerMascot("cheer", CHEER_MESSAGES[game.wordsDestroyed % CHEER_MESSAGES.length]);
+    if (!triggeredReward) {
+      if (game.combo > 0 && game.combo % 4 === 0) {
+        triggerMascot("cheer", `Combo x${game.combo}! 🔥`);
+      } else if (entry.level === "C2") {
+        triggerMascot("cheer", "Hạ gục từ C2! ⚡");
+      } else if (game.wordsDestroyed % 5 === 0) {
+        triggerMascot("cheer", CHEER_MESSAGES[game.wordsDestroyed % CHEER_MESSAGES.length]);
+      }
     }
 
     updateHUD();
@@ -2303,6 +2404,8 @@
     game.wordsDestroyed = 0;
     game.regularDestroyed = 0;
     game.rainMasteredThisRun = 0;
+    game.freezeTimer = 0;
+    game.spawnCountThisRun = 0;
 
     game.inBossPhase = false;
     game.bossWavesDefeated = 0;
@@ -2319,8 +2422,10 @@
 
     el.meaningHistory.innerHTML = "";
     el.meaningCurrent.classList.add("hidden");
-    el.arena.classList.remove("boss-mode");
+    el.arena.classList.remove("boss-mode", "freeze-active");
+    if (el.activeBuffPill) el.activeBuffPill.classList.add("hidden");
     el.bossHud.classList.add("hidden");
+    syncRainAmbienceState();
 
     game.wordQueue = buildQueueForRun();
     game.bossQueue = game.mode === "shooter" ? buildBossQueue(!game.endless) : [];
@@ -2373,8 +2478,10 @@
   function finishRun(victory) {
     game.status = "result";
     game.inBossPhase = false;
+    game.freezeTimer = 0;
     clearArenaWords();
-    el.arena.classList.remove("boss-mode");
+    el.arena.classList.remove("boss-mode", "freeze-active");
+    if (el.activeBuffPill) el.activeBuffPill.classList.add("hidden");
     el.bossHud.classList.add("hidden");
     syncPauseIcon();
 
@@ -2468,6 +2575,7 @@
     el.iconSoundOn.classList.toggle("hidden", !audio.soundEnabled);
     el.iconSoundOff.classList.toggle("hidden", audio.soundEnabled);
     el.btnSound.classList.toggle("active", audio.soundEnabled);
+    syncRainAmbienceState();
   }
 
   function gameLoop(ts) {
@@ -2478,6 +2586,21 @@
 
     if (game.status === "playing") {
       game.elapsed += dt;
+
+      if (game.freezeTimer > 0) {
+        game.freezeTimer = Math.max(0, game.freezeTimer - dt);
+        el.arena.classList.add("freeze-active");
+        if (el.activeBuffPill) {
+          el.activeBuffPill.textContent = `❄️ ${game.freezeTimer.toFixed(1)}s`;
+          el.activeBuffPill.classList.remove("hidden");
+        }
+      } else {
+        el.arena.classList.remove("freeze-active");
+        if (el.activeBuffPill) el.activeBuffPill.classList.add("hidden");
+      }
+
+      const speedMult = game.freezeTimer > 0 ? 0.42 : 1;
+
       if (!game.inBossPhase) {
         const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
         const rainPad = game.mode === "rain" ? 0.65 : 0;
@@ -2485,7 +2608,7 @@
           preset.minSpawn + rainPad,
           preset.spawnInterval + rainPad - Math.min(0.55, game.wordsDestroyed * 0.015)
         );
-        game.spawnTimer -= dt;
+        game.spawnTimer -= dt * (game.freezeTimer > 0 ? 0.55 : 1);
         if (game.spawnTimer <= 0) {
           spawnWord();
           game.spawnTimer = dynInterval;
@@ -2495,7 +2618,7 @@
       const dangerY = fx.height - 34;
       for (let i = game.activeWords.length - 1; i >= 0; i--) {
         const w = game.activeWords[i];
-        w.y += w.speed * dt;
+        w.y += w.speed * speedMult * dt;
         w.el.style.transform = `translate3d(${w.x}px, ${w.y}px, 0)`;
         if (w.y + w.h >= dangerY) handleWordMissed(w);
       }
@@ -2892,6 +3015,36 @@
       el.btnKeyboard.classList.toggle("active", game.virtualKeyboardOpen);
       updateTypingIndicator();
     });
+
+    if (el.btnRainAmbience) {
+      el.btnRainAmbience.addEventListener("click", () => {
+        el.btnRainAmbience.blur();
+        audio.unlock();
+        if (game.mode === "rain") {
+          game.rainAmbienceInRain = !game.rainAmbienceInRain;
+        } else {
+          game.rainAmbienceInShooter = !game.rainAmbienceInShooter;
+        }
+        savePrefs();
+        syncRainAmbienceState();
+      });
+    }
+    if (el.optRainAmbience1) {
+      el.optRainAmbience1.addEventListener("change", () => {
+        audio.unlock();
+        game.rainAmbienceInShooter = el.optRainAmbience1.checked;
+        savePrefs();
+        syncRainAmbienceState();
+      });
+    }
+    if (el.rainOptAmbience) {
+      el.rainOptAmbience.addEventListener("change", () => {
+        audio.unlock();
+        game.rainAmbienceInRain = el.rainOptAmbience.checked;
+        savePrefs();
+        syncRainAmbienceState();
+      });
+    }
 
     el.btnSound.addEventListener("click", () => {
       el.btnSound.blur();

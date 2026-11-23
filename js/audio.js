@@ -7,8 +7,13 @@ class GameAudio {
   constructor() {
     this.ctx = null;
     this.noiseBuffer = null;
+    this.rainBuffer = null;
     this.soundEnabled = true;
     this.autoSpeak = true;
+    this.rainAmbienceEnabled = true;
+    this._rainPlaying = false;
+    this._rainNodes = null;
+    this._rainDropTimer = null;
     this.preferredVoice = null;
     this._activeUtter = null;
     this._speakTimer = null;
@@ -46,7 +51,7 @@ class GameAudio {
       try {
         window.speechSynthesis.resume();
         this._initVoices();
-      } catch (_) {}
+      } catch (_) { }
     }
   }
 
@@ -58,7 +63,7 @@ class GameAudio {
       this.ctx = new AudioCtx();
     }
     if (this.ctx.state === "suspended") {
-      this.ctx.resume().catch(() => {});
+      this.ctx.resume().catch(() => { });
     }
     if (!this.noiseBuffer) {
       const sr = this.ctx.sampleRate;
@@ -116,6 +121,157 @@ class GameAudio {
     gain.connect(ctx.destination);
     noise.start(now);
     noise.stop(now + 0.26);
+  }
+
+  // --------------------------------------------------------------------------
+  // Cozy Procedural Rain Ambience (Pink-Noise Wash + Gentle Droplet Patters)
+  // --------------------------------------------------------------------------
+  _ensureRainBuffer(ctx) {
+    if (this.rainBuffer) return this.rainBuffer;
+    const sr = ctx.sampleRate;
+    const len = sr * 4; // 4-second seamless pink-noise loop
+    const buf = ctx.createBuffer(1, len, sr);
+    const out = buf.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < len; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      out[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.045;
+      b6 = white * 0.115926;
+    }
+    // Crossfade loop seam (last 0.15s) so there is zero click
+    const fadeSamples = Math.floor(sr * 0.15);
+    for (let i = 0; i < fadeSamples; i++) {
+      const t = i / fadeSamples;
+      out[len - fadeSamples + i] = out[len - fadeSamples + i] * (1 - t) + out[i] * t;
+    }
+    this.rainBuffer = buf;
+    return buf;
+  }
+
+  startRainAmbience() {
+    this._rainPlaying = true;
+    if (!this.soundEnabled || !this.rainAmbienceEnabled) return;
+    const ctx = this._ensureCtx();
+    if (!ctx) return;
+    if (this._rainNodes) return;
+
+    const now = ctx.currentTime;
+    const src = ctx.createBufferSource();
+    src.buffer = this._ensureRainBuffer(ctx);
+    src.loop = true;
+
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.setValueAtTime(230, now);
+
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(1180, now);
+
+    // Gentle LFO breathing on the rain filter
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.type = "sine";
+    lfo.frequency.setValueAtTime(0.16, now);
+    lfoGain.gain.setValueAtTime(210, now);
+    lfo.connect(lfoGain);
+    lfoGain.connect(lp.frequency);
+
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0.0001, now);
+    masterGain.gain.exponentialRampToValueAtTime(0.11, now + 0.75);
+
+    src.connect(hp);
+    hp.connect(lp);
+    lp.connect(masterGain);
+    masterGain.connect(ctx.destination);
+
+    src.start(now);
+    lfo.start(now);
+    this._rainNodes = { src, lfo, masterGain };
+
+    // Soft random raindrop patters
+    clearInterval(this._rainDropTimer);
+    this._rainDropTimer = setInterval(() => {
+      if (!this._rainPlaying || !this.soundEnabled || !this.rainAmbienceEnabled || !this.ctx || this.ctx.state !== "running") return;
+      if (Math.random() > 0.65) return;
+      const t = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      const freq = 950 + Math.random() * 1150;
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.32, t + 0.032);
+      const vol = 0.005 + Math.random() * 0.009;
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.038);
+      osc.connect(g);
+      g.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.042);
+    }, 210);
+  }
+
+  stopRainAmbience(keepIntent = false) {
+    if (!keepIntent) this._rainPlaying = false;
+    clearInterval(this._rainDropTimer);
+    this._rainDropTimer = null;
+    if (!this._rainNodes) return;
+    const nodes = this._rainNodes;
+    this._rainNodes = null;
+    try {
+      if (this.ctx) {
+        const now = this.ctx.currentTime;
+        nodes.masterGain.gain.cancelScheduledValues(now);
+        nodes.masterGain.gain.setValueAtTime(Math.max(0.0001, nodes.masterGain.gain.value), now);
+        nodes.masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+        setTimeout(() => {
+          try { nodes.src.stop(); nodes.lfo.stop(); nodes.masterGain.disconnect(); } catch (_) {}
+        }, 380);
+      } else {
+        nodes.src.stop();
+        nodes.lfo.stop();
+      }
+    } catch (_) {}
+  }
+
+  syncRainAmbience(shouldPlay) {
+    this._rainPlaying = Boolean(shouldPlay);
+    if (this._rainPlaying && this.soundEnabled && this.rainAmbienceEnabled) {
+      this.startRainAmbience();
+    } else {
+      this.stopRainAmbience(true);
+    }
+  }
+
+  playPowerUp(type = "freeze") {
+    const ctx = this._ensureCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const notes = type === "heal"
+      ? [523.25, 659.25, 783.99, 1046.5]
+      : type === "gem"
+        ? [659.25, 880, 1174.66, 1567.98]
+        : [783.99, 1046.5, 1318.5, 1760]; // freeze crystalline chime
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type === "heal" ? "triangle" : "sine";
+      const t = now + idx * 0.055;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.085, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.3);
+    });
   }
 
   playBullet(step = 0) {
@@ -381,8 +537,8 @@ class GameAudio {
       el.referrerPolicy = "no-referrer";
       el.volume = 0.95;
       this._audioEl = el;
-      el.play().catch(() => {});
-    } catch (_) {}
+      el.play().catch(() => { });
+    } catch (_) { }
   }
 
   speakWord(text, force = false, delayMs = 0) {
