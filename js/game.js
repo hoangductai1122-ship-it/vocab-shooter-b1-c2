@@ -3019,11 +3019,16 @@
     if (el.btnRainAmbience) {
       el.btnRainAmbience.addEventListener("click", () => {
         el.btnRainAmbience.blur();
+        const turningOn = game.mode === "rain" ? !game.rainAmbienceInRain : !game.rainAmbienceInShooter;
+        if (turningOn && !audio.soundEnabled) {
+          audio.soundEnabled = true;
+          syncSoundIcon();
+        }
         audio.unlock();
         if (game.mode === "rain") {
-          game.rainAmbienceInRain = !game.rainAmbienceInRain;
+          game.rainAmbienceInRain = turningOn;
         } else {
-          game.rainAmbienceInShooter = !game.rainAmbienceInShooter;
+          game.rainAmbienceInShooter = turningOn;
         }
         savePrefs();
         syncRainAmbienceState();
@@ -3031,6 +3036,10 @@
     }
     if (el.optRainAmbience1) {
       el.optRainAmbience1.addEventListener("change", () => {
+        if (el.optRainAmbience1.checked && !audio.soundEnabled) {
+          audio.soundEnabled = true;
+          syncSoundIcon();
+        }
         audio.unlock();
         game.rainAmbienceInShooter = el.optRainAmbience1.checked;
         savePrefs();
@@ -3039,6 +3048,10 @@
     }
     if (el.rainOptAmbience) {
       el.rainOptAmbience.addEventListener("change", () => {
+        if (el.rainOptAmbience.checked && !audio.soundEnabled) {
+          audio.soundEnabled = true;
+          syncSoundIcon();
+        }
         audio.unlock();
         game.rainAmbienceInRain = el.rainOptAmbience.checked;
         savePrefs();
