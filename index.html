@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luyện Gõ · Từ Vựng &amp; Boss Collocations B1–C2</title>
+  <title>Học Từ Vựng Tiếng Anh B1–C2 · Luyện Gõ &amp; Mưa Từ Vựng</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -14,14 +14,15 @@
     <!-- Top Bar -->
     <header class="top-bar">
       <div class="top-bar-left">
-        <button class="icon-btn back-btn" id="btn-home" title="Chọn mốc & Cài đặt" aria-label="Menu">
+        <button class="icon-btn back-btn" id="btn-home" title="Chọn game (Luyện Gõ / Mưa Từ Vựng)" aria-label="Chọn game">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </button>
 
-        <div class="brand-badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <div class="brand-badge" id="brand-badge" aria-hidden="true">
+          <!-- Space Shooter Icon -->
+          <svg id="brand-icon-shooter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9"></circle>
             <circle cx="12" cy="12" r="3"></circle>
             <line x1="12" y1="2" x2="12" y2="6"></line>
@@ -29,11 +30,18 @@
             <line x1="2" y1="12" x2="6" y2="12"></line>
             <line x1="18" y1="12" x2="22" y2="12"></line>
           </svg>
+          <!-- Rain Spelling Icon -->
+          <svg id="brand-icon-rain" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+            <path d="M8 19v2"></path>
+            <path d="M12 17v4"></path>
+            <path d="M16 19v2"></path>
+          </svg>
         </div>
 
         <div class="brand-text">
-          <h1>Luyện Gõ · Boss Collocations</h1>
-          <p>Bắn hạ từ vựng B1–C2 &amp; chinh phục Boss Collocation cuối mỗi mốc</p>
+          <h1 id="brand-title">Luyện Gõ · Boss Collocations</h1>
+          <p id="brand-subtitle">Gõ các từ tiếng Anh B1–C2 đang rơi để bắn hạ &amp; học nghĩa tiếng Việt</p>
         </div>
       </div>
 
@@ -65,17 +73,26 @@
       </div>
     </header>
 
-    <!-- Main Space Arena -->
+    <!-- Main Arena (Switches cleanly between Space Mode & Rain Mode!) -->
     <main class="arena-frame">
-      <section class="arena" id="arena" aria-label="Khu vực chơi bắn từ vựng">
-        <!-- Starfield, projectiles, explosions canvas -->
+      <section class="arena" id="arena" aria-label="Khu vực chơi học từ vựng">
+        <!-- Starfield / Raindrops / Projectiles / Explosions canvas -->
         <canvas id="fx-canvas"></canvas>
 
-        <!-- Boss Alert Vignette -->
+        <!-- Boss Alert Vignette (Space Mode) -->
         <div class="boss-vignette" aria-hidden="true"></div>
 
-        <!-- Distant Glowing Ice Moon (Top Left) -->
-        <div class="planet-ice" aria-hidden="true">
+        <!-- Storm Clouds Layer (Rain Mode only) -->
+        <div class="rain-clouds" aria-hidden="true">
+          <div class="cloud-puff c1"></div>
+          <div class="cloud-puff c2"></div>
+          <div class="cloud-puff c3"></div>
+          <div class="cloud-puff c4"></div>
+          <div class="cloud-puff c5"></div>
+        </div>
+
+        <!-- Distant Glowing Ice Moon (Space Mode) -->
+        <div class="planet-ice space-only" aria-hidden="true">
           <svg viewBox="0 0 120 120" fill="none">
             <defs>
               <radialGradient id="iceGlow" cx="50%" cy="50%" r="50%">
@@ -97,8 +114,8 @@
           </svg>
         </div>
 
-        <!-- Decorative Ringed Planet (Top Right) -->
-        <div class="planet-saturn" aria-hidden="true">
+        <!-- Decorative Ringed Planet (Space Mode) -->
+        <div class="planet-saturn space-only" aria-hidden="true">
           <svg viewBox="0 0 220 140" fill="none">
             <defs>
               <radialGradient id="planetGlow" cx="50%" cy="50%" r="50%">
@@ -140,7 +157,7 @@
             <span class="combo-chip hidden" id="combo-badge">x2</span>
           </div>
 
-          <!-- Center Stack: Milestone pill + Boss HP Bar -->
+          <!-- Center Stack: Compact Milestone pill + Slim Boss HP Strip -->
           <div class="hud-center-stack">
             <button class="hud-pill hud-milestone" id="btn-milestones" title="Nhấn để đổi mốc chủ đề">
               <div class="milestone-row">
@@ -151,18 +168,17 @@
                 <span class="milestone-label" id="milestone-label">Mốc 1/20</span>
                 <span class="milestone-dot">·</span>
                 <span class="milestone-topic" id="milestone-topic">Technology</span>
-                <span class="milestone-progress-text" id="milestone-progress-text">0/15</span>
+                <span class="milestone-progress-text" id="milestone-progress-text">0/12</span>
               </div>
               <div class="milestone-progress-track">
                 <div class="milestone-progress-fill" id="milestone-progress-fill" style="width: 0%"></div>
               </div>
             </button>
 
-            <!-- Boss HP HUD (shown during Boss Collocation fight) -->
             <div class="boss-hud hidden" id="boss-hud">
               <div class="boss-hud-row">
-                <span class="boss-hud-title" id="boss-hud-title">👑 BOSS COLLOCATION · Technology</span>
-                <span class="boss-hud-phase" id="boss-hud-phase">Đợt 1/3</span>
+                <span class="boss-hud-title" id="boss-hud-title">👑 BOSS</span>
+                <span class="boss-hud-phase" id="boss-hud-phase">👑 1/3</span>
               </div>
               <div class="boss-hp-segments" id="boss-hp-segments"></div>
             </div>
@@ -174,7 +190,7 @@
 
         <!-- Right Vertical Floating Controls -->
         <div class="arena-controls">
-          <button class="ctrl-circle" id="btn-exit" title="Thoát về menu chọn mốc" aria-label="Thoát">
+          <button class="ctrl-circle" id="btn-exit" title="Thoát về menu cài đặt" aria-label="Thoát">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -209,13 +225,13 @@
           </button>
         </div>
 
-        <!-- Falling Words & Boss Layer -->
+        <!-- Falling Words / Rain Cards Layer -->
         <div class="words-layer" id="words-layer"></div>
 
-        <!-- In-Place Floating Vietnamese Meaning Popups Layer -->
+        <!-- In-Place Compact Meaning Popups Layer -->
         <div class="popups-layer" id="popups-layer"></div>
 
-        <!-- Live Meaning Dock (Bottom Right) -->
+        <!-- Compact Live Meaning Dock (Bottom Right) -->
         <aside class="meaning-dock" id="meaning-dock" aria-live="polite">
           <div class="meaning-history" id="meaning-history"></div>
           <div class="meaning-current hidden" id="meaning-current">
@@ -237,14 +253,17 @@
           </div>
         </aside>
 
-        <!-- Active Typing Buffer Indicator (above turret) -->
+        <!-- Active Typing Buffer Indicator -->
         <div class="typing-indicator hidden" id="typing-indicator">
           <span class="typing-typed" id="typing-typed"></span><span class="typing-remaining" id="typing-remaining"></span>
-          <span class="typing-hint">ESC để đổi mục tiêu</span>
+          <span class="typing-hint" id="typing-hint">ESC đổi mục tiêu</span>
         </div>
 
-        <!-- Bottom Glowing Red Barrier Line -->
-        <div class="danger-line" id="danger-line" aria-hidden="true"></div>
+        <!-- Bottom Glowing Red Barrier Line (Space Mode) -->
+        <div class="danger-line space-only" id="danger-line" aria-hidden="true"></div>
+
+        <!-- Bottom Glowing Ocean Surface (Rain Mode) -->
+        <div class="ocean-surface rain-only" id="ocean-surface" aria-hidden="true"></div>
 
         <!-- Cute Blue Mascot (Bottom Left) -->
         <div class="mascot" id="mascot" aria-hidden="true">
@@ -282,11 +301,10 @@
           </svg>
         </div>
 
-        <!-- Weapon Turret (Bottom Center: Heavy Tank / Assault Gun / Plasma Cannon) -->
-        <div class="turret-anchor" id="turret-anchor" aria-hidden="true">
+        <!-- Space Weapon Turret (Space Mode only: Tank / Gun / Cannon) -->
+        <div class="turret-anchor space-only" id="turret-anchor" aria-hidden="true">
           <!-- 1. HEAVY TANK -->
           <div class="weapon-model" id="weapon-tank">
-            <!-- Grounded Armored Tank Chassis & Treads -->
             <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
               <defs>
                 <linearGradient id="tankHull" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -300,27 +318,21 @@
                   <stop offset="100%" stop-color="#0f172a"/>
                 </linearGradient>
               </defs>
-              <!-- Left & Right Tracks -->
               <rect x="14" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b" stroke-width="1.8"/>
               <line x1="16" y1="54" x2="30" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
               <line x1="16" y1="62" x2="30" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
               <line x1="16" y1="70" x2="30" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
               <line x1="16" y1="78" x2="30" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-
               <rect x="88" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b" stroke-width="1.8"/>
               <line x1="90" y1="54" x2="104" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
               <line x1="90" y1="62" x2="104" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
               <line x1="90" y1="70" x2="104" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
               <line x1="90" y1="78" x2="104" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-
-              <!-- Armored Body Hull -->
               <path d="M30 48 L38 40 L82 40 L90 48 L90 84 L82 90 L38 90 L30 84 Z" fill="url(#tankHull)" stroke="#38bdf8" stroke-width="1.8"/>
-              <!-- Reactor Core Glow -->
               <rect x="44" y="75" width="32" height="6" rx="3" fill="#38bdf8" opacity="0.8"/>
               <circle cx="38" cy="52" r="2.5" fill="#fbbf24"/>
               <circle cx="82" cy="52" r="2.5" fill="#fbbf24"/>
             </svg>
-            <!-- Rotating Tank Turret & Cannon Barrel -->
             <div class="turret-rotator" id="rotator-tank">
               <svg viewBox="0 0 120 96" fill="none">
                 <defs>
@@ -335,14 +347,10 @@
                     <stop offset="100%" stop-color="#1e3a8a"/>
                   </radialGradient>
                 </defs>
-                <!-- Main Cannon Barrel -->
                 <rect x="54" y="8" width="12" height="44" rx="3" fill="url(#barrelGrad)" stroke="#334155" stroke-width="1.4"/>
-                <!-- Muzzle Brake -->
                 <rect x="51" y="4" width="18" height="10" rx="2.5" fill="#334155" stroke="#38bdf8" stroke-width="1.4"/>
                 <rect x="55" y="1" width="10" height="4" rx="1.5" fill="#7dd3fc"/>
-                <!-- Turret Dome -->
                 <path d="M40 58 C40 44, 48 38, 60 38 C72 38, 80 44, 80 58 L76 74 L44 74 Z" fill="url(#domeGrad)" stroke="#93c5fd" stroke-width="1.8"/>
-                <!-- Hatch / Sight -->
                 <circle cx="60" cy="58" r="8.5" fill="#0f172a" stroke="#7dd3fc" stroke-width="2"/>
                 <circle cx="58" cy="56" r="2.6" fill="#38bdf8"/>
               </svg>
@@ -357,18 +365,13 @@
             </svg>
             <div class="turret-rotator" id="rotator-gun">
               <svg viewBox="0 0 120 96" fill="none">
-                <!-- Twin Gun Barrels -->
                 <rect x="46" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4"/>
                 <rect x="66" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4"/>
-                <!-- Glowing Barrel Rails -->
                 <rect x="49" y="12" width="2" height="28" fill="#38bdf8"/>
                 <rect x="69" y="12" width="2" height="28" fill="#38bdf8"/>
-                <!-- Muzzle Tips -->
                 <rect x="45" y="4" width="10" height="6" rx="1.5" fill="#f59e0b"/>
                 <rect x="65" y="4" width="10" height="6" rx="1.5" fill="#f59e0b"/>
-                <!-- Tactical Receiver Body -->
                 <path d="M40 46 L46 38 L74 38 L80 46 L78 72 L42 72 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
-                <!-- Red Dot Optical Core -->
                 <rect x="54" y="46" width="12" height="18" rx="4" fill="#0f172a" stroke="#fb7185" stroke-width="1.8"/>
                 <circle cx="60" cy="55" r="3" fill="#fb7185"/>
               </svg>
@@ -383,21 +386,44 @@
             </svg>
             <div class="turret-rotator" id="rotator-cannon">
               <svg viewBox="0 0 120 96" fill="none">
-                <!-- Outer Energy Prongs -->
                 <path d="M45 14 L51 14 L53 46 L43 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4"/>
                 <path d="M69 14 L75 14 L77 46 L67 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4"/>
-                <!-- Central Plasma Accelerator Core -->
                 <rect x="55" y="6" width="10" height="44" rx="4" fill="#e879f9" opacity="0.85"/>
                 <rect x="58" y="8" width="4" height="38" rx="2" fill="#ffffff"/>
-                <!-- Energy Rings -->
                 <rect x="44" y="20" width="32" height="4" rx="2" fill="#38bdf8"/>
                 <rect x="43" y="32" width="34" height="4" rx="2" fill="#a855f7"/>
-                <!-- Cannon Core -->
                 <circle cx="60" cy="58" r="17" fill="#312e81" stroke="#c084fc" stroke-width="2.2"/>
                 <circle cx="60" cy="58" r="8" fill="#e879f9"/>
                 <circle cx="60" cy="58" r="4" fill="#ffffff"/>
               </svg>
             </div>
+          </div>
+        </div>
+
+        <!-- Origami Paper Boat (Rain Mode only, matching reference screenshot!) -->
+        <div class="boat-anchor rain-only" id="boat-anchor" aria-hidden="true">
+          <div class="paper-boat" id="paper-boat">
+            <svg viewBox="0 0 110 82" fill="none">
+              <defs>
+                <linearGradient id="boatHull" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#f8fafc"/>
+                  <stop offset="100%" stop-color="#cbd5e1"/>
+                </linearGradient>
+                <linearGradient id="sailShade" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#94a3b8"/>
+                </linearGradient>
+              </defs>
+              <!-- Mast & Red Pennant -->
+              <line x1="55" y1="12" x2="55" y2="54" stroke="#94a3b8" stroke-width="2.8" stroke-linecap="round"/>
+              <path d="M56 19 L72 25 L56 30 Z" fill="#ef4444"/>
+              <circle cx="55" cy="11" r="5" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.5"/>
+              <!-- Center Origami Peak -->
+              <polygon points="55,28 36,56 74,56" fill="url(#sailShade)" stroke="#e2e8f0" stroke-width="1.2"/>
+              <!-- Boat Hull -->
+              <polygon points="14,54 96,54 81,72 29,72" fill="url(#boatHull)" stroke="#e2e8f0" stroke-width="1.4"/>
+              <polygon points="14,54 55,54 45,72 29,72" fill="#e2e8f0" opacity="0.55"/>
+            </svg>
           </div>
         </div>
 
@@ -412,15 +438,41 @@
         <!-- Virtual Keyboard Drawer -->
         <div class="virtual-keyboard hidden" id="virtual-keyboard" aria-label="Bàn phím ảo"></div>
 
-        <!-- Start / Setup Overlay -->
-        <div class="overlay-backdrop" id="start-overlay">
+        <!-- =================================================================
+             1. GAME SELECTION HUB (Clean & Minimalist)
+             ================================================================= -->
+        <div class="overlay-backdrop" id="hub-overlay">
+          <div class="glass-card hub-card">
+            <h2 class="hub-title">Chọn trò chơi</h2>
+
+            <div class="hub-grid">
+              <button class="game-choice-card" id="choose-game-shooter" type="button">
+                <span class="gc-emoji">🚀</span>
+                <strong class="gc-name">Luyện Gõ</strong>
+                <span class="gc-sub">Bắn từ vựng B1–C2</span>
+              </button>
+
+              <button class="game-choice-card" id="choose-game-rain" type="button">
+                <span class="gc-emoji">🌧️</span>
+                <strong class="gc-name">Mưa Từ Vựng</strong>
+                <span class="gc-sub" id="hub-rain-count">Ôn chính tả · 0 từ đã bắn</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================================================
+             2A. GAME 1 SETUP OVERLAY (Luyện Gõ · Bắn Từ & Boss)
+             ================================================================= -->
+        <div class="overlay-backdrop hidden" id="start-overlay">
           <div class="glass-card start-card">
             <div class="start-header">
               <div class="start-rocket-badge">🛡️</div>
-              <div>
-                <h2>Từ Vựng B1–C2 &amp; Boss Collocations</h2>
-                <p><strong>4.258 từ đơn</strong> + <strong>500 Collocations Boss</strong> cuối mỗi màn — bắn hạ để hiện <strong>nghĩa tiếng Việt &amp; từ loại</strong>!</p>
+              <div style="flex:1;">
+                <h2>Luyện Gõ · Từ Vựng B1–C2 &amp; Boss</h2>
+                <p><strong>4.258 từ đơn</strong> + <strong>500 Collocations Boss</strong> cuối mỗi màn — bắn hạ để hiện <strong>nghĩa tiếng Việt, từ loại &amp; phát âm</strong>!</p>
               </div>
+              <button class="btn-ghost btn-mini-back" id="btn-back-hub-1">← Đổi game</button>
             </div>
 
             <div class="setup-section">
@@ -474,10 +526,13 @@
             </div>
 
             <div class="setup-toggles">
-              <label class="toggle-item">
-                <input type="checkbox" id="opt-speak" checked />
-                <span>🔊 Tự động phát âm tiếng Anh khi bắn hạ</span>
-              </label>
+              <div class="toggle-row-split" style="align-items:center;justify-content:space-between;">
+                <label class="toggle-item">
+                  <input type="checkbox" id="opt-speak" checked />
+                  <span>🔊 Tự động phát âm tiếng Anh khi bắn hạ</span>
+                </label>
+                <button type="button" class="speak-test-chip" id="btn-test-voice-1">🔊 Thử phát âm</button>
+              </div>
               <label class="toggle-item">
                 <input type="checkbox" id="opt-show-level" checked />
                 <span>🏷️ Hiện nhãn cấp độ (B1–C2) trên mục tiêu</span>
@@ -498,12 +553,92 @@
 
             <div class="start-actions">
               <button class="btn-primary btn-glow" id="btn-start-game">
-                <span>Vào trận ngay</span>
+                <span>Vào trận Luyện Gõ</span>
                 <span class="btn-arrow">→</span>
               </button>
               <button class="btn-secondary" id="btn-open-notebook-start">
-                📚 Kho 4,758 từ &amp; Boss
+                📚 Kho 4,758 từ
               </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================================================
+             2B. GAME 2 SETUP OVERLAY (Mưa Từ Vựng · Kiểm Tra Chính Tả)
+             ================================================================= -->
+        <div class="overlay-backdrop hidden" id="rain-start-overlay">
+          <div class="glass-card start-card rain-setup-card">
+            <div class="start-header">
+              <div class="start-rocket-badge rain-badge">🌧️</div>
+              <div style="flex:1;">
+                <h2>Mưa Từ Vựng · Kiểm Tra Chính Tả</h2>
+                <p>Đọc <strong>nghĩa tiếng Việt</strong> đang rơi, nhớ lại từ tiếng Anh và gõ để bắn hạ! <strong>Chỉ dùng những từ bạn đã bắn hạ ở game Luyện Gõ.</strong></p>
+              </div>
+              <button class="btn-ghost btn-mini-back" id="btn-back-hub-2">← Đổi game</button>
+            </div>
+
+            <!-- Empty-pool alert if 0 words shot down -->
+            <div class="rain-empty-alert hidden" id="rain-empty-alert">
+              <p>🌊 Bạn chưa bắn hạ từ nào ở game <strong>Luyện Gõ</strong>! Hãy bắn hạ ít nhất 1 từ ở game Luyện Gõ trước để mở khóa kho ôn tập chính tả nhé.</p>
+              <button class="btn-primary" id="btn-goto-shooter-empty" style="margin-top:8px;">🚀 Qua Luyện Gõ thu thập từ ngay →</button>
+            </div>
+
+            <div id="rain-setup-body">
+              <div class="setup-section">
+                <label class="setup-label">Nguồn từ ôn tập (từ kho đã bắn hạ) <span class="setup-hint" id="rain-pool-hint">(0 từ sẵn sàng)</span></label>
+                <div class="chip-group" id="rain-source-group">
+                  <button class="chip active" data-source="all">Tất cả đã bắn hạ</button>
+                  <button class="chip" data-source="recent20">20 từ bắn gần nhất</button>
+                  <button class="chip" data-source="session">Vừa bắn phiên này</button>
+                </div>
+              </div>
+
+              <div class="setup-grid">
+                <div class="setup-section">
+                  <label class="setup-label" for="rain-kind-select">Loại mục tiêu</label>
+                  <select id="rain-kind-select" class="glass-select">
+                    <option value="WORDS_ONLY">Chỉ từ đơn đã bắn (khuyên dùng)</option>
+                    <option value="ALL">Cả từ đơn &amp; Collocations đã bắn</option>
+                    <option value="COLLOCS_ONLY">Chỉ Boss Collocations đã bắn</option>
+                  </select>
+                </div>
+
+                <div class="setup-section">
+                  <label class="setup-label">Tốc độ mưa rơi</label>
+                  <div class="chip-group compact" id="rain-speed-group">
+                    <button class="chip" data-speed="slow">🐢 Rất chậm</button>
+                    <button class="chip active" data-speed="chill">Thư giãn</button>
+                    <button class="chip" data-speed="normal">Tiêu chuẩn</button>
+                    <button class="chip" data-speed="fast">Thử thách</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setup-toggles">
+                <div class="toggle-row-split" style="align-items:center;justify-content:space-between;">
+                  <label class="toggle-item">
+                    <input type="checkbox" id="rain-opt-speak" checked />
+                    <span>🔊 Phát âm từ tiếng Anh ngay khi điền đúng</span>
+                  </label>
+                  <button type="button" class="speak-test-chip" id="btn-test-voice-2">🔊 Thử phát âm</button>
+                </div>
+                <label class="toggle-item">
+                  <input type="checkbox" id="rain-opt-pos" checked />
+                  <span>🏷️ Hiện gợi ý từ loại (n / v / adj) cạnh nghĩa tiếng Việt</span>
+                </label>
+              </div>
+
+              <div class="ime-tip">💡 Gõ bắt đầu từ <strong>chữ cái đầu màu vàng</strong> để khóa mục tiêu (vd: thấy <code>p _ _ _ _ _ _</code> thì gõ <code>package</code>). Quên chữ tiếp theo? Nhấn phím <strong>?</strong> (hoặc <strong>/</strong>) để mở gợi ý 1 chữ cái!</div>
+
+              <div class="start-actions">
+                <button class="btn-primary btn-glow rain-btn" id="btn-start-rain">
+                  <span>Bắt đầu Mưa Từ Vựng ⛵</span>
+                  <span class="btn-arrow">→</span>
+                </button>
+                <button class="btn-secondary" id="btn-open-notebook-rain">
+                  📚 Xem từ đã bắn
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -514,15 +649,16 @@
             <h3>⏸ Đang tạm dừng</h3>
             <p class="muted-text" id="pause-subtitle">Mốc 1/20 · Technology</p>
             <div class="vertical-actions">
-              <button class="btn-primary" id="btn-resume">Tiếp tục chiến đấu</button>
-              <button class="btn-secondary" id="btn-restart-milestone">Chơi lại mốc này</button>
+              <button class="btn-primary" id="btn-resume">Tiếp tục chơi</button>
+              <button class="btn-secondary" id="btn-restart-milestone">Chơi lại ván này</button>
               <button class="btn-secondary" id="btn-pause-notebook">Xem sổ từ vựng</button>
-              <button class="btn-ghost" id="btn-pause-menu">Về màn hình chính</button>
+              <button class="btn-ghost" id="btn-pause-menu">Về cài đặt game</button>
+              <button class="btn-ghost" id="btn-pause-hub">Đổi sang game khác</button>
             </div>
           </div>
         </div>
 
-        <!-- Milestone Complete / Game Over Summary Modal -->
+        <!-- Result Summary Modal -->
         <div class="overlay-backdrop hidden" id="result-overlay">
           <div class="glass-card result-card">
             <div class="result-banner" id="result-banner">
@@ -553,14 +689,15 @@
             </div>
 
             <div class="review-header">
-              <h4>📖 Từ vựng &amp; Boss Collocations trong ván vừa chơi</h4>
+              <h4>📖 Từ vựng trong ván vừa chơi</h4>
               <span class="muted-text">Nhấn 🔊 để nghe lại phát âm</span>
             </div>
             <div class="review-list" id="result-review-list"></div>
 
             <div class="result-actions">
               <button class="btn-primary btn-glow" id="btn-next-milestone">Mốc tiếp theo →</button>
-              <button class="btn-secondary" id="btn-replay-milestone">Chơi lại mốc này</button>
+              <button class="btn-secondary rain-bridge-btn hidden" id="btn-practice-rain-now">🌧️ Ôn chính tả từ vừa bắn</button>
+              <button class="btn-secondary" id="btn-replay-milestone">Chơi lại</button>
               <button class="btn-ghost" id="btn-result-menu">Về menu</button>
             </div>
           </div>

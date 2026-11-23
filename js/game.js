@@ -1,6 +1,7 @@
 /* ==========================================================================
-   Luyện Gõ · B1–C2 Vocabulary + 500 Boss Collocations Game Engine
-   Features: Tank/Gun/Cannon Turrets, 4 Selectable Ammo Types, Boss Phase
+   Học Từ Vựng B1–C2 · Dual-Game Engine:
+   1. Luyện Gõ (Space Shooter + 500 Boss Collocations + Tank/Gun/Cannon)
+   2. Mưa Từ Vựng (Spelling Recall strictly from shot-down words!)
    ========================================================================== */
 
 (() => {
@@ -25,10 +26,10 @@
   };
 
   const SPEED_PRESETS = {
-    slow:   { baseSpeed: 19, maxSpeed: 30, bossSpeed: 16, spawnInterval: 3.15, minSpawn: 2.2, maxActive: 3 },
-    chill:  { baseSpeed: 33, maxSpeed: 54, bossSpeed: 28, spawnInterval: 2.35, minSpawn: 1.55, maxActive: 4 },
-    normal: { baseSpeed: 48, maxSpeed: 74, bossSpeed: 38, spawnInterval: 1.85, minSpawn: 1.15, maxActive: 5 },
-    fast:   { baseSpeed: 68, maxSpeed: 102, bossSpeed: 50, spawnInterval: 1.45, minSpawn: 0.85, maxActive: 6 }
+    slow:   { baseSpeed: 19, maxSpeed: 30, bossSpeed: 16, rainSpeed: 16, spawnInterval: 3.15, minSpawn: 2.2, maxActive: 3 },
+    chill:  { baseSpeed: 33, maxSpeed: 54, bossSpeed: 28, rainSpeed: 25, spawnInterval: 2.35, minSpawn: 1.55, maxActive: 4 },
+    normal: { baseSpeed: 48, maxSpeed: 74, bossSpeed: 38, rainSpeed: 36, spawnInterval: 1.85, minSpawn: 1.15, maxActive: 5 },
+    fast:   { baseSpeed: 68, maxSpeed: 102, bossSpeed: 50, rainSpeed: 48, spawnInterval: 1.45, minSpawn: 0.85, maxActive: 6 }
   };
 
   const BOSS_PHASES_PER_MILESTONE = 3;
@@ -40,7 +41,7 @@
     "Đỉnh quá!",
     "Hỏa lực cực mạnh!",
     "Bắn cực nét!",
-    "Học siêu đỉnh!"
+    "Nhớ siêu đỉnh!"
   ];
 
   // --------------------------------------------------------------------------
@@ -56,18 +57,25 @@
   let allLibrary = [];
   let progress = loadProgress();
   let prefs = loadPrefs();
+  const sessionMastered = new Set(); // Exact words shot down during this browser session
 
   const game = {
-    status: "menu", // menu | playing | paused | result
+    mode: "shooter",   // "shooter" (Luyện Gõ) | "rain" (Mưa Từ Vựng)
+    status: "hub",     // hub | menu | playing | paused | result
     levelFilter: prefs.levelFilter || "ALL",
     milestoneId: prefs.milestoneId || 1,
     speedKey: prefs.speedKey || "chill",
-    weaponType: prefs.weaponType || "tank",   // tank | gun | cannon
-    ammoType: prefs.ammoType || "bullet",     // bullet | laser | missile | plasma
+    weaponType: prefs.weaponType || "tank",
+    ammoType: prefs.ammoType || "bullet",
     endless: Boolean(prefs.endless),
     bossOnly: Boolean(prefs.bossOnly),
     showLevelOnPill: prefs.showLevelOnPill !== false,
     virtualKeyboardOpen: false,
+
+    // Rain Mode preferences
+    rainSource: prefs.rainSource || "all",       // all | recent20 | session
+    rainKind: prefs.rainKind || "WORDS_ONLY",    // WORDS_ONLY | ALL | COLLOCS_ONLY
+    rainShowPos: prefs.rainShowPos !== false,
 
     score: 0,
     lives: 3,
@@ -102,7 +110,7 @@
     lastDockWord: null
   };
 
-  // Canvas visual effects state (lively deep space + weapons)
+  // Canvas visual effects state (Space Mode + Rain Mode)
   const fx = {
     width: 1000,
     height: 600,
@@ -110,10 +118,12 @@
     nebulae: [],
     meteors: [],
     asteroids: [],
+    raindrops: [],
+    ripples: [],
     meteorTimer: 1.4,
     lasers: [],
-    projectiles: [], // bullets, homing missiles, plasma orbs
-    casings: [],     // ejected brass casings
+    projectiles: [],
+    casings: [],
     particles: [],
     rings: [],
     muzzleFlashes: []
@@ -134,7 +144,10 @@
     wordsLayer: document.getElementById("words-layer"),
     popupsLayer: document.getElementById("popups-layer"),
     dangerLine: document.getElementById("danger-line"),
+    oceanSurface: document.getElementById("ocean-surface"),
     turretAnchor: document.getElementById("turret-anchor"),
+    boatAnchor: document.getElementById("boat-anchor"),
+    paperBoat: document.getElementById("paper-boat"),
     weaponTank: document.getElementById("weapon-tank"),
     weaponGun: document.getElementById("weapon-gun"),
     weaponCannon: document.getElementById("weapon-cannon"),
@@ -143,6 +156,12 @@
     rotatorCannon: document.getElementById("rotator-cannon"),
     mascot: document.getElementById("mascot"),
     mascotBubble: document.getElementById("mascot-bubble"),
+
+    // Brand top bar
+    brandIconShooter: document.getElementById("brand-icon-shooter"),
+    brandIconRain: document.getElementById("brand-icon-rain"),
+    brandTitle: document.getElementById("brand-title"),
+    brandSubtitle: document.getElementById("brand-subtitle"),
 
     // Boss HUD
     bossHud: document.getElementById("boss-hud"),
@@ -191,11 +210,19 @@
     typingIndicator: document.getElementById("typing-indicator"),
     typingTyped: document.getElementById("typing-typed"),
     typingRemaining: document.getElementById("typing-remaining"),
+    typingHint: document.getElementById("typing-hint"),
     virtualKeyboard: document.getElementById("virtual-keyboard"),
     mobileInput: document.getElementById("mobile-input"),
 
-    // Overlays
+    // Hub Overlay
+    hubOverlay: document.getElementById("hub-overlay"),
+    chooseGameShooter: document.getElementById("choose-game-shooter"),
+    chooseGameRain: document.getElementById("choose-game-rain"),
+    hubRainCount: document.getElementById("hub-rain-count"),
+
+    // Game 1 Start Overlay
     startOverlay: document.getElementById("start-overlay"),
+    btnBackHub1: document.getElementById("btn-back-hub-1"),
     startLevelGroup: document.getElementById("start-level-group"),
     startWeaponGroup: document.getElementById("start-weapon-group"),
     startAmmoGroup: document.getElementById("start-ammo-group"),
@@ -203,18 +230,37 @@
     selectMilestone: document.getElementById("select-milestone"),
     speedGroup: document.getElementById("speed-group"),
     optSpeak: document.getElementById("opt-speak"),
+    btnTestVoice1: document.getElementById("btn-test-voice-1"),
     optShowLevel: document.getElementById("opt-show-level"),
     optBossOnly: document.getElementById("opt-boss-only"),
     optEndless: document.getElementById("opt-endless"),
     btnStartGame: document.getElementById("btn-start-game"),
     btnOpenNotebookStart: document.getElementById("btn-open-notebook-start"),
 
+    // Game 2 Rain Start Overlay
+    rainStartOverlay: document.getElementById("rain-start-overlay"),
+    btnBackHub2: document.getElementById("btn-back-hub-2"),
+    rainEmptyAlert: document.getElementById("rain-empty-alert"),
+    btnGotoShooterEmpty: document.getElementById("btn-goto-shooter-empty"),
+    rainSetupBody: document.getElementById("rain-setup-body"),
+    rainPoolHint: document.getElementById("rain-pool-hint"),
+    rainSourceGroup: document.getElementById("rain-source-group"),
+    rainKindSelect: document.getElementById("rain-kind-select"),
+    rainSpeedGroup: document.getElementById("rain-speed-group"),
+    rainOptSpeak: document.getElementById("rain-opt-speak"),
+    btnTestVoice2: document.getElementById("btn-test-voice-2"),
+    rainOptPos: document.getElementById("rain-opt-pos"),
+    btnStartRain: document.getElementById("btn-start-rain"),
+    btnOpenNotebookRain: document.getElementById("btn-open-notebook-rain"),
+
+    // Pause & Result Overlays
     pauseOverlay: document.getElementById("pause-overlay"),
     pauseSubtitle: document.getElementById("pause-subtitle"),
     btnResume: document.getElementById("btn-resume"),
     btnRestartMilestone: document.getElementById("btn-restart-milestone"),
     btnPauseNotebook: document.getElementById("btn-pause-notebook"),
     btnPauseMenu: document.getElementById("btn-pause-menu"),
+    btnPauseHub: document.getElementById("btn-pause-hub"),
 
     resultOverlay: document.getElementById("result-overlay"),
     resultEmoji: document.getElementById("result-emoji"),
@@ -226,6 +272,7 @@
     resCombo: document.getElementById("res-combo"),
     resultReviewList: document.getElementById("result-review-list"),
     btnNextMilestone: document.getElementById("btn-next-milestone"),
+    btnPracticeRainNow: document.getElementById("btn-practice-rain-now"),
     btnReplayMilestone: document.getElementById("btn-replay-milestone"),
     btnResultMenu: document.getElementById("btn-result-menu"),
 
@@ -272,15 +319,27 @@
       const raw = localStorage.getItem(STORAGE_PROGRESS_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
+        const masteredSet = new Set(parsed.mastered || []);
         return {
-          mastered: new Set(parsed.mastered || []),
+          mastered: masteredSet,
+          recentMastered: Array.isArray(parsed.recentMastered)
+            ? parsed.recentMastered.filter(w => masteredSet.has(w))
+            : Array.from(masteredSet).reverse(),
+          spelled: new Set(parsed.spelled || []),
           missed: new Set(parsed.missed || []),
           clearedMilestones: new Set(parsed.clearedMilestones || []),
           highScore: parsed.highScore || 0
         };
       }
     } catch (_) {}
-    return { mastered: new Set(), missed: new Set(), clearedMilestones: new Set(), highScore: 0 };
+    return {
+      mastered: new Set(),
+      recentMastered: [],
+      spelled: new Set(),
+      missed: new Set(),
+      clearedMilestones: new Set(),
+      highScore: 0
+    };
   }
 
   function saveProgress() {
@@ -289,6 +348,8 @@
         STORAGE_PROGRESS_KEY,
         JSON.stringify({
           mastered: Array.from(progress.mastered),
+          recentMastered: progress.recentMastered.slice(0, 250),
+          spelled: Array.from(progress.spelled),
           missed: Array.from(progress.missed),
           clearedMilestones: Array.from(progress.clearedMilestones),
           highScore: progress.highScore
@@ -296,6 +357,15 @@
       );
     } catch (_) {}
     updateNotebookBadge();
+    updateHubStats();
+  }
+
+  function recordMasteredWord(word) {
+    progress.mastered.add(word);
+    progress.missed.delete(word);
+    sessionMastered.add(word);
+    progress.recentMastered = [word, ...progress.recentMastered.filter(w => w !== word)].slice(0, 250);
+    saveProgress();
   }
 
   function loadPrefs() {
@@ -313,7 +383,10 @@
       autoSpeak: true,
       showLevelOnPill: true,
       endless: false,
-      bossOnly: false
+      bossOnly: false,
+      rainSource: "all",
+      rainKind: "WORDS_ONLY",
+      rainShowPos: true
     };
   }
 
@@ -331,7 +404,10 @@
           autoSpeak: audio.autoSpeak,
           showLevelOnPill: game.showLevelOnPill,
           endless: game.endless,
-          bossOnly: game.bossOnly
+          bossOnly: game.bossOnly,
+          rainSource: game.rainSource,
+          rainKind: game.rainKind,
+          rainShowPos: game.rainShowPos
         })
       );
     } catch (_) {}
@@ -391,7 +467,6 @@
   }
 
   function normalizeCollocEntry(raw) {
-    // [phrase, pattern, level, vietnamese_meaning, topicId]
     const phrase = String(raw[0] || "").trim().toLowerCase().replace(/\s+/g, " ");
     const pattern = String(raw[1] || "colloc").trim();
     const level = String(raw[2] || "B2").trim().toUpperCase();
@@ -471,6 +546,7 @@
 
     updatePoolHints();
     updateNotebookBadge();
+    updateHubStats();
   }
 
   function getFilteredPool(sourceList, forMilestone = !game.endless) {
@@ -479,6 +555,46 @@
       const matchTopic = !forMilestone || item.topicId === game.milestoneId;
       return matchLvl && matchTopic;
     });
+  }
+
+  // STRICTLY returns ONLY words/collocations the player has ALREADY shot down in Game 1!
+  function getRainPool() {
+    if (progress.mastered.size === 0) return [];
+
+    const byWord = new Map(allLibrary.map(item => [item.word, item]));
+    let wordKeys = [];
+
+    if (game.rainSource === "session" && sessionMastered.size > 0) {
+      wordKeys = Array.from(sessionMastered);
+    } else if (game.rainSource === "recent20") {
+      const recentList = progress.recentMastered.length
+        ? progress.recentMastered
+        : Array.from(progress.mastered).reverse();
+      wordKeys = recentList.slice(0, 20);
+    } else {
+      wordKeys = Array.from(progress.mastered);
+    }
+
+    let entries = wordKeys
+      .filter(w => progress.mastered.has(w))
+      .map(w => byWord.get(w))
+      .filter(Boolean);
+
+    // Filter by kind (single words vs collocations)
+    if (game.rainKind === "WORDS_ONLY") {
+      const onlyWords = entries.filter(e => !e.isColloc);
+      if (onlyWords.length) entries = onlyWords;
+    } else if (game.rainKind === "COLLOCS_ONLY") {
+      entries = entries.filter(e => e.isColloc);
+    }
+
+    // Respect top-bar CEFR filter when matching words exist
+    if (game.levelFilter !== "ALL") {
+      const lvlMatched = entries.filter(e => e.level === game.levelFilter);
+      if (lvlMatched.length) entries = lvlMatched;
+    }
+
+    return entries;
   }
 
   function shuffle(arr) {
@@ -491,6 +607,10 @@
   }
 
   function buildQueueForRun() {
+    if (game.mode === "rain") {
+      return shuffle(getRainPool());
+    }
+
     const pool = getFilteredPool(singleVocab, !game.endless);
     const fallback = pool.length ? pool : singleVocab;
 
@@ -520,7 +640,6 @@
     const fallback = pool.length ? pool : collocVocab;
 
     if (game.levelFilter === "ALL") {
-      // Escalate Boss Collocations: Wave 1 (B1/B2) -> Wave 2 (B2/C1) -> Wave 3 (C1/C2)
       const tier1 = shuffle(fallback.filter(c => c.level === "B1" || c.level === "B2"));
       const tier2 = shuffle(fallback.filter(c => c.level === "B2" || c.level === "C1"));
       const tier3 = shuffle(fallback.filter(c => c.level === "C1" || c.level === "C2"));
@@ -538,7 +657,6 @@
         return false;
       };
 
-      // Build clean escalating sequence of 3+ waves
       pushUnique(tier1);
       pushUnique(tier2);
       pushUnique(tier3);
@@ -555,7 +673,108 @@
   }
 
   // --------------------------------------------------------------------------
-  // Weapon & Ammo Management
+  // Mode Switching (Hub <-> Space Shooter <-> Rain Spelling)
+  // --------------------------------------------------------------------------
+  function applyModeTheme() {
+    const isRain = game.mode === "rain";
+    el.arena.classList.toggle("rain-mode", isRain);
+    el.brandIconShooter.classList.toggle("hidden", isRain);
+    el.brandIconRain.classList.toggle("hidden", !isRain);
+
+    if (isRain) {
+      el.brandTitle.textContent = "Mưa Từ Vựng";
+      el.brandSubtitle.textContent = "Đọc nghĩa đang rơi, nhớ ra từ tiếng Anh đã bắn hạ và gõ để bắn hạ";
+    } else {
+      el.brandTitle.textContent = "Luyện Gõ · Boss Collocations";
+      el.brandSubtitle.textContent = "Gõ các từ tiếng Anh B1–C2 đang rơi để bắn hạ & học nghĩa tiếng Việt";
+    }
+  }
+
+  function openHub() {
+    game.status = "hub";
+    game.inBossPhase = false;
+    clearArenaWords();
+    closeAllModals();
+    el.arena.classList.remove("boss-mode");
+    el.bossHud.classList.add("hidden");
+    el.startOverlay.classList.add("hidden");
+    el.rainStartOverlay.classList.add("hidden");
+    el.pauseOverlay.classList.add("hidden");
+    el.resultOverlay.classList.add("hidden");
+    el.hubOverlay.classList.remove("hidden");
+    updateHubStats();
+    syncPauseIcon();
+    updateHUD();
+  }
+
+  function openGameSetup(mode) {
+    game.mode = mode;
+    game.status = "menu";
+    game.inBossPhase = false;
+    clearArenaWords();
+    closeAllModals();
+    applyModeTheme();
+
+    el.arena.classList.remove("boss-mode");
+    el.bossHud.classList.add("hidden");
+    el.hubOverlay.classList.add("hidden");
+    el.pauseOverlay.classList.add("hidden");
+    el.resultOverlay.classList.add("hidden");
+
+    if (mode === "rain") {
+      el.startOverlay.classList.add("hidden");
+      el.rainStartOverlay.classList.remove("hidden");
+      syncRainSetupControls();
+    } else {
+      el.rainStartOverlay.classList.add("hidden");
+      el.startOverlay.classList.remove("hidden");
+      syncStartOverlayControls();
+    }
+    syncPauseIcon();
+    updateHUD();
+  }
+
+  function updateHubStats() {
+    const masteredCnt = progress.mastered.size;
+    el.hubRainCount.textContent = masteredCnt > 0
+      ? `Ôn chính tả · ${masteredCnt} từ đã bắn`
+      : "Cần bắn từ ở Luyện Gõ trước";
+  }
+
+  function syncRainSetupControls() {
+    const masteredCnt = progress.mastered.size;
+    const hasAny = masteredCnt > 0;
+
+    el.rainEmptyAlert.classList.toggle("hidden", hasAny);
+    el.rainSetupBody.classList.toggle("hidden", !hasAny);
+
+    // Update source chip counts
+    const sessionBtn = el.rainSourceGroup.querySelector('[data-source="session"]');
+    if (sessionBtn) {
+      sessionBtn.textContent = `Vừa bắn phiên này (${sessionMastered.size})`;
+      sessionBtn.disabled = sessionMastered.size === 0;
+      if (game.rainSource === "session" && sessionMastered.size === 0) {
+        game.rainSource = "all";
+      }
+    }
+
+    el.rainSourceGroup.querySelectorAll(".chip").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.source === game.rainSource);
+    });
+    el.rainSpeedGroup.querySelectorAll(".chip").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.speed === game.speedKey);
+    });
+    el.rainKindSelect.value = game.rainKind;
+    el.rainOptSpeak.checked = audio.autoSpeak;
+    el.rainOptPos.checked = game.rainShowPos;
+
+    const pool = getRainPool();
+    el.rainPoolHint.textContent = `(${pool.length} từ hợp lệ sẵn sàng ôn)`;
+    el.btnStartRain.disabled = pool.length === 0;
+  }
+
+  // --------------------------------------------------------------------------
+  // Weapon & Ammo Management (Space Mode)
   // --------------------------------------------------------------------------
   function getActiveRotator() {
     if (game.weaponType === "gun") return el.rotatorGun;
@@ -571,9 +790,7 @@
     el.weaponTank.classList.toggle("hidden", type !== "tank");
     el.weaponGun.classList.toggle("hidden", type !== "gun");
     el.weaponCannon.classList.toggle("hidden", type !== "cannon");
-
     el.startWeaponGroup.querySelectorAll(".chip").forEach(b => b.classList.toggle("active", b.dataset.weapon === type));
-
     getActiveRotator().style.transform = `rotate(${game.turretAngle.toFixed(1)}deg)`;
   }
 
@@ -581,12 +798,17 @@
     if (!["bullet", "laser", "missile", "plasma"].includes(type)) return;
     game.ammoType = type;
     savePrefs();
-
     el.startAmmoGroup.querySelectorAll(".chip").forEach(b => b.classList.toggle("active", b.dataset.ammo === type));
   }
 
-  function getTurretMuzzlePoint() {
+  function getShooterOriginPoint() {
     const arenaRect = el.arena.getBoundingClientRect();
+    if (game.mode === "rain") {
+      const boatRect = el.boatAnchor.getBoundingClientRect();
+      const cx = boatRect.left - arenaRect.left + boatRect.width * 0.5;
+      const cy = boatRect.top - arenaRect.top + 12;
+      return { x: cx, y: cy, pivotX: cx, pivotY: cy + 28 };
+    }
     const anchorRect = el.turretAnchor.getBoundingClientRect();
     const pivotX = anchorRect.left - arenaRect.left + anchorRect.width * 0.5;
     const pivotY = anchorRect.top - arenaRect.top + anchorRect.height * 0.6;
@@ -601,6 +823,7 @@
   }
 
   function aimTurretAt(tx, ty) {
+    if (game.mode === "rain") return;
     const arenaRect = el.arena.getBoundingClientRect();
     const anchorRect = el.turretAnchor.getBoundingClientRect();
     const pivotX = anchorRect.left - arenaRect.left + anchorRect.width * 0.5;
@@ -612,19 +835,25 @@
     getActiveRotator().style.transform = `rotate(${game.turretAngle.toFixed(1)}deg)`;
   }
 
-  function triggerTurretRecoil() {
+  function triggerShooterRecoil() {
+    if (game.mode === "rain") {
+      el.paperBoat.classList.add("recoil");
+      clearTimeout(triggerShooterRecoil._rt);
+      triggerShooterRecoil._rt = setTimeout(() => el.paperBoat.classList.remove("recoil"), 110);
+      return;
+    }
     const rot = getActiveRotator();
     rot.classList.add("recoil");
     rot.style.transform = `rotate(${game.turretAngle.toFixed(1)}deg) translateY(5px) scale(0.97)`;
-    clearTimeout(triggerTurretRecoil._t);
-    triggerTurretRecoil._t = setTimeout(() => {
+    clearTimeout(triggerShooterRecoil._t);
+    triggerShooterRecoil._t = setTimeout(() => {
       rot.classList.remove("recoil");
       rot.style.transform = `rotate(${game.turretAngle.toFixed(1)}deg)`;
     }, 85);
   }
 
   // --------------------------------------------------------------------------
-  // Canvas FX (Starfield, 4 Ammo Projectiles, Shell Casings, Explosions)
+  // Canvas FX (Lively Space Mode + Stormy Rain Mode + Weapon Projectiles)
   // --------------------------------------------------------------------------
   function resizeCanvas() {
     const rect = el.arena.getBoundingClientRect();
@@ -636,25 +865,17 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     if (!fx.stars.length) {
-      initSpaceBackdrop();
+      initBackdrops();
     } else {
-      fx.stars.forEach(s => {
-        s.x = Math.random() * fx.width;
-        s.y = Math.random() * fx.height;
-      });
-      fx.nebulae.forEach(n => {
-        n.x = Math.random() * fx.width;
-        n.y = Math.random() * fx.height;
-      });
-      fx.asteroids.forEach(a => {
-        a.x = Math.random() * fx.width;
-        a.y = Math.random() * fx.height;
-      });
+      fx.stars.forEach(s => { s.x = Math.random() * fx.width; s.y = Math.random() * fx.height; });
+      fx.nebulae.forEach(n => { n.x = Math.random() * fx.width; n.y = Math.random() * fx.height; });
+      fx.asteroids.forEach(a => { a.x = Math.random() * fx.width; a.y = Math.random() * fx.height; });
+      fx.raindrops.forEach(r => { r.x = Math.random() * fx.width; r.y = Math.random() * fx.height; });
     }
   }
 
-  function initSpaceBackdrop() {
-    // 1. 3-Layer Parallax Starfield (175 stars)
+  function initBackdrops() {
+    // Space stars (3 layers)
     fx.stars = [];
     const palette = ["#ffffff", "#ffffff", "#bfdbfe", "#e9d5ff", "#fde68a", "#a5f3fc"];
     for (let i = 0; i < 175; i++) {
@@ -672,7 +893,7 @@
       });
     }
 
-    // 2. Drifting Luminous Nebula Clouds
+    // Space nebulae
     fx.nebulae = [
       { x: fx.width * 0.2, y: fx.height * 0.35, r: 290, vx: 6, vy: 3, color: "124, 58, 237", baseA: 0.14, phase: 0 },
       { x: fx.width * 0.78, y: fx.height * 0.48, r: 260, vx: -5, vy: 4, color: "14, 165, 233", baseA: 0.13, phase: 1.7 },
@@ -681,15 +902,13 @@
       { x: fx.width * 0.85, y: fx.height * 0.76, r: 210, vx: -6, vy: 2, color: "45, 212, 191", baseA: 0.09, phase: 2.3 }
     ];
 
-    // 3. Subtle Deep-Space Drifting Asteroids
+    // Space asteroids
     fx.asteroids = [];
     for (let i = 0; i < 6; i++) {
       const sides = 6 + Math.floor(Math.random() * 3);
       const pts = [];
       for (let k = 0; k < sides; k++) {
-        const ang = (Math.PI * 2 * k) / sides;
-        const rad = 0.72 + Math.random() * 0.32;
-        pts.push({ ang, rad });
+        pts.push({ ang: (Math.PI * 2 * k) / sides, rad: 0.72 + Math.random() * 0.32 });
       }
       fx.asteroids.push({
         x: Math.random() * fx.width,
@@ -703,12 +922,24 @@
         alpha: 0.11 + Math.random() * 0.09
       });
     }
+
+    // Raindrops for Mưa Từ Vựng!
+    fx.raindrops = [];
+    for (let i = 0; i < 85; i++) {
+      fx.raindrops.push({
+        x: Math.random() * fx.width,
+        y: Math.random() * fx.height,
+        len: 10 + Math.random() * 16,
+        vy: 260 + Math.random() * 240,
+        alpha: 0.12 + Math.random() * 0.25
+      });
+    }
   }
 
   function spawnMeteor() {
     const startX = fx.width * (0.15 + Math.random() * 0.85);
     const startY = -10 + Math.random() * (fx.height * 0.35);
-    const angle = (128 + Math.random() * 28) * (Math.PI / 180); // diagonal down-left
+    const angle = (128 + Math.random() * 28) * (Math.PI / 180);
     const speed = 520 + Math.random() * 360;
     const colors = ["#7dd3fc", "#fde68a", "#e9d5ff", "#ffffff"];
     fx.meteors.push({
@@ -718,16 +949,30 @@
       vy: Math.sin(angle) * speed,
       len: 75 + Math.random() * 75,
       color: colors[Math.floor(Math.random() * colors.length)],
-      life: 0.55 + Math.random() * 0.45,
-      maxLife: 1.0
+      life: 0.55 + Math.random() * 0.45
     });
   }
 
   function fireAmmoAt(tx, ty, accentColor, isFinishingShot = false) {
-    const muzzle = getTurretMuzzlePoint();
-    const ammo = game.ammoType;
+    const muzzle = getShooterOriginPoint();
 
-    // Muzzle flash burst at barrel tip
+    // Rain mode fires crisp luminous aqua-gold bolt from the origami boat mast
+    if (game.mode === "rain") {
+      fx.lasers.push({
+        x1: muzzle.x,
+        y1: muzzle.y,
+        x2: tx,
+        y2: ty,
+        color: isFinishingShot ? "#fde047" : "#38bdf8",
+        thick: isFinishingShot,
+        life: isFinishingShot ? 0.22 : 0.14,
+        maxLife: isFinishingShot ? 0.22 : 0.14
+      });
+      spawnImpactSparks(tx, ty, "#7dd3fc", isFinishingShot ? 10 : 5);
+      return;
+    }
+
+    const ammo = game.ammoType;
     fx.muzzleFlashes.push({
       x: muzzle.x,
       y: muzzle.y,
@@ -754,7 +999,6 @@
     }
 
     if (ammo === "bullet") {
-      // Eject spinning brass shell casing from weapon breech
       const ejectDir = Math.random() < 0.5 ? 1 : -1;
       fx.casings.push({
         x: muzzle.pivotX + ejectDir * 14,
@@ -766,7 +1010,6 @@
         life: 0.65
       });
 
-      // High-velocity golden tracer bullet(s) — twin burst for gun!
       const shots = game.weaponType === "gun" ? [-6, 6] : [0];
       shots.forEach(off => {
         const rad = (game.turretAngle * Math.PI) / 180;
@@ -774,41 +1017,23 @@
         const sy = muzzle.y + Math.sin(rad) * off;
         fx.projectiles.push({
           type: "bullet",
-          x: sx,
-          y: sy,
-          sx,
-          sy,
+          x: sx, y: sy, sx, sy,
           tx: tx + (Math.random() - 0.5) * 12,
           ty: ty + (Math.random() - 0.5) * 8,
-          t: 0,
-          duration: 0.12,
-          color: "#fde047",
-          isFinal: isFinishingShot
+          t: 0, duration: 0.12, color: "#fde047", isFinal: isFinishingShot
         });
       });
       return;
     }
 
     if (ammo === "missile") {
-      // Curved homing micro-missile with smoke trail!
       const curveSide = (Math.random() < 0.5 ? -1 : 1) * (55 + Math.random() * 65);
-      const midX = (muzzle.x + tx) / 2 + curveSide;
-      const midY = (muzzle.y + ty) / 2 + 25;
       fx.projectiles.push({
         type: "missile",
-        x: muzzle.x,
-        y: muzzle.y,
-        sx: muzzle.x,
-        sy: muzzle.y,
-        cx: midX,
-        cy: midY,
-        tx,
-        ty,
-        t: 0,
-        duration: 0.28,
-        angle: (game.turretAngle * Math.PI) / 180,
-        color: "#fb923c",
-        isFinal: isFinishingShot
+        x: muzzle.x, y: muzzle.y, sx: muzzle.x, sy: muzzle.y,
+        cx: (muzzle.x + tx) / 2 + curveSide,
+        cy: (muzzle.y + ty) / 2 + 25,
+        tx, ty, t: 0, duration: 0.28, color: "#fb923c", isFinal: isFinishingShot
       });
       return;
     }
@@ -816,16 +1041,8 @@
     if (ammo === "plasma") {
       fx.projectiles.push({
         type: "plasma",
-        x: muzzle.x,
-        y: muzzle.y,
-        sx: muzzle.x,
-        sy: muzzle.y,
-        tx,
-        ty,
-        t: 0,
-        duration: 0.19,
-        color: "#c084fc",
-        isFinal: isFinishingShot
+        x: muzzle.x, y: muzzle.y, sx: muzzle.x, sy: muzzle.y,
+        tx, ty, t: 0, duration: 0.19, color: "#c084fc", isFinal: isFinishingShot
       });
     }
   }
@@ -835,8 +1052,7 @@
       const ang = Math.random() * Math.PI * 2;
       const spd = 60 + Math.random() * 150;
       fx.particles.push({
-        x,
-        y,
+        x, y,
         vx: Math.cos(ang) * spd,
         vy: Math.sin(ang) * spd,
         r: 1.6 + Math.random() * 2.2,
@@ -849,33 +1065,19 @@
 
   function spawnExplosion(x, y, color, isBoss = false) {
     fx.rings.push({
-      x,
-      y,
-      r: 14,
-      maxR: isBoss ? 125 : 68,
+      x, y, r: 14, maxR: isBoss ? 125 : 68,
       color: isBoss ? "#fbbf24" : color,
-      life: isBoss ? 0.52 : 0.36,
-      maxLife: isBoss ? 0.52 : 0.36
+      life: isBoss ? 0.52 : 0.36, maxLife: isBoss ? 0.52 : 0.36
     });
     if (isBoss) {
-      fx.rings.push({
-        x,
-        y,
-        r: 6,
-        maxR: 92,
-        color: "#f43f5e",
-        life: 0.44,
-        maxLife: 0.44
-      });
+      fx.rings.push({ x, y, r: 6, maxR: 92, color: "#f43f5e", life: 0.44, maxLife: 0.44 });
     }
-
     const count = isBoss ? 44 : 24;
     for (let i = 0; i < count; i++) {
       const ang = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.35;
       const spd = (isBoss ? 105 : 70) + Math.random() * (isBoss ? 280 : 210);
       fx.particles.push({
-        x,
-        y,
+        x, y,
         vx: Math.cos(ang) * spd,
         vy: Math.sin(ang) * spd,
         r: (isBoss ? 2.8 : 2) + Math.random() * 3.4,
@@ -886,10 +1088,60 @@
     }
   }
 
-  function renderCanvas(dt, nowSec) {
-    ctx.clearRect(0, 0, fx.width, fx.height);
+  function renderRainBackdrop(dt, nowSec) {
+    // 1. Falling Rain Streaks
+    ctx.save();
+    ctx.lineCap = "round";
+    for (const r of fx.raindrops) {
+      r.y += r.vy * dt;
+      if (r.y > fx.height - 34) {
+        if (Math.random() < 0.25 && fx.ripples.length < 18) {
+          fx.ripples.push({ x: r.x, y: fx.height - 32, r: 2, maxR: 16 + Math.random() * 14, life: 0.45, maxLife: 0.45 });
+        }
+        r.y = -r.len - Math.random() * 40;
+        r.x = Math.random() * fx.width;
+      }
+      ctx.globalAlpha = r.alpha;
+      ctx.strokeStyle = "#93c5fd";
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.moveTo(r.x, r.y);
+      ctx.lineTo(r.x, r.y + r.len);
+      ctx.stroke();
+    }
+    ctx.restore();
 
-    // 0. Drifting Breathing Nebula Clouds
+    // 2. Gentle Ocean Wave Highlight & Rain Ripples
+    ctx.save();
+    ctx.strokeStyle = "rgba(125, 211, 252, 0.38)";
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    const baseY = fx.height - 34;
+    for (let x = 0; x <= fx.width; x += 24) {
+      const wy = baseY + Math.sin(x * 0.018 + nowSec * 2.2) * 2.4;
+      if (x === 0) ctx.moveTo(x, wy);
+      else ctx.lineTo(x, wy);
+    }
+    ctx.stroke();
+
+    for (let i = fx.ripples.length - 1; i >= 0; i--) {
+      const rp = fx.ripples[i];
+      rp.life -= dt;
+      if (rp.life <= 0) { fx.ripples.splice(i, 1); continue; }
+      const p = 1 - rp.life / rp.maxLife;
+      const rx = rp.r + (rp.maxR - rp.r) * p;
+      ctx.globalAlpha = (1 - p) * 0.45;
+      ctx.strokeStyle = "#7dd3fc";
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.ellipse(rp.x, rp.y, rx, rx * 0.26, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function renderSpaceBackdrop(dt, nowSec) {
+    // 0. Drifting Nebulae
     for (const n of fx.nebulae) {
       n.x += n.vx * dt;
       n.y += n.vy * dt;
@@ -909,7 +1161,7 @@
       ctx.fill();
     }
 
-    // 0b. Subtle Perspective Sci-Fi Defense Grid above bottom horizon
+    // 0b. Horizon Defense Grid
     const horizonTop = fx.height - 110;
     const horizonBot = fx.height - 24;
     ctx.save();
@@ -935,7 +1187,7 @@
     }
     ctx.restore();
 
-    // 0c. Distant Drifting Space Asteroids
+    // 0c. Distant Asteroids
     for (const ast of fx.asteroids) {
       ast.x += ast.vx * dt;
       ast.y += ast.vy * dt;
@@ -968,10 +1220,7 @@
     for (const s of fx.stars) {
       const speedMult = game.status === "playing" ? (game.inBossPhase ? 1.8 : 1.0) : 0.45;
       s.y += s.drift * speedMult * dt;
-      if (s.y > fx.height) {
-        s.y = -2;
-        s.x = Math.random() * fx.width;
-      }
+      if (s.y > fx.height) { s.y = -2; s.x = Math.random() * fx.width; }
       const tw = 0.52 + 0.48 * Math.sin(nowSec * s.speed + s.phase);
       ctx.globalAlpha = s.alpha * tw;
       ctx.fillStyle = s.hue;
@@ -993,7 +1242,7 @@
     }
     ctx.globalAlpha = 1;
 
-    // 1b. Shooting Stars / Meteors
+    // 1b. Meteors
     fx.meteorTimer -= dt;
     if (fx.meteorTimer <= 0) {
       spawnMeteor();
@@ -1025,15 +1274,24 @@
       ctx.moveTo(m.x, m.y);
       ctx.lineTo(tailX, tailY);
       ctx.stroke();
-
       ctx.fillStyle = "#ffffff";
       ctx.beginPath();
       ctx.arc(m.x, m.y, 1.8, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
+  }
 
-    // 2. Shockwave rings
+  function renderCanvas(dt, nowSec) {
+    ctx.clearRect(0, 0, fx.width, fx.height);
+
+    if (game.mode === "rain") {
+      renderRainBackdrop(dt, nowSec);
+    } else {
+      renderSpaceBackdrop(dt, nowSec);
+    }
+
+    // Shockwave rings
     for (let i = fx.rings.length - 1; i >= 0; i--) {
       const ring = fx.rings[i];
       ring.life -= dt;
@@ -1050,7 +1308,7 @@
       ctx.restore();
     }
 
-    // 3. Laser beams
+    // Laser / Boat energy bolts
     for (let i = fx.lasers.length - 1; i >= 0; i--) {
       const l = fx.lasers[i];
       l.life -= dt;
@@ -1060,7 +1318,7 @@
       ctx.lineCap = "round";
       ctx.globalAlpha = alpha * 0.58;
       ctx.strokeStyle = l.color;
-      ctx.lineWidth = l.thick ? 12 : 6.5;
+      ctx.lineWidth = l.thick ? 11 : 6;
       ctx.beginPath();
       ctx.moveTo(l.x1, l.y1);
       ctx.lineTo(l.x2, l.y2);
@@ -1068,7 +1326,7 @@
 
       ctx.globalAlpha = alpha;
       ctx.strokeStyle = "#fef9c3";
-      ctx.lineWidth = l.thick ? 3.8 : 2.2;
+      ctx.lineWidth = l.thick ? 3.5 : 2;
       ctx.beginPath();
       ctx.moveTo(l.x1, l.y1);
       ctx.lineTo(l.x2, l.y2);
@@ -1076,7 +1334,7 @@
       ctx.restore();
     }
 
-    // 4. Active Projectiles (Bullets, Homing Missiles, Plasma Orbs)
+    // Active Projectiles (Bullets, Homing Missiles, Plasma Orbs)
     for (let i = fx.projectiles.length - 1; i >= 0; i--) {
       const pr = fx.projectiles[i];
       const prevX = pr.x;
@@ -1099,13 +1357,11 @@
 
       const u = pr.t;
       if (pr.type === "missile") {
-        // Quadratic Bezier homing arc
         const inv = 1 - u;
         pr.x = inv * inv * pr.sx + 2 * inv * u * pr.cx + u * u * pr.tx;
         pr.y = inv * inv * pr.sy + 2 * inv * u * pr.cy + u * u * pr.ty;
         const ang = Math.atan2(pr.y - prevY, pr.x - prevX);
 
-        // Smoke & fire exhaust trail
         fx.particles.push({
           x: pr.x - Math.cos(ang) * 8,
           y: pr.y - Math.sin(ang) * 8,
@@ -1113,35 +1369,22 @@
           vy: (Math.random() - 0.5) * 26,
           r: 2.5 + Math.random() * 2.4,
           color: Math.random() < 0.45 ? "#fb923c" : "rgba(226, 232, 240, 0.75)",
-          life: 0.24,
-          maxLife: 0.24
+          life: 0.24, maxLife: 0.24
         });
 
         ctx.save();
         ctx.translate(pr.x, pr.y);
         ctx.rotate(ang);
-        // Missile body
         ctx.fillStyle = "#f8fafc";
         ctx.beginPath();
-        ctx.moveTo(11, 0);
-        ctx.lineTo(-6, -4);
-        ctx.lineTo(-9, 0);
-        ctx.lineTo(-6, 4);
-        ctx.closePath();
-        ctx.fill();
-        // Red nose tip
+        ctx.moveTo(11, 0); ctx.lineTo(-6, -4); ctx.lineTo(-9, 0); ctx.lineTo(-6, 4);
+        ctx.closePath(); ctx.fill();
         ctx.fillStyle = "#ef4444";
         ctx.beginPath();
-        ctx.moveTo(11, 0);
-        ctx.lineTo(4, -2.8);
-        ctx.lineTo(4, 2.8);
-        ctx.closePath();
-        ctx.fill();
-        // Tail flame
+        ctx.moveTo(11, 0); ctx.lineTo(4, -2.8); ctx.lineTo(4, 2.8);
+        ctx.closePath(); ctx.fill();
         ctx.fillStyle = "#fde047";
-        ctx.beginPath();
-        ctx.arc(-9, 0, 3.2, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(-9, 0, 3.2, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
       } else if (pr.type === "bullet") {
         pr.x = pr.sx + (pr.tx - pr.sx) * u;
@@ -1149,28 +1392,19 @@
         const tailU = Math.max(0, u - 0.28);
         const tailX = pr.sx + (pr.tx - pr.sx) * tailU;
         const tailY = pr.sy + (pr.ty - pr.sy) * tailU;
-
         ctx.save();
         ctx.lineCap = "round";
         ctx.strokeStyle = "rgba(251, 146, 60, 0.72)";
         ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.moveTo(tailX, tailY);
-        ctx.lineTo(pr.x, pr.y);
-        ctx.stroke();
-
+        ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(pr.x, pr.y); ctx.stroke();
         ctx.strokeStyle = "#fef9c3";
         ctx.lineWidth = 2.6;
-        ctx.beginPath();
-        ctx.moveTo(tailX, tailY);
-        ctx.lineTo(pr.x, pr.y);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(pr.x, pr.y); ctx.stroke();
         ctx.restore();
       } else if (pr.type === "plasma") {
         pr.x = pr.sx + (pr.tx - pr.sx) * u;
         pr.y = pr.sy + (pr.ty - pr.sy) * u;
         const pulse = 8 + Math.sin(nowSec * 36) * 2.2;
-
         ctx.save();
         const grad = ctx.createRadialGradient(pr.x, pr.y, 1, pr.x, pr.y, pulse * 1.9);
         grad.addColorStop(0, "#ffffff");
@@ -1178,23 +1412,20 @@
         grad.addColorStop(0.7, "rgba(56, 189, 248, 0.55)");
         grad.addColorStop(1, "rgba(56, 189, 248, 0)");
         ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(pr.x, pr.y, pulse * 1.9, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(pr.x, pr.y, pulse * 1.9, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
       }
     }
 
-    // 5. Ejected Brass Shell Casings
+    // Brass shell casings
     for (let i = fx.casings.length - 1; i >= 0; i--) {
       const c = fx.casings[i];
       c.life -= dt;
       if (c.life <= 0) { fx.casings.splice(i, 1); continue; }
-      c.vy += 420 * dt; // gravity
+      c.vy += 420 * dt;
       c.x += c.vx * dt;
       c.y += c.vy * dt;
       c.rot += c.vrot * dt;
-
       ctx.save();
       ctx.globalAlpha = Math.min(1, c.life * 2.5);
       ctx.translate(c.x, c.y);
@@ -1204,14 +1435,13 @@
       ctx.restore();
     }
 
-    // 6. Muzzle Flashes
+    // Muzzle Flashes
     for (let i = fx.muzzleFlashes.length - 1; i >= 0; i--) {
       const mf = fx.muzzleFlashes[i];
       mf.life -= dt;
       if (mf.life <= 0) { fx.muzzleFlashes.splice(i, 1); continue; }
-      const a = mf.life / mf.maxLife;
       ctx.save();
-      ctx.globalAlpha = a;
+      ctx.globalAlpha = mf.life / mf.maxLife;
       ctx.translate(mf.x, mf.y);
       ctx.rotate(mf.angle);
       const grad = ctx.createRadialGradient(0, 0, 1, 0, -4, mf.size);
@@ -1219,13 +1449,11 @@
       grad.addColorStop(0.45, mf.color);
       grad.addColorStop(1, "rgba(255,255,255,0)");
       ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(0, -4, mf.size, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(0, -4, mf.size, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
 
-    // 7. Particles
+    // Particles
     for (let i = fx.particles.length - 1; i >= 0; i--) {
       const p = fx.particles[i];
       p.life -= dt;
@@ -1261,7 +1489,7 @@
   }
 
   function renderBossHud() {
-    if (!game.inBossPhase) {
+    if (game.mode === "rain" || !game.inBossPhase) {
       el.bossHud.classList.add("hidden");
       el.arena.classList.remove("boss-mode");
       return;
@@ -1269,11 +1497,6 @@
 
     el.bossHud.classList.remove("hidden");
     el.arena.classList.add("boss-mode");
-
-    const topic = topicMap.get(game.milestoneId) || topics[0];
-    el.bossHudTitle.textContent = game.endless
-      ? "👑 MINI-BOSS COLLOCATION"
-      : `👑 BOSS · ${topic.name}`;
 
     const curWave = Math.min(game.bossTotalWaves, game.bossWavesDefeated + 1);
     el.bossHudPhase.textContent = game.endless && game.bossOnly
@@ -1308,35 +1531,47 @@
       el.comboBadge.classList.add("hidden");
     }
 
-    const topic = topicMap.get(game.milestoneId) || topics[0];
-    if (game.endless) {
-      el.milestoneLabel.textContent = game.bossOnly ? "Săn Boss Vô tận" : "Vô tận";
-      el.milestoneTopic.textContent = "Mọi chủ đề";
-      el.milestoneProgressText.textContent = `${game.wordsDestroyed} hạ gục`;
-      el.milestoneProgressFill.style.width = `${Math.min(100, (game.wordsDestroyed % 20) * 5)}%`;
-    } else if (game.bossOnly) {
-      el.milestoneLabel.textContent = `Boss Mốc ${topic.id}/20`;
-      el.milestoneTopic.textContent = topic.name;
-      el.milestoneProgressText.textContent = `${game.bossWavesDefeated}/${game.bossTotalWaves} Boss`;
-      const pct = (game.bossWavesDefeated / Math.max(1, game.bossTotalWaves)) * 100;
-      el.milestoneProgressFill.style.width = `${Math.min(100, pct)}%`;
+    if (game.mode === "rain") {
+      const srcName = game.rainSource === "session"
+        ? "Phiên vừa bắn"
+        : game.rainSource === "recent20"
+          ? "20 từ gần nhất"
+          : "Từ đã bắn hạ";
+      el.milestoneLabel.textContent = "Mưa Chính Tả";
+      el.milestoneTopic.textContent = srcName;
+      el.milestoneProgressText.textContent = `${game.wordsDestroyed}/${game.milestoneGoal}`;
+      const pct = game.milestoneGoal > 0 ? Math.min(100, (game.wordsDestroyed / game.milestoneGoal) * 100) : 0;
+      el.milestoneProgressFill.style.width = `${pct}%`;
+      el.deckPillText.textContent = `Kho đã bắn hạ · ${progress.mastered.size} từ`;
     } else {
-      el.milestoneLabel.textContent = `Mốc ${topic.id}/20`;
-      el.milestoneTopic.textContent = topic.name;
-      if (game.inBossPhase) {
-        el.milestoneProgressText.textContent = `👑 BOSS ${game.bossWavesDefeated}/${game.bossTotalWaves}`;
-        el.milestoneProgressFill.style.width = "100%";
+      const topic = topicMap.get(game.milestoneId) || topics[0];
+      if (game.endless) {
+        el.milestoneLabel.textContent = game.bossOnly ? "Săn Boss Vô tận" : "Vô tận";
+        el.milestoneTopic.textContent = "Mọi chủ đề";
+        el.milestoneProgressText.textContent = `${game.wordsDestroyed} hạ gục`;
+        el.milestoneProgressFill.style.width = `${Math.min(100, (game.wordsDestroyed % 20) * 5)}%`;
+      } else if (game.bossOnly) {
+        el.milestoneLabel.textContent = `Boss Mốc ${topic.id}/20`;
+        el.milestoneTopic.textContent = topic.name;
+        el.milestoneProgressText.textContent = `${game.bossWavesDefeated}/${game.bossTotalWaves} Boss`;
+        el.milestoneProgressFill.style.width = `${Math.min(100, (game.bossWavesDefeated / Math.max(1, game.bossTotalWaves)) * 100)}%`;
       } else {
-        el.milestoneProgressText.textContent = `${game.regularDestroyed}/${game.milestoneGoal} + Boss`;
-        const pct = game.milestoneGoal > 0 ? Math.min(100, (game.regularDestroyed / game.milestoneGoal) * 100) : 0;
-        el.milestoneProgressFill.style.width = `${pct}%`;
+        el.milestoneLabel.textContent = `Mốc ${topic.id}/20`;
+        el.milestoneTopic.textContent = topic.name;
+        if (game.inBossPhase) {
+          el.milestoneProgressText.textContent = `👑 BOSS ${game.bossWavesDefeated}/${game.bossTotalWaves}`;
+          el.milestoneProgressFill.style.width = "100%";
+        } else {
+          el.milestoneProgressText.textContent = `${game.regularDestroyed}/${game.milestoneGoal} + Boss`;
+          el.milestoneProgressFill.style.width = `${Math.min(100, (game.regularDestroyed / Math.max(1, game.milestoneGoal)) * 100)}%`;
+        }
       }
-    }
 
-    const lvlLabel = game.levelFilter === "ALL" ? "B1–C2" : `Level ${game.levelFilter}`;
-    const wordCnt = getFilteredPool(singleVocab, false).length;
-    const colCnt = getFilteredPool(collocVocab, false).length;
-    el.deckPillText.textContent = `${wordCnt.toLocaleString("en-US")} từ + ${colCnt} Boss Collocations · ${lvlLabel}`;
+      const lvlLabel = game.levelFilter === "ALL" ? "B1–C2" : `Level ${game.levelFilter}`;
+      const wordCnt = getFilteredPool(singleVocab, false).length;
+      const colCnt = getFilteredPool(collocVocab, false).length;
+      el.deckPillText.textContent = `${wordCnt.toLocaleString("en-US")} từ + ${colCnt} Boss Collocations · ${lvlLabel}`;
+    }
 
     renderHearts();
     renderBossHud();
@@ -1375,6 +1610,29 @@
     return `<span class="typed">${typedHtml}</span><span class="untyped">${restHtml}</span>`;
   }
 
+  // Format Mưa Từ Vựng blank mask (e.g. `p _ _ _ _ _ _` -> as typed: `p a c _ _ _ _`)
+  function formatRainMaskHtml(word, typedCount, revealedExtra = 0) {
+    let html = "";
+    for (let i = 0; i < word.length; i++) {
+      const ch = word[i];
+      if (ch === " ") {
+        const isNextSpace = i === typedCount;
+        html += `<span class="rm-space${isNextSpace ? " next-space" : ""}">${isNextSpace ? "␣" : ""}</span>`;
+        continue;
+      }
+      const isWordStart = i === 0 || word[i - 1] === " ";
+      if (i < typedCount) {
+        html += `<span class="rm-slot typed">${escapeHtml(ch)}</span>`;
+      } else if (isWordStart || i < typedCount + revealedExtra) {
+        html += `<span class="rm-slot hint">${escapeHtml(ch)}</span>`;
+      } else {
+        const isNext = i === typedCount && typedCount > 0;
+        html += `<span class="rm-slot blank${isNext ? " next-blank" : ""}">_</span>`;
+      }
+    }
+    return html;
+  }
+
   function updateTypingIndicator() {
     if (!game.lockedWord) {
       el.typingIndicator.classList.add("hidden");
@@ -1384,10 +1642,20 @@
     const w = game.lockedWord;
     const text = w.entry.word;
     const nextCh = text[w.typedCount] || null;
-    el.typingTyped.textContent = text.slice(0, w.typedCount);
-    el.typingRemaining.textContent = text.slice(w.typedCount).replace(/ /g, "␣");
+    if (game.mode === "rain") {
+      el.typingTyped.textContent = text.slice(0, w.typedCount);
+      el.typingRemaining.textContent = text
+        .slice(w.typedCount)
+        .replace(/[a-z]/g, "_")
+        .replace(/ /g, " ");
+      el.typingHint.textContent = "Bấm ? mở gợi ý · ESC đổi từ";
+    } else {
+      el.typingTyped.textContent = text.slice(0, w.typedCount);
+      el.typingRemaining.textContent = text.slice(w.typedCount).replace(/ /g, "␣");
+      el.typingHint.textContent = "ESC đổi mục tiêu";
+    }
     el.typingIndicator.classList.remove("hidden");
-    highlightVirtualKey(nextCh);
+    highlightVirtualKey(game.mode === "rain" ? null : nextCh);
   }
 
   function triggerMascot(mode, text) {
@@ -1399,14 +1667,12 @@
       el.mascotBubble.textContent = text;
       el.mascotBubble.classList.remove("hidden");
       clearTimeout(triggerMascot._bt);
-      triggerMascot._bt = setTimeout(() => {
-        el.mascotBubble.classList.add("hidden");
-      }, 1700);
+      triggerMascot._bt = setTimeout(() => el.mascotBubble.classList.add("hidden"), 1600);
     }
   }
 
   // --------------------------------------------------------------------------
-  // Compact Vietnamese Meaning + Part of Speech Reveal (won't cover falling words)
+  // Compact Vietnamese Meaning + POS Reveal
   // --------------------------------------------------------------------------
   function showMeaningPopup(entry, x, y, missed = false) {
     const popup = document.createElement("div");
@@ -1435,13 +1701,11 @@
 
   function updateMeaningDock(entry, missed = false) {
     if (game.lastDockWord) {
-      game.recentMeanings = [game.lastDockWord]; // keep only 1 ultra-compact previous item
+      game.recentMeanings = [game.lastDockWord];
     }
     game.lastDockWord = { entry, missed };
 
     el.meaningHistory.innerHTML = game.recentMeanings
-      .slice()
-      .reverse()
       .map(
         item => `
         <div class="mh-item">
@@ -1461,10 +1725,12 @@
     el.meaningCurrent.style.animation = "";
 
     el.mcStatus.textContent = missed
-      ? "✕ BỎ LỠ · GHI NHỚ"
-      : entry.isColloc
-        ? "👑 BOSS COLLOCATION ĐÃ HẠ"
-        : "✓ VỪA BẮN HẠ";
+      ? (game.mode === "rain" ? "✕ ĐÁP ÁN CHÍNH TẢ" : "✕ BỎ LỠ · GHI NHỚ")
+      : game.mode === "rain"
+        ? "✓ NHỚ CHÍNH TẢ CHUẨN"
+        : entry.isColloc
+          ? "👑 BOSS COLLOCATION ĐÃ HẠ"
+          : "✓ VỪA BẮN HẠ";
     el.mcLevel.textContent = entry.level;
     el.mcLevel.className = `cefr-tag ${entry.level}`;
     el.mcWord.textContent = entry.word;
@@ -1475,7 +1741,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Word Spawning & Boss Collocation Encounter System
+  // Spawning: Space Words / Boss Collocations / Rain Spelling Cards
   // --------------------------------------------------------------------------
   function pickNextWordEntry() {
     const activeSet = new Set(game.activeWords.map(w => w.entry.word));
@@ -1495,13 +1761,40 @@
     return entry;
   }
 
+  function pickNonOverlappingX(pillW) {
+    const minX = 24;
+    const maxX = Math.max(minX + 40, fx.width - pillW - 76);
+    let chosenX = minX + Math.random() * (maxX - minX);
+    let bestClearance = -1;
+
+    for (let attempt = 0; attempt < 12; attempt++) {
+      const candX = minX + Math.random() * (maxX - minX);
+      let minDist = Infinity;
+      for (const other of game.activeWords) {
+        if (other.y < 165) {
+          const dist = Math.abs(candX + pillW / 2 - (other.x + other.w / 2)) - (pillW + other.w) / 2;
+          if (dist < minDist) minDist = dist;
+        }
+      }
+      if (minDist > 26) return candX;
+      if (minDist > bestClearance) {
+        bestClearance = minDist;
+        chosenX = candX;
+      }
+    }
+    return chosenX;
+  }
+
   function spawnWord() {
     if (game.inBossPhase) return;
 
     const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
-    if (game.activeWords.length >= preset.maxActive) return;
+    const maxCap = game.mode === "rain" ? Math.min(3, preset.maxActive) : preset.maxActive;
+    if (game.activeWords.length >= maxCap) return;
 
-    if (!game.endless && game.regularDestroyed + game.activeWords.length >= game.milestoneGoal) {
+    if (game.mode === "rain") {
+      if (game.wordsDestroyed + game.activeWords.length >= game.milestoneGoal) return;
+    } else if (!game.endless && game.regularDestroyed + game.activeWords.length >= game.milestoneGoal) {
       return;
     }
 
@@ -1509,53 +1802,62 @@
     if (!entry) return;
 
     const node = document.createElement("div");
-    node.className = `word-pill lvl-${entry.level}`;
-    node.innerHTML = `
-      <span class="word-chars">${formatPhraseCharsHtml(entry.word, 0)}</span>
-      <span class="pill-cefr">${entry.level}</span>
-    `;
+    let charsEl;
+
+    if (game.mode === "rain") {
+      node.className = "word-pill rain-card";
+      const posBadge = game.rainShowPos
+        ? `<span class="rain-pos-mini">${escapeHtml(entry.isColloc ? entry.pattern : entry.pos)}</span>`
+        : "";
+      node.innerHTML = `
+        <div class="rain-meaning-row">
+          <span>${escapeHtml(entry.meaning)}</span>
+          ${posBadge}
+        </div>
+        <div class="rain-mask">${formatRainMaskHtml(entry.word, 0, 0)}</div>
+      `;
+      charsEl = node.querySelector(".rain-mask");
+    } else {
+      node.className = `word-pill lvl-${entry.level}`;
+      node.innerHTML = `
+        <span class="word-chars">${formatPhraseCharsHtml(entry.word, 0)}</span>
+        <span class="pill-cefr">${entry.level}</span>
+      `;
+      charsEl = node.querySelector(".word-chars");
+    }
+
     node.style.visibility = "hidden";
     el.wordsLayer.appendChild(node);
 
     const pillW = node.offsetWidth || 160;
-    const pillH = node.offsetHeight || 44;
+    const pillH = node.offsetHeight || 54;
+    const chosenX = pickNonOverlappingX(pillW);
 
-    const minX = 24;
-    const maxX = Math.max(minX + 40, fx.width - pillW - 76);
-
-    let chosenX = minX + Math.random() * (maxX - minX);
-    let bestClearance = -1;
-    for (let attempt = 0; attempt < 12; attempt++) {
-      const candX = minX + Math.random() * (maxX - minX);
-      let minDist = Infinity;
-      for (const other of game.activeWords) {
-        if (other.y < 140) {
-          const dist = Math.abs(candX + pillW / 2 - (other.x + other.w / 2)) - (pillW + other.w) / 2;
-          if (dist < minDist) minDist = dist;
-        }
-      }
-      if (minDist > 26) { chosenX = candX; break; }
-      if (minDist > bestClearance) { bestClearance = minDist; chosenX = candX; }
+    let speed;
+    if (game.mode === "rain") {
+      const lengthRelief = Math.max(0.68, Math.min(1.0, 9 / Math.max(6, entry.word.length)));
+      speed = preset.rainSpeed * lengthRelief * (0.94 + Math.random() * 0.12);
+    } else {
+      const progressFactor = Math.min(1, game.wordsDestroyed / 35);
+      const rawSpeed = preset.baseSpeed + (preset.maxSpeed - preset.baseSpeed) * progressFactor;
+      const lengthRelief = entry.word.length > 9 ? 0.84 : entry.word.length > 7 ? 0.92 : 1.0;
+      speed = rawSpeed * lengthRelief * (0.92 + Math.random() * 0.16);
     }
-
-    const progressFactor = Math.min(1, game.wordsDestroyed / 35);
-    const rawSpeed = preset.baseSpeed + (preset.maxSpeed - preset.baseSpeed) * progressFactor;
-    const lengthRelief = entry.word.length > 9 ? 0.84 : entry.word.length > 7 ? 0.92 : 1.0;
-    const speed = rawSpeed * lengthRelief * (0.92 + Math.random() * 0.16);
 
     const wordObj = {
       id: ++game.wordUid,
       entry,
       isBoss: false,
       el: node,
-      charsEl: node.querySelector(".word-chars"),
+      charsEl,
       hpFillEl: null,
       x: chosenX,
       y: -pillH - 4,
       w: pillW,
       h: pillH,
       speed,
-      typedCount: 0
+      typedCount: 0,
+      hintExtra: 0
     };
 
     node.style.transform = `translate3d(${wordObj.x}px, ${wordObj.y}px, 0)`;
@@ -1564,7 +1866,6 @@
   }
 
   function triggerBossPhase(wavesCount) {
-    // Seamless natural Boss transition — no warning banner or pause!
     game.inBossPhase = true;
     game.bossTotalWaves = wavesCount;
     game.bossWavesDefeated = 0;
@@ -1572,7 +1873,6 @@
     if (!game.bossQueue.length) {
       game.bossQueue = buildBossQueue(!game.endless);
     }
-
     updateHUD();
 
     setTimeout(() => {
@@ -1613,7 +1913,6 @@
 
     const pillW = node.offsetWidth || 320;
     const pillH = node.offsetHeight || 78;
-
     const minX = 32;
     const maxX = Math.max(minX + 20, fx.width - pillW - 78);
     const centerX = Math.max(minX, Math.min(maxX, (fx.width - pillW) / 2 + (Math.random() - 0.5) * 140));
@@ -1631,11 +1930,12 @@
       charsEl: node.querySelector(".word-chars"),
       hpFillEl: node.querySelector(".boss-pill-hp-fill"),
       x: centerX,
-      y: -pillH - 4, // glides in naturally from top like regular words
+      y: -pillH - 4,
       w: pillW,
       h: pillH,
       speed,
-      typedCount: 0
+      typedCount: 0,
+      hintExtra: 0
     };
 
     node.style.transform = `translate3d(${bossObj.x}px, ${bossObj.y}px, 0)`;
@@ -1665,18 +1965,41 @@
   }
 
   // --------------------------------------------------------------------------
-  // Typing Mechanics, Weapon Firing & Scoring
+  // Typing Mechanics, Rain Hint & Scoring
   // --------------------------------------------------------------------------
+  function renderTargetDisplay(target) {
+    if (game.mode === "rain") {
+      target.charsEl.innerHTML = formatRainMaskHtml(target.entry.word, target.typedCount, target.hintExtra);
+    } else {
+      target.charsEl.innerHTML = formatPhraseCharsHtml(target.entry.word, target.typedCount);
+    }
+  }
+
+  function revealRainHint() {
+    if (game.mode !== "rain" || game.status !== "playing") return;
+    const target = game.lockedWord || game.activeWords.slice().sort((a, b) => b.y - a.y)[0];
+    if (!target) return;
+    if (!game.lockedWord) {
+      game.lockedWord = target;
+      target.el.classList.add("locked");
+    }
+    target.hintExtra = Math.min(target.entry.word.length - target.typedCount, target.hintExtra + 1);
+    game.combo = 0;
+    renderTargetDisplay(target);
+    updateTypingIndicator();
+    updateHUD();
+  }
+
   function handleCharInput(char) {
     if (game.status !== "playing") return;
     const ch = char.toLowerCase();
     if (!/^[a-z ]$/.test(ch)) return;
 
+    audio.unlock();
     flashVirtualKey(ch);
 
-    // 1. Lock onto lowest matching word if unlocked
     if (!game.lockedWord) {
-      if (ch === " ") return; // never start lock-on with space
+      if (ch === " ") return;
       const candidates = game.activeWords
         .filter(w => w.entry.word[0] === ch && w.y > -w.h * 0.7)
         .sort((a, b) => b.y - a.y);
@@ -1693,14 +2016,14 @@
       game.lockedWord.el.classList.add("locked");
     }
 
-    // 2. Match next expected char (including space for Boss Collocations!)
     const target = game.lockedWord;
     const expected = target.entry.word[target.typedCount];
 
     if (ch === expected) {
       game.correctChars++;
       target.typedCount++;
-      target.charsEl.innerHTML = formatPhraseCharsHtml(target.entry.word, target.typedCount);
+      if (target.hintExtra > 0) target.hintExtra--;
+      renderTargetDisplay(target);
 
       if (target.isBoss && target.hpFillEl) {
         const remPct = ((target.entry.word.length - target.typedCount) / target.entry.word.length) * 100;
@@ -1708,21 +2031,22 @@
         renderBossHud();
       }
 
-      // Gentle knockback & aim turret
-      target.y = Math.max(target.isBoss ? 78 : 8, target.y - (target.isBoss ? 3.5 : 5));
+      target.y = Math.max(target.isBoss ? 56 : 8, target.y - (target.isBoss ? 3.5 : 5));
       const cx = target.x + target.w / 2;
       const cy = target.y + target.h / 2;
       aimTurretAt(cx, cy);
-      triggerTurretRecoil();
+      triggerShooterRecoil();
 
-      const color = target.isBoss ? "#fbbf24" : (LEVEL_COLORS[target.entry.level] || "#38bdf8");
+      const color = game.mode === "rain"
+        ? "#38bdf8"
+        : target.isBoss ? "#fbbf24" : (LEVEL_COLORS[target.entry.level] || "#38bdf8");
       const isFinal = target.typedCount >= target.entry.word.length;
       fireAmmoAt(cx, cy, color, isFinal);
 
       if (isFinal) {
         destroyWord(target, cx, cy, color);
       } else {
-        audio.playShot(game.ammoType, target.typedCount);
+        audio.playShot(game.mode === "rain" ? "water" : game.ammoType, target.typedCount);
         updateTypingIndicator();
       }
     } else {
@@ -1733,7 +2057,6 @@
       void target.el.offsetWidth;
       target.el.classList.add("wrong-hit");
 
-      // Extra Boss Challenge: typos push the Boss closer!
       if (target.isBoss) {
         target.y += 10;
       }
@@ -1746,7 +2069,7 @@
     const target = game.lockedWord;
     if (target.typedCount > 0) {
       target.typedCount--;
-      target.charsEl.innerHTML = formatPhraseCharsHtml(target.entry.word, target.typedCount);
+      renderTargetDisplay(target);
       if (target.isBoss && target.hpFillEl) {
         const remPct = ((target.entry.word.length - target.typedCount) / target.entry.word.length) * 100;
         target.hpFillEl.style.width = `${Math.max(0, remPct).toFixed(1)}%`;
@@ -1764,7 +2087,7 @@
     if (!game.lockedWord) return;
     const t = game.lockedWord;
     t.typedCount = 0;
-    t.charsEl.innerHTML = formatPhraseCharsHtml(t.entry.word, 0);
+    renderTargetDisplay(t);
     if (!t.isBoss) {
       t.el.classList.remove("locked");
       game.lockedWord = null;
@@ -1786,32 +2109,52 @@
     game.combo++;
     if (game.combo > game.bestCombo) game.bestCombo = game.combo;
 
-    const base = (wasBoss ? 320 : 100) + entry.word.length * 10 + (LEVEL_BONUS[entry.level] || 0);
+    const base = (wasBoss ? 320 : game.mode === "rain" ? 150 : 100) + entry.word.length * 10 + (LEVEL_BONUS[entry.level] || 0);
     const mult = 1 + Math.min(game.combo - 1, 10) * 0.12;
     game.score += Math.round(base * mult);
     if (game.score > progress.highScore) progress.highScore = game.score;
 
-    progress.mastered.add(entry.word);
-    progress.missed.delete(entry.word);
-    saveProgress();
+    if (game.mode === "rain") {
+      progress.spelled.add(entry.word);
+      saveProgress();
+    } else {
+      recordMasteredWord(entry.word);
+    }
 
     game.sessionLog.unshift({ entry, status: "hit" });
 
-    // Visual & Audio FX
+    // Visual FX + Explosion SFX + Crystal-Clear English Pronunciation (120ms after boom!)
     spawnExplosion(cx, cy, color, wasBoss);
     audio.playExplosion(game.combo, wasBoss);
-    audio.speakWord(entry.word);
+    audio.speakWord(entry.word, false, 120);
 
-    // Reveal Vietnamese Meaning + Part of Speech / Collocation Pattern
     showMeaningPopup(entry, cx, cy, false);
     updateMeaningDock(entry, false);
 
+    // Rain Mode Victory Check
+    if (game.mode === "rain") {
+      if (game.combo > 0 && game.combo % 3 === 0) {
+        triggerMascot("cheer", `Nhớ chuẩn x${game.combo}! ⛵`);
+      }
+      updateHUD();
+
+      if (game.wordsDestroyed >= game.milestoneGoal) {
+        audio.playMilestoneWin();
+        setTimeout(() => {
+          if (game.status === "playing") finishRun(true);
+        }, 700);
+      } else if (game.activeWords.length === 0) {
+        game.spawnTimer = Math.min(game.spawnTimer, 0.35);
+      }
+      return;
+    }
+
+    // Space Shooter Boss Logic
     if (wasBoss) {
       game.bossWavesDefeated++;
       triggerMascot("cheer", `Hạ Boss ${game.bossWavesDefeated}/${game.bossTotalWaves}! 👑`);
       updateHUD();
 
-      // Check Endless Boss-Only vs Milestone Boss Completion
       if (game.endless && game.bossOnly) {
         setTimeout(() => {
           if (game.status === "playing") spawnNextBossWave();
@@ -1820,24 +2163,20 @@
       }
 
       if (game.bossWavesDefeated >= game.bossTotalWaves) {
-        // BOSS COMPLETELY DEFEATED!
         game.score += 500;
         if (game.score > progress.highScore) progress.highScore = game.score;
 
-        // Extra celebratory fireworks
         spawnExplosion(fx.width * 0.35, fx.height * 0.38, "#fbbf24", true);
         spawnExplosion(fx.width * 0.65, fx.height * 0.35, "#38bdf8", true);
         audio.playBossDefeat();
 
         if (game.endless) {
-          // Endless Mini-Boss cleared -> resume regular waves
           game.inBossPhase = false;
           game.nextEndlessBossAt = game.regularDestroyed + 10;
           triggerMascot("cheer", "+500 ĐIỂM HẠ BOSS! 🔥");
           updateHUD();
           game.spawnTimer = 1.1;
         } else {
-          // Milestone Victory!
           progress.clearedMilestones.add(game.milestoneId);
           saveProgress();
           updateHUD();
@@ -1846,7 +2185,6 @@
           }, 950);
         }
       } else {
-        // Next Boss wave!
         setTimeout(() => {
           if (game.status === "playing" && game.inBossPhase) {
             spawnNextBossWave();
@@ -1856,7 +2194,7 @@
       return;
     }
 
-    // Regular word celebrations
+    // Regular Space Shooter Word Celebrations
     if (game.combo > 0 && game.combo % 4 === 0) {
       triggerMascot("cheer", `Combo x${game.combo}! 🔥`);
     } else if (entry.level === "C2") {
@@ -1867,13 +2205,11 @@
 
     updateHUD();
 
-    // Check if ready to summon End-of-Milestone BOSS naturally
     if (!game.endless && game.regularDestroyed >= game.milestoneGoal) {
       triggerBossPhase(BOSS_PHASES_PER_MILESTONE);
       return;
     }
 
-    // Endless Mode Mini-Boss every 10 regular words
     if (game.endless && !game.bossOnly && game.regularDestroyed >= game.nextEndlessBossAt) {
       triggerBossPhase(1);
       return;
@@ -1885,7 +2221,7 @@
   }
 
   function handleWordMissed(wordObj) {
-    if (!game.endless && game.inBossPhase && game.bossWavesDefeated >= game.bossTotalWaves) {
+    if (game.mode === "shooter" && !game.endless && game.inBossPhase && game.bossWavesDefeated >= game.bossTotalWaves) {
       removeWordObj(wordObj);
       return;
     }
@@ -1900,33 +2236,46 @@
     game.lives = Math.max(0, game.lives - 1);
     game.combo = 0;
 
-    if (!progress.mastered.has(entry.word)) {
+    if (game.mode === "shooter" && !progress.mastered.has(entry.word)) {
       progress.missed.add(entry.word);
       saveProgress();
     }
     game.sessionLog.unshift({ entry, status: "missed" });
 
+    // Show full word + meaning so player learns the missed word immediately!
     showMeaningPopup(entry, cx, cy, true);
     updateMeaningDock(entry, true);
+    if (game.mode === "rain") {
+      audio.playWaterSplash();
+      audio.speakWord(entry.word, false, 180);
+      fx.ripples.push({ x: cx, y: fx.height - 32, r: 6, maxR: 48, life: 0.6, maxLife: 0.6 });
+      el.oceanSurface.classList.add("hit");
+      setTimeout(() => el.oceanSurface.classList.remove("hit"), 260);
+    } else {
+      audio.playDamage();
+      el.dangerLine.classList.add("hit");
+      setTimeout(() => el.dangerLine.classList.remove("hit"), 260);
+    }
 
-    audio.playDamage();
-    el.dangerLine.classList.add("hit");
     el.arena.classList.remove("shake");
     void el.arena.offsetWidth;
     el.arena.classList.add("shake");
-    triggerMascot("shock", wasBoss ? "Boss phá lá chắn rồi!" : "Ôi! Trượt mất rồi!");
-    setTimeout(() => el.dangerLine.classList.remove("hit"), 260);
+    triggerMascot("shock", game.mode === "rain" ? `Đáp án: ${entry.word}` : wasBoss ? "Boss phá lá chắn rồi!" : "Ôi! Trượt mất rồi!");
 
     updateHUD();
 
     if (game.lives <= 0) {
       setTimeout(() => {
         if (game.status === "playing") finishRun(false);
-      }, 420);
+      }, 450);
       return;
     }
 
-    // If a Boss Collocation slipped through but player still has lives, summon next Boss wave to retry!
+    // In Rain mode, re-queue missed word so you get another chance if milestone not finished
+    if (game.mode === "rain" && game.wordsDestroyed + game.activeWords.length < game.milestoneGoal) {
+      game.wordQueue.push(entry);
+    }
+
     if (wasBoss && game.inBossPhase) {
       setTimeout(() => {
         if (game.status === "playing" && game.inBossPhase && game.activeWords.length === 0) {
@@ -1937,11 +2286,27 @@
   }
 
   // --------------------------------------------------------------------------
-  // Game Lifecycle
+  // Game Lifecycle (Start, Pause, Resume, Result, Loop)
   // --------------------------------------------------------------------------
   function startRun() {
+    audio.unlock();
     clearArenaWords();
     closeAllModals();
+    applyModeTheme();
+
+    if (game.mode === "rain") {
+      const rainPool = getRainPool();
+      if (!rainPool.length) {
+        openGameSetup("rain");
+        return;
+      }
+      game.maxLives = 4; // 4 hearts matching Mưa Từ Vựng screenshot!
+      game.milestoneGoal = Math.min(20, rainPool.length);
+    } else {
+      game.maxLives = 3;
+      const poolSize = getFilteredPool(singleVocab, true).length;
+      game.milestoneGoal = game.endless ? 9999 : Math.min(12, Math.max(8, poolSize));
+    }
 
     game.status = "playing";
     game.score = 0;
@@ -1972,18 +2337,17 @@
     el.bossHud.classList.add("hidden");
 
     game.wordQueue = buildQueueForRun();
-    game.bossQueue = buildBossQueue(!game.endless);
+    game.bossQueue = game.mode === "shooter" ? buildBossQueue(!game.endless) : [];
 
-    const poolSize = getFilteredPool(singleVocab, true).length;
-    game.milestoneGoal = game.endless ? 9999 : Math.min(12, Math.max(8, poolSize));
-
+    el.hubOverlay.classList.add("hidden");
     el.startOverlay.classList.add("hidden");
+    el.rainStartOverlay.classList.add("hidden");
     el.pauseOverlay.classList.add("hidden");
     el.resultOverlay.classList.add("hidden");
     syncPauseIcon();
     updateHUD();
 
-    if (game.bossOnly) {
+    if (game.mode === "shooter" && game.bossOnly) {
       triggerBossPhase(game.endless ? 999 : BOSS_ONLY_GOAL);
     } else {
       spawnWord();
@@ -1991,19 +2355,23 @@
         if (game.status === "playing" && !game.inBossPhase && game.activeWords.length < 2) {
           spawnWord();
         }
-      }, 650);
+      }, game.mode === "rain" ? 1100 : 650);
     }
   }
 
   function pauseGame() {
     if (game.status !== "playing") return;
     game.status = "paused";
-    const topic = topicMap.get(game.milestoneId) || topics[0];
-    el.pauseSubtitle.textContent = game.inBossPhase
-      ? `👑 Đang đấu Boss Collocation · ${topic.name}`
-      : game.endless
-        ? `Chế độ Vô tận · Đã bắn hạ ${game.wordsDestroyed} mục tiêu`
-        : `Mốc ${topic.id}/20 · ${topic.name} (${game.regularDestroyed}/${game.milestoneGoal} từ + Boss)`;
+    if (game.mode === "rain") {
+      el.pauseSubtitle.textContent = `Mưa Từ Vựng · Đã nhớ ${game.wordsDestroyed}/${game.milestoneGoal} từ`;
+    } else {
+      const topic = topicMap.get(game.milestoneId) || topics[0];
+      el.pauseSubtitle.textContent = game.inBossPhase
+        ? `👑 Đang đấu Boss Collocation · ${topic.name}`
+        : game.endless
+          ? `Chế độ Vô tận · Đã bắn hạ ${game.wordsDestroyed} mục tiêu`
+          : `Mốc ${topic.id}/20 · ${topic.name} (${game.regularDestroyed}/${game.milestoneGoal} từ + Boss)`;
+    }
     el.pauseOverlay.classList.remove("hidden");
     syncPauseIcon();
   }
@@ -2016,20 +2384,6 @@
     syncPauseIcon();
   }
 
-  function returnToMenu() {
-    game.status = "menu";
-    game.inBossPhase = false;
-    clearArenaWords();
-    el.arena.classList.remove("boss-mode");
-    el.bossHud.classList.add("hidden");
-    el.pauseOverlay.classList.add("hidden");
-    el.resultOverlay.classList.add("hidden");
-    el.startOverlay.classList.remove("hidden");
-    syncStartOverlayControls();
-    syncPauseIcon();
-    updateHUD();
-  }
-
   function finishRun(victory) {
     game.status = "result";
     game.inBossPhase = false;
@@ -2038,21 +2392,42 @@
     el.bossHud.classList.add("hidden");
     syncPauseIcon();
 
-    const topic = topicMap.get(game.milestoneId) || topics[0];
     const totalTyped = game.correctChars + game.wrongChars;
     const accuracy = totalTyped > 0 ? Math.round((game.correctChars / totalTyped) * 100) : 100;
 
-    if (victory) {
-      el.resultEmoji.textContent = "👑";
-      el.resultTitle.textContent = `Tiêu diệt Boss · Vượt Mốc ${topic.id}/20!`;
-      el.resultSubtitle.textContent = `Chủ đề: ${topic.name} (${topic.vi}) · Hạ gục ${game.wordsDestroyed} từ & Collocations (+500 thưởng Boss)`;
-      el.btnNextMilestone.classList.toggle("hidden", game.milestoneId >= topics.length);
-    } else {
-      audio.playGameOver();
-      el.resultEmoji.textContent = "💥";
-      el.resultTitle.textContent = game.endless ? "Kết thúc lượt chiến đấu!" : "Lá chắn phòng thủ đã vỡ!";
-      el.resultSubtitle.textContent = `Bạn đã bắn hạ ${game.wordsDestroyed} mục tiêu · Ôn lại nghĩa từ & Collocations bên dưới nhé`;
+    if (game.mode === "rain") {
       el.btnNextMilestone.classList.add("hidden");
+      el.btnPracticeRainNow.classList.add("hidden");
+      if (victory) {
+        el.resultEmoji.textContent = "⛵";
+        el.resultTitle.textContent = "Xuất sắc! Vượt qua cơn Mưa Từ Vựng!";
+        el.resultSubtitle.textContent = `Bạn đã nhớ và gõ chuẩn chính tả ${game.wordsDestroyed} từ đã bắn hạ`;
+      } else {
+        audio.playGameOver();
+        el.resultEmoji.textContent = "🌧️";
+        el.resultTitle.textContent = "Thuyền đã chạm sóng!";
+        el.resultSubtitle.textContent = `Bạn đã nhớ đúng ${game.wordsDestroyed} từ · Xem lại chính tả các từ bên dưới nhé`;
+      }
+    } else {
+      const topic = topicMap.get(game.milestoneId) || topics[0];
+      const hasShotWords = progress.mastered.size > 0;
+      el.btnPracticeRainNow.classList.toggle("hidden", !hasShotWords);
+      el.btnPracticeRainNow.textContent = sessionMastered.size > 0
+        ? `🌧️ Kiểm tra chính tả (${sessionMastered.size} từ vừa bắn)`
+        : `🌧️ Kiểm tra chính tả (${progress.mastered.size} từ)`;
+
+      if (victory) {
+        el.resultEmoji.textContent = "👑";
+        el.resultTitle.textContent = `Tiêu diệt Boss · Vượt Mốc ${topic.id}/20!`;
+        el.resultSubtitle.textContent = `Chủ đề: ${topic.name} (${topic.vi}) · Hạ gục ${game.wordsDestroyed} từ & Collocations (+500 thưởng Boss)`;
+        el.btnNextMilestone.classList.toggle("hidden", game.milestoneId >= topics.length);
+      } else {
+        audio.playGameOver();
+        el.resultEmoji.textContent = "💥";
+        el.resultTitle.textContent = game.endless ? "Kết thúc lượt chiến đấu!" : "Lá chắn phòng thủ đã vỡ!";
+        el.resultSubtitle.textContent = `Bạn đã bắn hạ ${game.wordsDestroyed} mục tiêu · Ôn lại nghĩa hoặc sang Mưa Từ Vựng test chính tả nhé`;
+        el.btnNextMilestone.classList.add("hidden");
+      }
     }
 
     el.resScore.textContent = game.score.toLocaleString("en-US");
@@ -2109,9 +2484,10 @@
       game.elapsed += dt;
       if (!game.inBossPhase) {
         const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
+        const rainPad = game.mode === "rain" ? 0.65 : 0;
         const dynInterval = Math.max(
-          preset.minSpawn,
-          preset.spawnInterval - Math.min(0.65, game.wordsDestroyed * 0.018)
+          preset.minSpawn + rainPad,
+          preset.spawnInterval + rainPad - Math.min(0.55, game.wordsDestroyed * 0.015)
         );
         game.spawnTimer -= dt;
         if (game.spawnTimer <= 0) {
@@ -2120,7 +2496,7 @@
         }
       }
 
-      const dangerY = fx.height - 32;
+      const dangerY = fx.height - 34;
       for (let i = game.activeWords.length - 1; i >= 0; i--) {
         const w = game.activeWords[i];
         w.y += w.speed * dt;
@@ -2131,7 +2507,7 @@
         }
       }
 
-      if (game.lockedWord) {
+      if (game.lockedWord && game.mode === "shooter") {
         aimTurretAt(
           game.lockedWord.x + game.lockedWord.w / 2,
           game.lockedWord.y + game.lockedWord.h / 2
@@ -2144,7 +2520,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Virtual Keyboard (with SPACE bar for Boss Collocations!)
+  // Virtual Keyboard
   // --------------------------------------------------------------------------
   function buildVirtualKeyboard() {
     const rows = [
@@ -2192,7 +2568,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Modals: Milestones Picker & Vocabulary/Collocations Notebook
+  // Modals: Milestones Picker & Vocabulary Notebook
   // --------------------------------------------------------------------------
   function populateTopicSelects() {
     const optsHtml = topics
@@ -2204,6 +2580,10 @@
   }
 
   function openMilestonesModal() {
+    if (game.mode === "rain") {
+      openNotebookModal("MASTERED");
+      return;
+    }
     if (game.status === "playing") pauseGame();
     renderMilestonesGrid();
     el.milestonesModal.classList.remove("hidden");
@@ -2232,8 +2612,9 @@
       .join("");
   }
 
-  function openNotebookModal() {
+  function openNotebookModal(presetStatus = null) {
     if (game.status === "playing") pauseGame();
+    if (presetStatus) el.nbStatus.value = presetStatus;
     notebookState.page = 1;
     renderNotebook();
     el.notebookModal.classList.remove("hidden");
@@ -2251,7 +2632,7 @@
     const topicVal = el.nbTopic.value;
     const statusVal = el.nbStatus.value;
 
-    el.nbSummaryText.textContent = `${singleVocab.length.toLocaleString("en-US")} từ đơn + ${collocVocab.length} Boss Collocations · ${progress.mastered.size} đã bắn hạ · ${progress.missed.size} cần ôn lại`;
+    el.nbSummaryText.textContent = `${singleVocab.length.toLocaleString("en-US")} từ đơn + ${collocVocab.length} Boss Collocations · ${progress.mastered.size} đã bắn hạ · ${progress.spelled.size} thuộc chính tả`;
 
     notebookState.filtered = allLibrary.filter(item => {
       if (kind === "WORD" && item.isColloc) return false;
@@ -2277,10 +2658,11 @@
     } else {
       el.nbTbody.innerHTML = slice
         .map(item => {
+          const isSpelled = progress.spelled.has(item.word);
           const isMastered = progress.mastered.has(item.word);
           const isMissed = progress.missed.has(item.word);
           const stClass = isMastered ? "mastered" : isMissed ? "missed" : "unseen";
-          const stText = isMastered ? "✓ Đã bắn hạ" : isMissed ? "✕ Cần ôn lại" : "Chưa gặp";
+          const stText = isSpelled ? "⛵ Thuộc chính tả" : isMastered ? "✓ Đã bắn hạ" : isMissed ? "✕ Cần ôn lại" : "Chưa gặp";
 
           return `
             <tr>
@@ -2388,11 +2770,12 @@
     el.startLevelGroup.querySelectorAll(".chip").forEach(btn => btn.classList.toggle("active", btn.dataset.level === level));
 
     updatePoolHints();
+    if (game.mode === "rain" && game.status === "menu") syncRainSetupControls();
     updateHUD();
 
     if (game.status === "playing") {
       game.wordQueue = buildQueueForRun();
-      game.bossQueue = buildBossQueue(!game.endless);
+      if (game.mode === "shooter") game.bossQueue = buildBossQueue(!game.endless);
     }
   }
 
@@ -2414,8 +2797,12 @@
   function bindEvents() {
     window.addEventListener("resize", resizeCanvas);
 
-    // Global Typing + Quick Ammo Hotkeys (1-4)
+    // Unlock audio/speech engine on very first user gesture
+    window.addEventListener("pointerdown", () => audio.unlock(), { once: true });
+
+    // Global Typing Input
     window.addEventListener("keydown", e => {
+      audio.unlock();
       const tag = document.activeElement && document.activeElement.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") {
         if (document.activeElement !== el.mobileInput) return;
@@ -2454,6 +2841,12 @@
         return;
       }
 
+      if (game.mode === "rain" && (e.key === "?" || e.key === "/")) {
+        e.preventDefault();
+        revealRainHint();
+        return;
+      }
+
       if (e.key === " ") {
         e.preventDefault();
         handleCharInput(" ");
@@ -2474,14 +2867,32 @@
       }
     });
 
+    // Hub Navigation
+    el.chooseGameShooter.addEventListener("click", () => { audio.unlock(); openGameSetup("shooter"); });
+    el.chooseGameRain.addEventListener("click", () => { audio.unlock(); openGameSetup("rain"); });
+    el.btnBackHub1.addEventListener("click", openHub);
+    el.btnBackHub2.addEventListener("click", openHub);
+    el.btnPauseHub.addEventListener("click", openHub);
+    el.btnHome.addEventListener("click", openHub);
+    el.btnGotoShooterEmpty.addEventListener("click", () => openGameSetup("shooter"));
+
+    // Test Voice buttons
+    [el.btnTestVoice1, el.btnTestVoice2].forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.blur();
+        audio.unlock();
+        audio.speakWord("pronunciation", true, 0);
+      });
+    });
+
     // Top bar & HUD
-    el.btnHome.addEventListener("click", returnToMenu);
-    el.btnExit.addEventListener("click", returnToMenu);
+    el.btnExit.addEventListener("click", () => openGameSetup(game.mode));
     el.deckPill.addEventListener("click", openMilestonesModal);
     el.btnMilestones.addEventListener("click", openMilestonesModal);
-    el.btnNotebook.addEventListener("click", openNotebookModal);
-    el.btnOpenNotebookStart.addEventListener("click", openNotebookModal);
-    el.btnPauseNotebook.addEventListener("click", openNotebookModal);
+    el.btnNotebook.addEventListener("click", () => openNotebookModal());
+    el.btnOpenNotebookStart.addEventListener("click", () => openNotebookModal());
+    el.btnOpenNotebookRain.addEventListener("click", () => openNotebookModal("MASTERED"));
+    el.btnPauseNotebook.addEventListener("click", () => openNotebookModal());
 
     el.btnFullscreen.addEventListener("click", () => {
       el.btnFullscreen.blur();
@@ -2512,10 +2923,11 @@
 
     el.mcSpeak.addEventListener("click", () => {
       el.mcSpeak.blur();
-      if (game.lastDockWord) audio.speakWord(game.lastDockWord.entry.word, true);
+      audio.unlock();
+      if (game.lastDockWord) audio.speakWord(game.lastDockWord.entry.word, true, 0);
     });
 
-    // Weapon & Ammo switchers (Start menu only — hidden during battle)
+    // Game 1 Setup
     el.startWeaponGroup.addEventListener("click", e => {
       const btn = e.target.closest(".chip");
       if (btn) setWeaponType(btn.dataset.weapon);
@@ -2525,7 +2937,6 @@
       if (btn) setAmmoType(btn.dataset.ammo);
     });
 
-    // Level & Speed setup
     el.quickLevelBar.addEventListener("click", e => {
       const btn = e.target.closest(".lvl-pill");
       if (!btn) return;
@@ -2555,6 +2966,7 @@
 
     el.optSpeak.addEventListener("change", () => {
       audio.autoSpeak = el.optSpeak.checked;
+      el.rainOptSpeak.checked = audio.autoSpeak;
       savePrefs();
     });
 
@@ -2579,12 +2991,48 @@
       updateHUD();
     });
 
-    el.btnStartGame.addEventListener("click", startRun);
+    el.btnStartGame.addEventListener("click", () => { game.mode = "shooter"; startRun(); });
+
+    // Game 2 (Mưa Từ Vựng) Setup
+    el.rainSourceGroup.addEventListener("click", e => {
+      const btn = e.target.closest(".chip");
+      if (!btn || btn.disabled) return;
+      game.rainSource = btn.dataset.source;
+      savePrefs();
+      syncRainSetupControls();
+    });
+
+    el.rainKindSelect.addEventListener("change", () => {
+      game.rainKind = el.rainKindSelect.value;
+      savePrefs();
+      syncRainSetupControls();
+    });
+
+    el.rainSpeedGroup.addEventListener("click", e => {
+      const btn = e.target.closest(".chip");
+      if (!btn) return;
+      game.speedKey = btn.dataset.speed;
+      el.rainSpeedGroup.querySelectorAll(".chip").forEach(c => c.classList.toggle("active", c === btn));
+      savePrefs();
+    });
+
+    el.rainOptSpeak.addEventListener("change", () => {
+      audio.autoSpeak = el.rainOptSpeak.checked;
+      el.optSpeak.checked = audio.autoSpeak;
+      savePrefs();
+    });
+
+    el.rainOptPos.addEventListener("change", () => {
+      game.rainShowPos = el.rainOptPos.checked;
+      savePrefs();
+    });
+
+    el.btnStartRain.addEventListener("click", () => { game.mode = "rain"; startRun(); });
 
     // Pause & Result overlay buttons
     el.btnResume.addEventListener("click", resumeGame);
     el.btnRestartMilestone.addEventListener("click", startRun);
-    el.btnPauseMenu.addEventListener("click", returnToMenu);
+    el.btnPauseMenu.addEventListener("click", () => openGameSetup(game.mode));
 
     el.btnNextMilestone.addEventListener("click", () => {
       if (game.milestoneId < topics.length) {
@@ -2593,14 +3041,23 @@
       }
       startRun();
     });
+
+    el.btnPracticeRainNow.addEventListener("click", () => {
+      game.mode = "rain";
+      game.rainSource = sessionMastered.size > 0 ? "session" : "all";
+      savePrefs();
+      openGameSetup("rain");
+    });
+
     el.btnReplayMilestone.addEventListener("click", startRun);
-    el.btnResultMenu.addEventListener("click", returnToMenu);
+    el.btnResultMenu.addEventListener("click", () => openGameSetup(game.mode));
 
     document.addEventListener("click", e => {
       const speakBtn = e.target.closest("[data-speak]");
       if (speakBtn) {
         speakBtn.blur();
-        audio.speakWord(speakBtn.dataset.speak, true);
+        audio.unlock();
+        audio.speakWord(speakBtn.dataset.speak, true, 0);
       }
     });
 
@@ -2612,6 +3069,7 @@
     el.milestonesGrid.addEventListener("click", e => {
       const card = e.target.closest(".ms-card");
       if (!card) return;
+      game.mode = "shooter";
       game.milestoneId = Number(card.dataset.milestone);
       game.endless = false;
       savePrefs();
@@ -2685,9 +3143,18 @@
 
     el.btnResetProgress.addEventListener("click", () => {
       if (!confirm("Bạn có chắc muốn đặt lại toàn bộ tiến độ bắn hạ & mốc đã hoàn thành?")) return;
-      progress = { mastered: new Set(), missed: new Set(), clearedMilestones: new Set(), highScore: 0 };
+      progress = {
+        mastered: new Set(),
+        recentMastered: [],
+        spelled: new Set(),
+        missed: new Set(),
+        clearedMilestones: new Set(),
+        highScore: 0
+      };
+      sessionMastered.clear();
       saveProgress();
       renderNotebook();
+      if (game.mode === "rain") syncRainSetupControls();
       updateHUD();
     });
   }
@@ -2705,9 +3172,12 @@
     resizeCanvas();
     syncSoundIcon();
     syncStartOverlayControls();
+    applyModeTheme();
     updateHUD();
     bindEvents();
 
+    // Start on Game Selection Hub so user chooses between Luyện Gõ & Mưa Từ Vựng!
+    openHub();
     requestAnimationFrame(gameLoop);
   }
 

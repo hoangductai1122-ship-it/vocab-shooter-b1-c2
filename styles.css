@@ -2046,3 +2046,330 @@ button, select, input, textarea {
   .word-pill { font-size: 17px; padding: 6px 14px; }
   .meaning-dock { max-width: calc(100% - 24px); width: calc(100% - 24px); bottom: 112px; left: 12px; right: 12px; }
 }
+
+
+/* ==========================================================================
+   Game Selection Hub & Dual-Mode (Space Shooter + Mưa Từ Vựng Rain Mode)
+   ========================================================================== */
+
+.rain-only,
+.rain-clouds {
+  display: none;
+}
+
+.arena.rain-mode .space-only {
+  display: none !important;
+}
+
+.arena.rain-mode .rain-only,
+.arena.rain-mode .rain-clouds {
+  display: block;
+}
+
+/* Rainy Night Ocean Theme (Matching Mưa Từ Vựng Screenshot) */
+.arena.rain-mode {
+  background:
+    radial-gradient(ellipse 75% 40% at 50% 0%, rgba(30, 58, 86, 0.55) 0%, transparent 72%),
+    radial-gradient(ellipse 95% 28% at 50% 100%, rgba(14, 165, 233, 0.28) 0%, transparent 72%),
+    linear-gradient(180deg, #0b1b2d 0%, #091727 52%, #071322 86%, #0b2438 100%);
+}
+
+/* Rolling Storm Clouds along Top Edge */
+.rain-clouds {
+  position: absolute;
+  top: -38px;
+  left: -40px;
+  right: -40px;
+  height: 126px;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud-puff {
+  position: absolute;
+  top: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 58%, rgba(36, 56, 78, 0.72), rgba(14, 29, 46, 0.42) 62%, transparent 76%);
+  filter: blur(8px);
+  animation: cloudDrift 16s ease-in-out infinite alternate;
+}
+
+.cloud-puff.c1 { left: -2%; width: 28%; height: 118px; animation-duration: 18s; }
+.cloud-puff.c2 { left: 20%; width: 26%; height: 110px; animation-duration: 14s; animation-delay: -3s; }
+.cloud-puff.c3 { left: 42%; width: 30%; height: 125px; animation-duration: 20s; animation-delay: -6s; }
+.cloud-puff.c4 { left: 66%; width: 26%; height: 112px; animation-duration: 15s; animation-delay: -2s; }
+.cloud-puff.c5 { left: 84%; width: 22%; height: 105px; animation-duration: 17s; animation-delay: -5s; }
+
+@keyframes cloudDrift {
+  from { transform: translateX(-14px) translateY(0px); }
+  to { transform: translateX(18px) translateY(5px); }
+}
+
+/* Glowing Aqua Ocean Surface (Rain Mode bottom barrier) */
+.ocean-surface {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36px;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(14, 116, 144, 0.48) 38%, rgba(8, 47, 73, 0.92) 100%);
+  border-top: 2px solid rgba(56, 189, 248, 0.72);
+  box-shadow:
+    0 0 18px rgba(56, 189, 248, 0.55),
+    0 -10px 30px rgba(14, 165, 233, 0.25);
+  transition: filter 0.16s ease;
+}
+
+.ocean-surface.hit {
+  border-top-color: #fb7185;
+  box-shadow: 0 0 24px rgba(244, 63, 94, 0.85), 0 -14px 40px rgba(244, 63, 94, 0.45);
+}
+
+/* Origami Paper Boat (Bottom Center in Rain Mode) */
+.boat-anchor {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: 96px;
+  height: 74px;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.paper-boat {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 75%;
+  filter: drop-shadow(0 4px 14px rgba(56, 189, 248, 0.45));
+  animation: boatBob 2.8s ease-in-out infinite;
+  transition: filter 0.12s ease;
+}
+
+.paper-boat.recoil {
+  filter: drop-shadow(0 0 22px rgba(253, 224, 71, 0.9));
+}
+
+@keyframes boatBob {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+/* Falling Rain Spelling Card (Exact Look of Reference Screenshot!) */
+.word-pill.rain-card {
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 16px 10px;
+  border-radius: 14px;
+  min-width: 112px;
+  max-width: 310px;
+  white-space: normal;
+  text-align: center;
+  border: 1.5px solid rgba(56, 189, 248, 0.52);
+  background: rgba(10, 27, 46, 0.86);
+  box-shadow:
+    0 6px 22px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(56, 189, 248, 0.2),
+    inset 0 1px 0 rgba(186, 230, 253, 0.16);
+}
+
+.word-pill.rain-card.locked {
+  border-color: #fde047 !important;
+  box-shadow:
+    0 0 0 3px rgba(251, 191, 36, 0.24),
+    0 0 28px rgba(56, 189, 248, 0.5) !important;
+}
+
+.rain-meaning-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1.25;
+}
+
+.rain-pos-mini {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(56, 189, 248, 0.2);
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.rain-mask {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3.5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.rm-slot {
+  display: inline-block;
+  min-width: 11px;
+  text-align: center;
+}
+
+.rm-slot.hint {
+  color: #fde047;
+  text-shadow: 0 0 10px rgba(250, 204, 21, 0.65);
+}
+
+.rm-slot.typed {
+  color: #34d399;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.72);
+}
+
+.rm-slot.blank {
+  color: rgba(203, 213, 225, 0.68);
+}
+
+.rm-slot.next-blank {
+  color: #fde047;
+}
+
+.rm-space {
+  display: inline-block;
+  width: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(148, 163, 184, 0.4);
+}
+
+.rm-space.next-space {
+  color: #fde047;
+}
+
+/* ==========================================================================
+   Game Selection Hub Card (Minimal & Clean)
+   ========================================================================== */
+
+.hub-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  animation: popIn 0.2s ease;
+}
+
+.hub-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.game-choice-card {
+  padding: 22px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.72);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+}
+
+.game-choice-card:hover {
+  border-color: rgba(56, 189, 248, 0.65);
+  background: rgba(30, 41, 59, 0.78);
+  transform: translateY(-2px);
+}
+
+.gc-emoji {
+  font-size: 30px;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.gc-name {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.gc-sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.btn-mini-back {
+  padding: 6px 11px;
+  font-size: 12px;
+  border-radius: 9px;
+  white-space: nowrap;
+}
+
+.speak-test-chip {
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  background: rgba(56, 189, 248, 0.16);
+  color: #7dd3fc;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.speak-test-chip:hover {
+  background: rgba(56, 189, 248, 0.28);
+  color: #ffffff;
+}
+
+.rain-badge {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.28), rgba(6, 182, 212, 0.28));
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+.rain-btn {
+  background: linear-gradient(135deg, #0284c7, #06b6d4);
+}
+
+.rain-empty-alert {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(14, 116, 144, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  color: #e0f2fe;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.rain-bridge-btn {
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #7dd3fc;
+}
+
+@media (max-width: 760px) {
+  .hub-grid {
+    grid-template-columns: 1fr;
+  }
+}
