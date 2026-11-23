@@ -1,0 +1,4002 @@
+[
+  {
+    "phrase": "surf the internet",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "lướt mạng internet",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "install an update",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "cài đặt bản cập nhật",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "crash unexpectedly",
+    "pattern": "v + adv",
+    "level": "B1",
+    "meaning": "bị sập, treo bất ngờ",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "store personal data",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "lưu trữ dữ liệu cá nhân",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "wireless connection",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "kết nối không dây",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "technical glitch",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "lỗi kỹ thuật nhỏ",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "cutting edge technology",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "công nghệ tối tân nhất",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "artificial intelligence",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "trí tuệ nhân tạo",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "cyber security threat",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "mối đe dọa an ninh mạng",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "encrypt sensitive data",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "mã hóa dữ liệu nhạy cảm",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "streamline daily operations",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tinh gọn quy trình hằng ngày",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "software vulnerability",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "lỗ hổng phần mềm",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "user friendly interface",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "giao diện thân thiện người dùng",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "bridge the digital divide",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "thu hẹp khoảng cách số",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "disruptive innovation",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "đổi mới mang tính đột phá",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "render obsolete",
+    "pattern": "v + adj",
+    "level": "C1",
+    "meaning": "khiến trở nên lỗi thời",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "algorithmic bias",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "thiên lệch thuật toán",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "deploy automated systems",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "triển khai hệ thống tự động",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "breach data privacy",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "xâm phạm quyền riêng tư dữ liệu",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "ubiquitous computing",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "điện toán hiện diện khắp nơi",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "exponential technological leap",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "bước nhảy công nghệ theo cấp số nhân",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "proprietary ecosystem",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "hệ sinh thái độc quyền",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "mitigate systemic latency",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "giảm thiểu độ trễ toàn hệ thống",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "technological singularity",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "điểm kỳ dị công nghệ",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "seamless interoperability",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "khả năng tương tác liên thông mượt mà",
+    "topicId": 1,
+    "topic": "Technology"
+  },
+  {
+    "phrase": "carry out research",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tiến hành nghiên cứu",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "collect accurate data",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "thu thập dữ liệu chính xác",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "prove a theory",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "chứng minh một giả thuyết",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "scientific discovery",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "phát hiện khoa học",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "run an experiment",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "thực hiện một thí nghiệm",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "natural phenomenon",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "hiện tượng tự nhiên",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "make a breakthrough",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tạo ra bước đột phá",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "test a hypothesis",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "kiểm chứng giả thuyết",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "draw a conclusion",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "rút ra kết luận",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "conduct clinical trials",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tiến hành thử nghiệm lâm sàng",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "genetic mutation",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "đột biến gen",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "compelling evidence",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "bằng chứng thuyết phục",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "peer reviewed journal",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "tạp chí khoa học bình duyệt",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "empirical validation",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự xác thực qua thực nghiệm",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "statistically significant",
+    "pattern": "adv + adj",
+    "level": "C1",
+    "meaning": "có ý nghĩa thống kê",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "replicate earlier findings",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "tái lập các phát hiện trước đó",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "rigorous methodology",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "phương pháp luận nghiêm ngặt",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "correlate strongly with",
+    "pattern": "v + adv",
+    "level": "C1",
+    "meaning": "tương quan mạnh mẽ với",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "act as a catalyst",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "đóng vai trò chất xúc tác",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "paradigm shift",
+    "pattern": "n + n",
+    "level": "C2",
+    "meaning": "sự chuyển dịch hệ mẫu tư duy",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "falsifiable hypothesis",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "giả thuyết có thể kiểm chứng bác bỏ",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "immutable laws of nature",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "những quy luật bất biến của tự nhiên",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "corroborate empirical data",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "củng cố bằng chứng thực nghiệm",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "epistemological framework",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "khung nhận thức luận",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "unexplained scientific anomaly",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "dị thường khoa học chưa lý giải được",
+    "topicId": 2,
+    "topic": "Science & Research"
+  },
+  {
+    "phrase": "meet a deadline",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "hoàn thành đúng hạn chót",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "earn a living",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "kiếm sống",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "sign a contract",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "ký hợp đồng",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "apply for a promotion",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "ứng tuyển thăng chức",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "heavy workload",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "khối lượng công việc nặng",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "launch a product",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "ra mắt sản phẩm",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "boost productivity",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "thúc đẩy năng suất lao động",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "negotiate a deal",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đàm phán thỏa thuận",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "competitive advantage",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "lợi thế cạnh tranh",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "allocate resources wisely",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "phân bổ nguồn lực khôn ngoan",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "delegate key tasks",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "ủy thác các nhiệm vụ trọng yếu",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "corporate culture",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "văn hóa doanh nghiệp",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "retain top talent",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "giữ chân nhân tài hàng đầu",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "forge strategic alliances",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "xây dựng liên minh chiến lược",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "consolidate market share",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "củng cố thị phần",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "diversify revenue streams",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "đa dạng hóa nguồn doanh thu",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "lucrative venture",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "dự án kinh doanh béo bở",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "hold someone accountable",
+    "pattern": "v + adj",
+    "level": "C1",
+    "meaning": "buộc ai chịu trách nhiệm giải trình",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "viable business model",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "mô hình kinh doanh khả thi",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "sharp business acumen",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự nhạy bén sắc sảo trong kinh doanh",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "hostile corporate takeover",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "thương vụ thâu tóm thù địch",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "fiduciary responsibility",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "trách nhiệm ủy thác tài chính",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "institutionalized nepotism",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "nạn gia đình trị ăn sâu trong tổ chức",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "extricate from a quagmire",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "thoát khỏi tình thế sa lầy bế tắc",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "synergistic collaboration",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự hợp tác tạo sức mạnh cộng hưởng",
+    "topicId": 3,
+    "topic": "Business & Work"
+  },
+  {
+    "phrase": "attend a lecture",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tham dự bài giảng",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "submit an assignment",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "nộp bài tập được giao",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "broaden your knowledge",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "mở rộng kiến thức",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "revise for exams",
+    "pattern": "v + prep",
+    "level": "B1",
+    "meaning": "ôn thi",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "pass with flying colors",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "vượt qua kỳ thi xuất sắc",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "take detailed notes",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "ghi chép chi tiết",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "higher education",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "giáo dục bậc đại học",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "critical thinking skills",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "kỹ năng tư duy phản biện",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "pursue a degree",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "theo đuổi tấm bằng đại học",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "acquire fluency",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đạt được sự trôi chảy",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "academic excellence",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "thành tích học thuật xuất sắc",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "lifelong learning",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "học tập suốt đời",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "win a scholarship",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "giành được học bổng",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "foster intellectual curiosity",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "nuôi dưỡng sự tò mò trí tuệ",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "holistic curriculum",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "chương trình giảng dạy toàn diện",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "commit plagiarism",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "mắc lỗi đạo văn",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "innate aptitude for",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "năng khiếu bẩm sinh về",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "pedagogical approach",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "phương pháp tiếp cận sư phạm",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "memory retention rate",
+    "pattern": "n + n",
+    "level": "C1",
+    "meaning": "tỷ lệ ghi nhớ kiến thức",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "inculcate core values",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "truyền thụ khắc sâu giá trị cốt lõi",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "erudite scholarship",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "nền học thuật uyên bác",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "pedantic obsession with detail",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự câu nệ tiểu tiết khô khan",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "self taught polymath",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "bậc thông thái đa ngành tự học",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "authoritative treatise",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chuyên luận học thuật có uy tín lớn",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "moral edification",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự khai sáng về mặt đạo đức",
+    "topicId": 4,
+    "topic": "Education & Study"
+  },
+  {
+    "phrase": "protect wildlife",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "bảo vệ động vật hoang dã",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "reduce carbon footprint",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "giảm dấu chân carbon",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "global warming",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "sự nóng lên toàn cầu",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "natural resources",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "tài nguyên thiên nhiên",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "extreme weather",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "thời tiết khắc nghiệt",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "plant native trees",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "trồng cây bản địa",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "renewable energy sources",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "các nguồn năng lượng tái tạo",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "endangered species",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "các loài có nguy cơ tuyệt chủng",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "sustainable development",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "phát triển bền vững",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "combat climate change",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "chống biến đổi khí hậu",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "preserve biodiversity",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "bảo tồn đa dạng sinh học",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "toxic chemical waste",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "chất thải hóa học độc hại",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "soil erosion",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "sự xói mòn đất",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "mitigate environmental damage",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "giảm nhẹ thiệt hại môi trường",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "deplete finite reserves",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "làm cạn kiệt nguồn dự trữ hữu hạn",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "irreversible ecological loss",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "tổn thất sinh thái không thể đảo ngược",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "curb greenhouse emissions",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "kiềm chế phát thải khí nhà kính",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "pristine wilderness",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "vùng hoang dã nguyên sơ",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "acute water scarcity",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "tình trạng khan hiếm nước nghiêm trọng",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "anthropogenic climate disruption",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "biến động khí hậu do con người gây ra",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "cataclysmic ecological collapse",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự sụp đổ sinh thái mang tính hủy diệt",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "pernicious industrial effluent",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "nước thải công nghiệp độc hại ngầm",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "verdant pristine canopy",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tán rừng xanh mướt nguyên sơ",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "inclement atmospheric shifts",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "những biến đổi thời tiết khắc nghiệt",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "inundate coastal lowlands",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "làm ngập lụt vùng đồng bằng ven biển",
+    "topicId": 5,
+    "topic": "Environment & Nature"
+  },
+  {
+    "phrase": "balanced diet",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "chế độ ăn uống cân bằng",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "recover from illness",
+    "pattern": "v + prep",
+    "level": "B1",
+    "meaning": "hồi phục sau cơn bệnh",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "relieve back pain",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "làm dịu cơn đau lưng",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "seek medical attention",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tìm kiếm sự chăm sóc y tế",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "catch an infection",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "bị nhiễm trùng",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "boost your immunity",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tăng cường hệ miễn dịch",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "chronic medical condition",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "bệnh lý mãn tính",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "preventive healthcare",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "chăm sóc y tế dự phòng",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "prescribe medication",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "kê đơn thuốc",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "undergo major surgery",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "trải qua ca đại phẫu",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "mental wellbeing",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sức khỏe tinh thần",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "develop severe symptoms",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "xuất hiện triệu chứng nghiêm trọng",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "contain an epidemic",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "khống chế một dịch bệnh",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "alleviate chronic fatigue",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "làm dịu chứng mệt mỏi mãn tính",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "sedentary lifestyle",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "lối sống ít vận động",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "nutritional deficiency",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự thiếu hụt dinh dưỡng",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "grim medical prognosis",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "tiên lượng y khoa ảm đạm",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "highly contagious pathogen",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "mầm bệnh cực kỳ dễ lây lan",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "promote human longevity",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "thúc đẩy tuổi thọ con người",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "debilitating chronic malaise",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tình trạng suy nhược kéo dài",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "palliative end of life care",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chăm sóc giảm nhẹ cuối đời",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "salubrious mountain climate",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "khí hậu vùng núi trong lành tốt cho sức khỏe",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "muscular atrophy",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chứng teo cơ",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "virulent infectious strain",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chủng virus cực độc lây lan dữ dội",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "convalesce after trauma",
+    "pattern": "v + prep",
+    "level": "C2",
+    "meaning": "dưỡng sức hồi phục sau chấn thương",
+    "topicId": 6,
+    "topic": "Health & Medicine"
+  },
+  {
+    "phrase": "cultural heritage",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "di sản văn hóa",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "generation gap",
+    "pattern": "n + n",
+    "level": "B1",
+    "meaning": "khoảng cách thế hệ",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "local community",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "cộng đồng địa phương",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "raise awareness",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "nâng cao nhận thức",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "follow old traditions",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tuân theo truyền thống lâu đời",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "equal opportunities",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "cơ hội bình đẳng",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "cultural diversity",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự đa dạng văn hóa",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "bridge social divides",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "hàn gắn sự chia rẽ xã hội",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "challenge stereotypes",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "thách thức các định kiến khuôn mẫu",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "social mobility",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự dịch chuyển tầng lớp xã hội",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "live in harmony",
+    "pattern": "v + prep",
+    "level": "B2",
+    "meaning": "sống hòa thuận hài hòa",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "combat deep poverty",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "chống lại cảnh nghèo đói sâu sắc",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "welfare safety net",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "mạng lưới an sinh phúc lợi",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "foster social cohesion",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "thúc đẩy sự gắn kết xã hội",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "widening wealth disparity",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "khoảng cách giàu nghèo ngày càng nới rộng",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "marginalized communities",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "những cộng đồng bị gạt ra bên lề",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "grassroots movement",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "phong trào khởi phát từ quần chúng",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "indigenous cultural identity",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "bản sắc văn hóa bản địa",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "express firm solidarity",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "bày tỏ tình đoàn kết vững chắc",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "cultural hegemony",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "quyền bá chủ về mặt văn hóa",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "entrenched social stratification",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự phân tầng xã hội ăn sâu cố hữu",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "ostracize vocal dissenters",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "tẩy chay những người bất đồng quan điểm",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "parochial worldview",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "thế giới quan cục bộ thiển cận",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "widespread moral anomie",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tình trạng hỗn loạn chuẩn mực xã hội",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "entrenched xenophobia",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tâm lý bài ngoại ăn sâu",
+    "topicId": 7,
+    "topic": "Society & Culture"
+  },
+  {
+    "phrase": "obey the law",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tuân thủ pháp luật",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "hold an election",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tổ chức cuộc bầu cử",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "commit a crime",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "phạm tội",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "reach a decision",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đi đến quyết định",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "fair trial",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "phiên tòa xét xử công bằng",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "political campaign",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "chiến dịch chính trị",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "enforce strict regulations",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "thực thi các quy định nghiêm ngặt",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "pass new legislation",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "thông qua đạo luật mới",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "reach a unanimous verdict",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đưa ra phán quyết nhất trí",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "violate human rights",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "vi phạm nhân quyền",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "constitutional reform",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "cải cách hiến pháp",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "diplomatic relations",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "quan hệ ngoại giao",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "prosecute serious offenders",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "truy tố tội phạm nghiêm trọng",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "build broad consensus",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "xây dựng sự đồng thuận rộng rãi",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "national sovereignty",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "chủ quyền quốc gia",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "ratify a peace treaty",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "phê chuẩn hiệp ước hòa bình",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "cut bureaucratic red tape",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "cắt giảm thủ tục hành chính quan liêu",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "legal jurisdiction",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "thẩm quyền tài phán pháp lý",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "form a ruling coalition",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "thành lập liên minh cầm quyền",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "act with complete impunity",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "hành động ngang nhiên không sợ bị trừng phạt",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "abrogate a bilateral treaty",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "chính thức bãi bỏ hiệp ước song phương",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "grant executive clemency",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "ban lệnh ân xá khoan hồng",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "usurp legitimate authority",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "chiếm đoạt quyền lực hợp pháp",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "corrupt political oligarchy",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chế độ đầu sỏ chính trị tham nhũng",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "commit deliberate perjury",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "cố tình khai man trước tòa",
+    "topicId": 8,
+    "topic": "Law & Politics"
+  },
+  {
+    "phrase": "pay close attention",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "chú ý sát sao",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "lose your temper",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "mất bình tĩnh, nổi nóng",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "break a bad habit",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "từ bỏ một thói quen xấu",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "build self confidence",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "xây dựng sự tự tin",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "positive attitude",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "thái độ tích cực",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "vivid memory",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "ký ức sống động",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "cognitive development",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự phát triển nhận thức",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "emotional resilience",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự kiên cường về cảm xúc",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "trust your intuition",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tin vào trực giác của bạn",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "growth mindset",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "tư duy phát triển",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "show genuine empathy",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "thể hiện sự đồng cảm chân thành",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "subconscious fear",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "nỗi sợ ẩn sâu trong tiềm thức",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "overcome past trauma",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "vượt qua chấn thương tâm lý quá khứ",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "emotional catharsis",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự giải tỏa thanh lọc cảm xúc",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "deep introspection",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự tự soi xét nội tâm sâu sắc",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "ambivalent feelings",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "cảm xúc mâu thuẫn nước đôi",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "widespread public apathy",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự thờ ơ lan rộng trong công chúng",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "selfless altruism",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "lòng vị tha vô tư",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "harbor grand delusions",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "nuôi dưỡng ảo tưởng hoang đường",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "cognitive dissonance",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự bất hòa xung đột nhận thức",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "unshakeable equanimity",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự điềm tĩnh vững vàng khó lay chuyển",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "existential ennui",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cảm giác chán chường trống rỗng hiện sinh",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "sublimate aggressive impulses",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "thăng hoa các xung năng hung hăng",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "moments of rare lucidity",
+    "pattern": "n + n",
+    "level": "C2",
+    "meaning": "những khoảnh khắc minh mẫn hiếm có",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "intellectual torpor",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "trạng thái trì trệ đờ đẫn trí óc",
+    "topicId": 9,
+    "topic": "Psychology & Mind"
+  },
+  {
+    "phrase": "spread false news",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "lan truyền tin giả",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "grab public attention",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "thu hút sự chú ý của công chúng",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "make an announcement",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đưa ra thông báo",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "breaking news story",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "tin tức nóng hổi mới nhất",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "express clear views",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "bày tỏ quan điểm rõ ràng",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "target audience",
+    "pattern": "n + n",
+    "level": "B1",
+    "meaning": "đối tượng khán giả mục tiêu",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "media coverage",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "việc đưa tin của truyền thông",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "convey a powerful message",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "truyền tải thông điệp mạnh mẽ",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "erode public credibility",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "làm xói mòn uy tín trước công chúng",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "unconscious media bias",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "thiên vị vô thức của truyền thông",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "clarify a misunderstanding",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "làm rõ một sự hiểu lầm",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "strict state censorship",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự kiểm duyệt nghiêm ngặt của nhà nước",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "spark heated debate",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "châm ngòi cuộc tranh luận nảy lửa",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "disseminate vital information",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "phổ biến thông tin thiết yếu",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "subtle linguistic nuance",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sắc thái ngôn ngữ tinh tế",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "eloquent public speaker",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "diễn giả hùng hồn trước công chúng",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "tacit mutual agreement",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "thỏa thuận ngầm giữa hai bên",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "biting political satire",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự châm biếm chính trị sâu cay",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "sensational tabloid headline",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "tiêu đề báo lá cải giật gân",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "fierce ideological polemic",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cuộc luận chiến tư tưởng gay gắt",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "scathing public diatribe",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "bài công kích gay gắt trước công chúng",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "delicate polite euphemism",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cách nói giảm nói tránh tế nhị",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "laconic witty remark",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lời nhận xét cô đọng dí dỏm",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "tedious circumlocution",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lối nói vòng vo dài dòng nhàm chán",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "malicious veiled innuendo",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lời ám chỉ bóng gió ác ý",
+    "topicId": 10,
+    "topic": "Media & Communication"
+  },
+  {
+    "phrase": "save for the future",
+    "pattern": "v + prep",
+    "level": "B1",
+    "meaning": "tiết kiệm cho tương lai",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "pay off debt",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "trả hết nợ nần",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "manage a tight budget",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "quản lý ngân sách eo hẹp",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "make a steady profit",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tạo ra lợi nhuận ổn định",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "cost of living",
+    "pattern": "n + n",
+    "level": "B1",
+    "meaning": "chi phí sinh hoạt",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "exchange foreign currency",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đổi ngoại tệ",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "curb rising inflation",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "kiềm chế lạm phát gia tăng",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "economic recession",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "suy thoái kinh tế",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "fiscal deficit",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "thâm hụt ngân sách tài khóa",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "stimulate consumer spending",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "kích thích chi tiêu tiêu dùng",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "government subsidy",
+    "pattern": "n + n",
+    "level": "B2",
+    "meaning": "khoản trợ cấp của chính phủ",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "declare bankruptcy",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tuyên bố phá sản",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "secure a mortgage loan",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "vay được khoản vay thế chấp",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "impose harsh tariffs",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "áp đặt mức thuế quan khắc nghiệt",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "austerity measures",
+    "pattern": "n + n",
+    "level": "C1",
+    "meaning": "các biện pháp thắt lưng buộc bụng",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "market liquidity crunch",
+    "pattern": "n + n",
+    "level": "C1",
+    "meaning": "khủng hoảng thanh khoản thị trường",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "diversified asset portfolio",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "danh mục tài sản đầu tư đa dạng",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "depreciate rapidly in value",
+    "pattern": "v + adv",
+    "level": "C1",
+    "meaning": "mất giá nhanh chóng",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "break a market monopoly",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "phá vỡ thế độc quyền thị trường",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "unexpected financial windfall",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "khoản tiền bất ngờ từ trên trời rơi xuống",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "profligate public spending",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chi tiêu công phung phí hoang tàng",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "pecuniary self interest",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lợi ích cá nhân vì tiền bạc",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "sink into abject penury",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "rơi vào cảnh bần cùng khốn khổ",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "exploit market arbitrage",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "tận dụng chênh lệch giá thị trường",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "render a firm insolvent",
+    "pattern": "v + adj",
+    "level": "C2",
+    "meaning": "khiến công ty mất khả năng thanh toán",
+    "topicId": 11,
+    "topic": "Economy & Finance"
+  },
+  {
+    "phrase": "write a bestselling novel",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "viết cuốn tiểu thuyết bán chạy nhất",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "paint a landscape",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "vẽ tranh phong cảnh",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "live musical performance",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "buổi biểu diễn âm nhạc trực tiếp",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "visit an art gallery",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tham quan phòng tranh nghệ thuật",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "classic love story",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "câu chuyện tình kinh điển",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "creative imagination",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "trí tưởng tượng sáng tạo",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "timeless masterpiece",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "kiệt tác vượt thời gian",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "vivid visual imagery",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "hình ảnh miêu tả sống động",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "abstract contemporary art",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "nghệ thuật trừu tượng đương đại",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "compelling narrative arc",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "mạch truyện lôi cuốn",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "rich literary symbolism",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "tính biểu tượng văn học giàu có",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "aesthetic appeal",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sức hấp dẫn thẩm mỹ",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "critical acclaim",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự tán dương từ giới phê bình",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "poignant emotional resonance",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "dư âm cảm xúc sâu lắng day dứt",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "evocative poetic prose",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "lối văn xuôi giàu chất thơ gợi cảm",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "recurring thematic motif",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "mô-típ chủ đề lặp đi lặp lại",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "subtle dramatic irony",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự trớ trêu kịch tính tinh tế",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "curate a major exhibition",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "phụ trách tuyển chọn triển lãm lớn",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "royal artistic patronage",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự bảo trợ nghệ thuật của hoàng gia",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "sublime artistic transcendence",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "vẻ đẹp siêu việt thăng hoa trong nghệ thuật",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "remarkable verisimilitude",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tính chân thực sống động như thật",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "haunting mournful elegy",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "khúc ai điếu buồn thương ám ảnh",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "deafening urban cacophony",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tạp âm hỗn độn chói tai nơi đô thị",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "clever stylistic pastiche",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tác phẩm pha trộn nhiều phong cách tài tình",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "entire literary oeuvre",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "toàn bộ gia tài sáng tác văn chương",
+    "topicId": 12,
+    "topic": "Arts & Literature"
+  },
+  {
+    "phrase": "book a direct flight",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đặt chuyến bay thẳng",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "go through customs",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "làm thủ tục hải quan",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "travel off the beaten track",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "du lịch nơi hoang sơ ít người biết",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "broaden your horizons",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "mở mang tầm nhìn thế giới",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "explore foreign cultures",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "khám phá văn hóa nước ngoài",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "pack light luggage",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đóng gói hành lý gọn nhẹ",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "plan a detailed itinerary",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "lập lịch trình chi tiết",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "warm local hospitality",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "lòng hiếu khách nồng hậu bản địa",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "embark on an expedition",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "khởi hành chuyến thám hiểm",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "remote exotic destination",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "điểm đến kỳ lạ xa xôi",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "sustainable ecotourism",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "du lịch sinh thái bền vững",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "daily urban commute",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "chuyến đi làm hằng ngày ở đô thị",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "global supply chain",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "chuỗi cung ứng toàn cầu",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "cosmopolitan global hub",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "trung tâm quốc tế đa văn hóa",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "seek political asylum",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "xin tị nạn chính trị",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "thriving overseas diaspora",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "cộng đồng kiều bào thịnh vượng ở nước ngoài",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "shifting geopolitics",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "cục diện địa chính trị đang chuyển dịch",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "insatiable wanderlust",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "niềm đam mê xê dịch không bao giờ vơi",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "transnational cooperation",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự hợp tác xuyên quốc gia",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "diplomatic rapprochement",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự xích lại gần nhau trong ngoại giao",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "fragile geopolitical detente",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự hòa dịu căng thẳng địa chính trị mong manh",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "circumnavigate the globe",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "đi vòng quanh địa cầu",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "peripatetic lifestyle",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lối sống nay đây mai đó không cố định",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "economic autarky",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chính sách kinh tế tự cung tự cấp khép kín",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "epic personal odyssey",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "hành trình cuộc đời dài đầy biến cố",
+    "topicId": 13,
+    "topic": "Travel & Globalism"
+  },
+  {
+    "phrase": "affordable housing",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "nhà ở giá phải chăng",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "public transport network",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "mạng lưới giao thông công cộng",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "bustling city center",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "trung tâm thành phố nhộn nhịp",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "quiet residential suburb",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "vùng ngoại ô dân cư yên tĩnh",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "modern steel structure",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "công trình kết cấu thép hiện đại",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "green public park",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "công viên cây xanh công cộng",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "ease traffic congestion",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "giảm bớt ùn tắc giao thông",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "upgrade vital infrastructure",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "nâng cấp cơ sở hạ tầng thiết yếu",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "high population density",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "mật độ dân số cao",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "iconic city landmark",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "công trình biểu tượng thành phố",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "renovate historic buildings",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "cải tạo các tòa nhà lịch sử",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "towering glass skyscraper",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "tòa nhà chọc trời bằng kính cao vút",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "architectural blueprint",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "bản vẽ thiết kế kiến trúc",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "unchecked urban sprawl",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự mở rộng đô thị tràn lan thiếu kiểm soát",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "rapid gentrification",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "quá trình đô thị hóa thượng lưu nhanh chóng",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "revitalize neglected districts",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "hồi sinh các khu phố bị bỏ quên",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "imposing marble facade",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "mặt tiền đá cẩm thạch uy nghi",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "dilapidated abandoned edifice",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "công trình đồ sộ bị bỏ hoang đổ nát",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "municipal zoning laws",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "luật quy hoạch phân khu đô thị",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "sprawling coastal megalopolis",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "siêu đô thị ven biển trải rộng khổng lồ",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "labyrinthine medieval alleys",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "những con hẻm trung cổ rối rắm như mê cung",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "derelict industrial warehouse",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "nhà kho công nghiệp hoang phế",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "vernacular local architecture",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "kiến trúc bản địa truyền thống",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "impregnable stone bastion",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "pháo đài đá bất khả xâm phạm",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "urban historical palimpsest",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "đô thị mang nhiều tầng dấu tích lịch sử",
+    "topicId": 14,
+    "topic": "Urban & Architecture"
+  },
+  {
+    "phrase": "tell the plain truth",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "nói sự thật thẳng thắn",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "keep your promise",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "giữ lời hứa",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "sense of fairness",
+    "pattern": "n + n",
+    "level": "B1",
+    "meaning": "ý thức về sự công bằng",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "respect human dignity",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tôn trọng phẩm giá con người",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "fulfill your duty",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "hoàn thành bổn phận của mình",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "personal freedom",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "tự do cá nhân",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "face a moral dilemma",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đối mặt tình thế tiến thoái lưỡng nan về đạo đức",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "act with integrity",
+    "pattern": "v + prep",
+    "level": "B2",
+    "meaning": "hành động chính trực liêm khiết",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "clear conscience",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "lương tâm thanh thản trong sạch",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "informed mutual consent",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "sự đồng thuận có hiểu biết từ hai phía",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "ethical obligation",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "nghĩa vụ đạo đức",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "justify questionable actions",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "biện minh cho hành động đáng ngờ",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "timeless moral virtue",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "đức hạnh đạo đức trường tồn",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "inherent intrinsic value",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "giá trị nội tại vốn có",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "impartial ethical judgment",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "phán xét đạo đức công tâm không thiên vị",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "blatant moral hypocrisy",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "thói đạo đức giả trắng trợn",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "rigid ideological dogma",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "giáo điều tư tưởng cứng nhắc",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "pragmatic compromise",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự thỏa hiệp thực tế",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "stoic calm endurance",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự chịu đựng điềm tĩnh khắc kỷ",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "unblemished moral probity",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "đức tính liêm khiết không tì vết",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "uncompromising ethical rectitude",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự chính trực đạo đức không khoan nhượng",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "cynical philosophical nihilism",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chủ nghĩa hư vô hoài nghi",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "self denying ascetic life",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lối sống khổ hạnh tiết chế",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "deceptive moral sophistry",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "thuật ngụy biện đạo đức tinh vi",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "unbridled sensual hedonism",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chủ nghĩa khoái lạc buông thả không kiềm chế",
+    "topicId": 15,
+    "topic": "Ethics & Philosophy"
+  },
+  {
+    "phrase": "ancient civilization",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "nền văn minh cổ đại",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "historical monument",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "di tích tưởng niệm lịch sử",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "decisive historic battle",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "trận chiến lịch sử mang tính quyết định",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "trace family origins",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "truy tìm nguồn gốc gia đình",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "royal palace ruins",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "tàn tích cung điện hoàng gia",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "turning point in history",
+    "pattern": "n + n",
+    "level": "B1",
+    "meaning": "bước ngoặt trong lịch sử",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "unearth ancient artifacts",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "khai quật cổ vật thời xưa",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "peaceful golden era",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "kỷ nguyên hoàng kim thái bình",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "spark a revolution",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "châm ngòi một cuộc cách mạng",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "prosperous ruling dynasty",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "triều đại trị vì hưng thịnh",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "preserve national archives",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "bảo tồn kho lưu trữ quốc gia",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "distant common ancestors",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "tổ tiên chung từ xa xưa",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "medieval stone fortress",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "pháo đài đá thời trung cổ",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "leave a lasting legacy",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "để lại di sản bền vững lâu dài",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "commemorate fallen heroes",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "tưởng niệm các anh hùng đã hy sinh",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "cultural renaissance",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "thời kỳ phục hưng văn hóa",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "sudden political upheaval",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "biến động đảo lộn chính trị đột ngột",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "archaeological excavation",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "cuộc khai quật khảo cổ học",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "feudal social hierarchy",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "hệ thống đẳng cấp phong kiến",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "since time immemorial",
+    "pattern": "prep + n",
+    "level": "C2",
+    "meaning": "từ thời xa xưa không ai còn nhớ nổi",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "faint surviving vestige",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "dấu vết tàn dư mờ nhạt còn sót lại",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "epochal historical transformation",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cuộc biến đổi mang tính bước ngoặt lịch sử",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "glaring historical anachronism",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "chi tiết sai lệch niên đại rõ rệt",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "chaotic power interregnum",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "giai đoạn trống ngôi hỗn loạn quyền lực",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "primordial human instincts",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "những bản năng nguyên sơ thuở hồng hoang",
+    "topicId": 16,
+    "topic": "History & Heritage"
+  },
+  {
+    "phrase": "solve a complex problem",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "giải quyết vấn đề phức tạp",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "spot a clear pattern",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "nhận ra quy luật rõ ràng",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "compare two options",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "so sánh hai lựa chọn",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "key deciding factor",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "yếu tố quyết định then chốt",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "obvious logical flaw",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "lỗ hổng logic hiển nhiên",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "predict future trends",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "dự đoán xu hướng tương lai",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "draw logical inferences",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "rút ra các suy luận hợp lý",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "meet strict criteria",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đáp ứng các tiêu chí nghiêm ngặt",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "coherent analytical framework",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "khung phân tích mạch lạc",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "make a rough estimate",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đưa ra ước tính sơ bộ",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "highly relevant details",
+    "pattern": "adv + adj",
+    "level": "B2",
+    "meaning": "những chi tiết cực kỳ liên quan",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "consistent clear reasoning",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "lập luận rõ ràng nhất quán",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "challenge basic assumptions",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "thách thức các giả định cơ bản",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "scrutinize every detail",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "soi xét kỹ lưỡng từng chi tiết",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "glaring data discrepancy",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự sai lệch dữ liệu rõ rệt",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "false binary dichotomy",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự phân đôi đối lập sai lệch",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "extrapolate future outcomes",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "ngoại suy kết quả tương lai",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "resolve a striking paradox",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "giải quyết một nghịch lý nổi bật",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "purely arbitrary decision",
+    "pattern": "adv + adj",
+    "level": "C1",
+    "meaning": "quyết định hoàn toàn tùy tiện",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "cogent airtight argument",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lập luận đanh thép không thể bẻ gãy",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "perspicacious keen insight",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cái nhìn sâu sắc thấu đáo nhanh nhạy",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "specious misleading claim",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "tuyên bố nghe có vẻ đúng nhưng sai lệch",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "baffling intellectual conundrum",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "bài toán trí tuệ hóc búa nan giải",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "myopic short term view",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cái nhìn thiển cận ngắn hạn",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "indubitable proven fact",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "sự thật hiển nhiên không thể nghi ngờ",
+    "topicId": 17,
+    "topic": "Logic & Analysis"
+  },
+  {
+    "phrase": "stay calm under pressure",
+    "pattern": "v + adj",
+    "level": "B1",
+    "meaning": "giữ bình tĩnh dưới áp lực",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "deeply grateful for",
+    "pattern": "adv + adj",
+    "level": "B1",
+    "meaning": "vô cùng biết ơn về",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "loyal lifelong friend",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "người bạn trung thành suốt đời",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "generous kind gesture",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "cử chỉ hào phóng tử tế",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "cheerful warm smile",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "nụ cười ấm áp vui tươi",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "brave selfless act",
+    "pattern": "adj + n",
+    "level": "B1",
+    "meaning": "hành động dũng cảm vị tha",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "cautiously optimistic",
+    "pattern": "adv + adj",
+    "level": "B2",
+    "meaning": "lạc quan một cách thận trọng",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "genuine warm affection",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "tình cảm yêu mến ấm áp chân thành",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "deep heartfelt compassion",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "lòng trắc ẩn sâu sắc từ trái tim",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "remain humble in victory",
+    "pattern": "v + adj",
+    "level": "B2",
+    "meaning": "giữ sự khiêm tốn khi chiến thắng",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "fiercely passionate about",
+    "pattern": "adv + adj",
+    "level": "B2",
+    "meaning": "đam mê mãnh liệt với",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "healthy skeptical mindset",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "tư duy hoài nghi lành mạnh",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "rash impulsive choice",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "lựa chọn bốc đồng thiếu suy nghĩ",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "meticulous attention to detail",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự chú tâm tỉ mỉ đến từng chi tiết",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "tenacious unwavering grit",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự kiên trì bền bỉ không lay chuyển",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "magnetic personal charisma",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sức hút cá nhân đầy mê hoặc",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "astute judge of character",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "người nhìn nhận tính cách sắc sảo",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "callous utter indifference",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "sự vô cảm nhẫn tâm hoàn toàn",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "quiet bittersweet melancholy",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "nỗi u sầu man mác lắng đọng",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "magnanimous gracious gesture",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cử chỉ đại lượng cao thượng",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "intrepid fearless explorer",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "nhà thám hiểm gan dạ bất khuất",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "bitter acrimonious dispute",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cuộc tranh chấp cay nghiệt gay gắt",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "sanguine hopeful outlook",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "cái nhìn lạc quan giữa nghịch cảnh",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "fastidious exacting standards",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "những tiêu chuẩn cực kỳ khắt khe tỉ mỉ",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "obsequious hollow flattery",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "lời nịnh nọt khúm núm sáo rỗng",
+    "topicId": 18,
+    "topic": "Character & Emotion"
+  },
+  {
+    "phrase": "adapt quickly to change",
+    "pattern": "v + adv",
+    "level": "B1",
+    "meaning": "thích nghi nhanh với sự thay đổi",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "make steady progress",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đạt được tiến bộ đều đặn",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "improve overall quality",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "cải thiện chất lượng tổng thể",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "expand into new markets",
+    "pattern": "v + prep",
+    "level": "B1",
+    "meaning": "mở rộng sang các thị trường mới",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "reduce unnecessary waste",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "giảm bớt lãng phí không cần thiết",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "survive tough times",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "vượt qua giai đoạn khó khăn",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "accelerate rapid growth",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "đẩy nhanh tốc độ tăng trưởng",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "eliminate major obstacles",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "loại bỏ những trở ngại lớn",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "restore public trust",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "khôi phục niềm tin của công chúng",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "enhance user experience",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "nâng cao trải nghiệm người dùng",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "fluctuate wildly overnight",
+    "pattern": "v + adv",
+    "level": "B2",
+    "meaning": "biến động mạnh chỉ sau một đêm",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "radically transform society",
+    "pattern": "adv + v",
+    "level": "B2",
+    "meaning": "biến đổi xã hội tận gốc",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "accumulate vast wealth",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tích lũy khối tài sản khổng lồ",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "exacerbate existing tensions",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "làm trầm trọng thêm căng thẳng sẵn có",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "bolster economic resilience",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "củng cố sức chống chịu của nền kinh tế",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "curtail excessive spending",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "cắt giảm chi tiêu quá mức",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "eradicate infectious diseases",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "xóa sổ hoàn toàn các bệnh truyền nhiễm",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "undermine core stability",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "làm suy yếu nền tảng ổn định",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "rectify costly mistakes",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "sửa chữa những sai lầm đắt giá",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "galvanize immediate action",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "thúc đẩy hành động tức thì mạnh mẽ",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "assuage lingering doubts",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "xoa dịu những nghi ngờ dai dẳng",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "coalesce into a unified force",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "hợp nhất thành một lực lượng thống nhất",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "mollify fierce critics",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "xoa dịu những nhà phê bình gay gắt",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "extirpate deep rooted corruption",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "nhổ tận gốc nạn tham nhũng ăn sâu",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "attenuate harmful impacts",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "làm suy giảm cường độ tác động có hại",
+    "topicId": 19,
+    "topic": "Action & Change"
+  },
+  {
+    "phrase": "give a clear example",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "đưa ra một ví dụ rõ ràng",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "summarize main points",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "tóm tắt các luận điểm chính",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "in the wider context",
+    "pattern": "prep + n",
+    "level": "B1",
+    "meaning": "trong bối cảnh rộng hơn",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "state your main purpose",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "nêu rõ mục đích chính",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "support a strong opinion",
+    "pattern": "v + n",
+    "level": "B1",
+    "meaning": "ủng hộ quan điểm mạnh mẽ",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "explain things briefly",
+    "pattern": "v + adv",
+    "level": "B1",
+    "meaning": "giải thích ngắn gọn",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "cite reliable sources",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "trích dẫn các nguồn đáng tin cậy",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "emphasize key findings",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "nhấn mạnh các phát hiện trọng tâm",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "draw a sharp contrast",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "tạo ra sự tương phản sắc nét",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "offer a fresh perspective",
+    "pattern": "v + n",
+    "level": "B2",
+    "meaning": "mang lại một góc nhìn mới mẻ",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "concise clear summary",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "bản tóm tắt ngắn gọn súc tích",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "explicit clear guidelines",
+    "pattern": "adj + n",
+    "level": "B2",
+    "meaning": "những hướng dẫn rõ ràng minh bạch",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "assert firmly that",
+    "pattern": "v + adv",
+    "level": "B2",
+    "meaning": "khẳng định chắc nịch rằng",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "substantiate bold claims",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "chứng minh tuyên bố táo bạo bằng chứng cứ",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "refute opposing arguments",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "bác bỏ các lập luận đối lập",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "highly contentious issue",
+    "pattern": "adv + adj",
+    "level": "C1",
+    "meaning": "vấn đề gây nhiều tranh cãi",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "elaborate in great detail",
+    "pattern": "v + n",
+    "level": "C1",
+    "meaning": "trình bày giải thích hết sức chi tiết",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "comprehensive thorough review",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "bài đánh giá toàn diện kỹ lưỡng",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "implicit hidden assumption",
+    "pattern": "adj + n",
+    "level": "C1",
+    "meaning": "giả định ngầm ẩn giấu",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "incontrovertible hard proof",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "bằng chứng chắc chắn không thể chối cãi",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "juxtapose contrasting ideas",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "đặt cạnh nhau các ý tưởng tương phản để đối chiếu",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "trenchant incisive critique",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "bài phê bình sắc bén sâu cay trực diện",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "conciliatory diplomatic tone",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "giọng điệu ngoại giao hòa giải xoa dịu",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "pithy timeless aphorism",
+    "pattern": "adj + n",
+    "level": "C2",
+    "meaning": "câu cách ngôn ngắn gọn hàm súc vượt thời gian",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  },
+  {
+    "phrase": "avoid prolix writing",
+    "pattern": "v + n",
+    "level": "C2",
+    "meaning": "tránh lối viết dài dòng lê thê rườm rà",
+    "topicId": 20,
+    "topic": "Academic & Rhetoric"
+  }
+]

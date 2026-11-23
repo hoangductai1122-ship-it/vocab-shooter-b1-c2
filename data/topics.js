@@ -27,7 +27,9 @@ window.POS_LABELS = {
   adj: { abbr: "adj", vi: "Tính từ", short: "adj · tính từ" },
   adv: { abbr: "adv", vi: "Trạng từ", short: "adv · trạng từ" },
   prep: { abbr: "prep", vi: "Giới từ", short: "prep · giới từ" },
-  conj: { abbr: "conj", vi: "Liên từ", short: "conj · liên từ" }
+  conj: { abbr: "conj", vi: "Liên từ", short: "conj · liên từ" },
+  colloc: { abbr: "colloc", vi: "Cụm từ cố định", short: "collocation" }
 };
 
 window.VOCAB_PARTS = window.VOCAB_PARTS || [];
+window.COLLOCATION_PARTS = window.COLLOCATION_PARTS || [];

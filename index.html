@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luyện Gõ · Học Từ Vựng Tiếng Anh B1–C2</title>
+  <title>Luyện Gõ · Từ Vựng &amp; Boss Collocations B1–C2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -21,17 +21,19 @@
         </button>
 
         <div class="brand-badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
-            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="12" cy="12" r="3"></circle>
+            <line x1="12" y1="2" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="2" y1="12" x2="6" y2="12"></line>
+            <line x1="18" y1="12" x2="22" y2="12"></line>
           </svg>
         </div>
 
         <div class="brand-text">
-          <h1>Luyện Gõ</h1>
-          <p>Gõ các từ tiếng Anh đang rơi để bắn hạ chúng</p>
+          <h1>Luyện Gõ · Boss Collocations</h1>
+          <p>Bắn hạ từ vựng B1–C2 &amp; chinh phục Boss Collocation cuối mỗi mốc</p>
         </div>
       </div>
 
@@ -44,12 +46,12 @@
           <button class="lvl-pill lvl-c2" data-level="C2">C2</button>
         </div>
 
-        <button class="notebook-btn" id="btn-notebook" title="Sổ từ vựng B1–C2 & Nhập từ mới">
+        <button class="notebook-btn" id="btn-notebook" title="Sổ từ vựng B1–C2, 500 Collocations & Nhập từ mới">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
           </svg>
           <span>Sổ từ vựng</span>
-          <span class="notebook-count" id="notebook-count">0/1008</span>
+          <span class="notebook-count" id="notebook-count">0/1508</span>
         </button>
 
         <button class="icon-btn" id="btn-fullscreen" title="Toàn màn hình" aria-label="Toàn màn hình">
@@ -66,10 +68,13 @@
     <!-- Main Space Arena -->
     <main class="arena-frame">
       <section class="arena" id="arena" aria-label="Khu vực chơi bắn từ vựng">
-        <!-- Starfield, lasers, explosions canvas -->
+        <!-- Starfield, projectiles, explosions canvas -->
         <canvas id="fx-canvas"></canvas>
 
-        <!-- Decorative Ringed Planet (Top Right, matching reference) -->
+        <!-- Boss Alert Vignette -->
+        <div class="boss-vignette" aria-hidden="true"></div>
+
+        <!-- Decorative Ringed Planet (Top Right) -->
         <div class="planet-saturn" aria-hidden="true">
           <svg viewBox="0 0 220 140" fill="none">
             <defs>
@@ -90,11 +95,8 @@
               </linearGradient>
             </defs>
             <circle cx="110" cy="68" r="64" fill="url(#planetGlow)"/>
-            <!-- Back half of ring -->
             <path d="M 28 84 A 88 22 -14 0 1 192 52" stroke="url(#ringGrad)" stroke-width="5.5" stroke-linecap="round" opacity="0.65"/>
-            <!-- Planet sphere -->
             <circle cx="110" cy="68" r="34" fill="url(#planetBody)"/>
-            <!-- Front half of ring -->
             <path d="M 192 52 A 88 22 -14 0 1 28 84" stroke="url(#ringGrad)" stroke-width="6.5" stroke-linecap="round"/>
           </svg>
         </div>
@@ -115,30 +117,48 @@
             <span class="combo-chip hidden" id="combo-badge">x2</span>
           </div>
 
-          <!-- Milestone pill (Top Center) -->
-          <button class="hud-pill hud-milestone" id="btn-milestones" title="Nhấn để đổi mốc chủ đề">
-            <div class="milestone-row">
-              <svg class="flag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
-                <line x1="4" y1="22" x2="4" y2="15"/>
-              </svg>
-              <span class="milestone-label" id="milestone-label">Mốc 1/20</span>
-              <span class="milestone-dot">·</span>
-              <span class="milestone-topic" id="milestone-topic">Technology</span>
-              <span class="milestone-progress-text" id="milestone-progress-text">0/15</span>
+          <!-- Center Stack: Milestone pill + Boss HP Bar -->
+          <div class="hud-center-stack">
+            <button class="hud-pill hud-milestone" id="btn-milestones" title="Nhấn để đổi mốc chủ đề">
+              <div class="milestone-row">
+                <svg class="flag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                  <line x1="4" y1="22" x2="4" y2="15"/>
+                </svg>
+                <span class="milestone-label" id="milestone-label">Mốc 1/20</span>
+                <span class="milestone-dot">·</span>
+                <span class="milestone-topic" id="milestone-topic">Technology</span>
+                <span class="milestone-progress-text" id="milestone-progress-text">0/15</span>
+              </div>
+              <div class="milestone-progress-track">
+                <div class="milestone-progress-fill" id="milestone-progress-fill" style="width: 0%"></div>
+              </div>
+            </button>
+
+            <!-- Boss HP HUD (shown during Boss Collocation fight) -->
+            <div class="boss-hud hidden" id="boss-hud">
+              <div class="boss-hud-row">
+                <span class="boss-hud-title" id="boss-hud-title">👑 BOSS COLLOCATION · Technology</span>
+                <span class="boss-hud-phase" id="boss-hud-phase">Đợt 1/3</span>
+              </div>
+              <div class="boss-hp-segments" id="boss-hp-segments"></div>
             </div>
-            <div class="milestone-progress-track">
-              <div class="milestone-progress-fill" id="milestone-progress-fill" style="width: 0%"></div>
-            </div>
-          </button>
+          </div>
 
           <!-- Lives pill (Top Right) -->
-          <div class="hud-pill hud-lives" id="hearts-container" aria-label="Mạng sống">
-            <!-- Rendered by JS -->
+          <div class="hud-pill hud-lives" id="hearts-container" aria-label="Mạng sống"></div>
+        </div>
+
+        <!-- Boss Incoming Dramatic Banner -->
+        <div class="boss-warning hidden" id="boss-warning" aria-live="assertive">
+          <div class="boss-warning-inner">
+            <span class="bw-kicker">⚠️ CẢNH BÁO BOSS CUỐI MÀN ⚠️</span>
+            <strong class="bw-title" id="bw-title">BOSS COLLOCATION · TECHNOLOGY</strong>
+            <span class="bw-sub" id="bw-sub">Gõ chuẩn 3 cụm Collocation (có dấu Cách) để tiêu diệt Boss · Gõ sai Boss sẽ lao xuống nhanh hơn!</span>
           </div>
         </div>
 
-        <!-- Right Vertical Floating Controls (Matching Screenshot) -->
+        <!-- Right Vertical Floating Controls -->
         <div class="arena-controls">
           <button class="ctrl-circle" id="btn-exit" title="Thoát về menu chọn mốc" aria-label="Thoát">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -175,13 +195,13 @@
           </button>
         </div>
 
-        <!-- Falling Words Layer -->
+        <!-- Falling Words & Boss Layer -->
         <div class="words-layer" id="words-layer"></div>
 
         <!-- In-Place Floating Vietnamese Meaning Popups Layer -->
         <div class="popups-layer" id="popups-layer"></div>
 
-        <!-- Live Meaning Dock (Bottom Right, shows latest shot-down word's Vietnamese meaning + POS!) -->
+        <!-- Live Meaning Dock (Bottom Right) -->
         <aside class="meaning-dock" id="meaning-dock" aria-live="polite">
           <div class="meaning-history" id="meaning-history"></div>
           <div class="meaning-current hidden" id="meaning-current">
@@ -203,16 +223,16 @@
           </div>
         </aside>
 
-        <!-- Active Typing Buffer Indicator (above rocket) -->
+        <!-- Active Typing Buffer Indicator (above turret) -->
         <div class="typing-indicator hidden" id="typing-indicator">
           <span class="typing-typed" id="typing-typed"></span><span class="typing-remaining" id="typing-remaining"></span>
-          <span class="typing-hint">ESC để hủy mục tiêu</span>
+          <span class="typing-hint">ESC để đổi mục tiêu</span>
         </div>
 
         <!-- Bottom Glowing Red Barrier Line -->
         <div class="danger-line" id="danger-line" aria-hidden="true"></div>
 
-        <!-- Cute Blue Mascot (Bottom Left, matching screenshot) -->
+        <!-- Cute Blue Mascot (Bottom Left) -->
         <div class="mascot" id="mascot" aria-hidden="true">
           <div class="mascot-bubble hidden" id="mascot-bubble">Tuyệt vời!</div>
           <svg viewBox="0 0 96 108" fill="none">
@@ -227,93 +247,186 @@
                 <stop offset="100%" stop-color="#bedbff"/>
               </radialGradient>
             </defs>
-            <!-- Head tuft -->
             <path d="M46 18 C43 8, 40 7, 42 18" stroke="#f5b841" stroke-width="3.5" stroke-linecap="round"/>
             <path d="M49 17 C50 6, 54 6, 52 17" stroke="#ffcf5c" stroke-width="3.5" stroke-linecap="round"/>
             <path d="M53 19 C57 10, 61 11, 56 20" stroke="#f5b841" stroke-width="3" stroke-linecap="round"/>
-            <!-- Feet -->
             <ellipse cx="38" cy="96" rx="8" ry="4.5" fill="#f59e0b"/>
             <ellipse cx="58" cy="96" rx="8" ry="4.5" fill="#f59e0b"/>
-            <!-- Wings -->
             <ellipse cx="20" cy="64" rx="11" ry="18" transform="rotate(14 20 64)" fill="#2268cf"/>
             <ellipse cx="76" cy="64" rx="11" ry="18" transform="rotate(-14 76 64)" fill="#2268cf"/>
-            <!-- Body -->
             <ellipse cx="48" cy="60" rx="28" ry="34" fill="url(#owlBody)"/>
-            <!-- Belly -->
             <ellipse cx="48" cy="70" rx="18" ry="20" fill="url(#owlBelly)"/>
-            <!-- Eyes -->
             <circle cx="38" cy="44" r="10.5" fill="#ffffff"/>
             <circle cx="58" cy="44" r="10.5" fill="#ffffff"/>
             <circle class="mascot-pupil" cx="39" cy="44" r="5.5" fill="#13223d"/>
             <circle class="mascot-pupil" cx="57" cy="44" r="5.5" fill="#13223d"/>
             <circle cx="41" cy="42" r="2" fill="#ffffff"/>
             <circle cx="59" cy="42" r="2" fill="#ffffff"/>
-            <!-- Cheeks -->
             <ellipse cx="29" cy="54" rx="4.5" ry="2.6" fill="#ff8fab" opacity="0.55"/>
             <ellipse cx="67" cy="54" rx="4.5" ry="2.6" fill="#ff8fab" opacity="0.55"/>
-            <!-- Beak -->
             <path d="M44 51 L52 51 L48 58 Z" fill="#f59e0b" stroke="#d97706" stroke-width="1" stroke-linejoin="round"/>
           </svg>
         </div>
 
-        <!-- Rocket Turret (Bottom Center, matching screenshot) -->
-        <div class="rocket-anchor" id="rocket-anchor" aria-hidden="true">
-          <div class="rocket-ship" id="rocket-ship">
-            <svg viewBox="0 0 80 96" fill="none">
-              <defs>
-                <linearGradient id="rocketBody" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#7dd3fc"/>
-                  <stop offset="50%" stop-color="#38bdf8"/>
-                  <stop offset="100%" stop-color="#0284c7"/>
-                </linearGradient>
-                <linearGradient id="flameGrad" x1="50%" y1="0%" x2="50%" y2="100%">
-                  <stop offset="0%" stop-color="#fef08a"/>
-                  <stop offset="55%" stop-color="#fb923c"/>
-                  <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <!-- Engine Flame -->
-              <path class="rocket-flame" d="M32 72 Q40 94 48 72 Z" fill="url(#flameGrad)"/>
-              <!-- Left & Right Fins -->
-              <path d="M25 50 L10 72 L26 68 Z" fill="#0ea5e9"/>
-              <path d="M55 50 L70 72 L54 68 Z" fill="#0369a1"/>
-              <!-- Main Hull -->
-              <path d="M40 8 C26 24 23 48 26 70 L54 70 C57 48 54 24 40 8 Z" fill="url(#rocketBody)"/>
-              <!-- Nose Highlight -->
-              <path d="M40 8 C35 16 33 24 33 30 L47 30 C47 24 45 16 40 8 Z" fill="#bae6fd" opacity="0.6"/>
-              <!-- Nozzle -->
-              <rect x="31" y="68" width="18" height="6" rx="2" fill="#1e3a8a"/>
-              <!-- Cockpit Window -->
-              <circle cx="40" cy="40" r="9.5" fill="#0f172a" stroke="#e0f2fe" stroke-width="2.5"/>
-              <circle cx="37.5" cy="37.5" r="3" fill="#38bdf8" opacity="0.85"/>
-            </svg>
+        <!-- Live In-Arena Arsenal Quick Switcher (Next to Mascot) -->
+        <div class="arsenal-dock" id="arsenal-dock" aria-label="Đổi vũ khí & loại đạn nhanh">
+          <div class="arsenal-group" id="dock-weapon-group" title="Đổi vũ khí (Xe tăng / Súng máy / Pháo)">
+            <button class="ars-btn active" data-weapon="tank" title="Xe Tăng">🛡️<span>Tăng</span></button>
+            <button class="ars-btn" data-weapon="gun" title="Súng Máy">🔫<span>Súng</span></button>
+            <button class="ars-btn" data-weapon="cannon" title="Pháo Phòng Không">🎯<span>Pháo</span></button>
+          </div>
+          <span class="arsenal-sep"></span>
+          <div class="arsenal-group" id="dock-ammo-group" title="Đổi loại đạn (Phím 1-4)">
+            <button class="ars-btn active" data-ammo="bullet" title="Đạn thường (Phím 1)"><kbd>1</kbd>💥</button>
+            <button class="ars-btn" data-ammo="laser" title="Tia Laze (Phím 2)"><kbd>2</kbd>⚡</button>
+            <button class="ars-btn" data-ammo="missile" title="Tên lửa tầm nhiệt (Phím 3)"><kbd>3</kbd>🚀</button>
+            <button class="ars-btn" data-ammo="plasma" title="Cầu Plasma (Phím 4)"><kbd>4</kbd>🔮</button>
           </div>
         </div>
 
-        <!-- Bottom Deck Pill (Matching "1000 common English words" in screenshot) -->
-        <button class="deck-pill" id="deck-pill" title="Nhấn để chọn bộ từ & cấp độ">
-          <span id="deck-pill-text">1,008 từ vựng Oxford B1–C2</span>
+        <!-- Weapon Turret (Bottom Center: Heavy Tank / Assault Gun / Plasma Cannon) -->
+        <div class="turret-anchor" id="turret-anchor" aria-hidden="true">
+          <!-- 1. HEAVY TANK -->
+          <div class="weapon-model" id="weapon-tank">
+            <!-- Grounded Armored Tank Chassis & Treads -->
+            <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
+              <defs>
+                <linearGradient id="tankHull" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#1e3a5f"/>
+                  <stop offset="50%" stop-color="#2d5a8c"/>
+                  <stop offset="100%" stop-color="#172c4b"/>
+                </linearGradient>
+                <linearGradient id="treadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#475569"/>
+                  <stop offset="50%" stop-color="#1e293b"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+              </defs>
+              <!-- Left & Right Tracks -->
+              <rect x="14" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b" stroke-width="1.8"/>
+              <line x1="16" y1="54" x2="30" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+              <line x1="16" y1="62" x2="30" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+              <line x1="16" y1="70" x2="30" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+              <line x1="16" y1="78" x2="30" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+
+              <rect x="88" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b" stroke-width="1.8"/>
+              <line x1="90" y1="54" x2="104" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+              <line x1="90" y1="62" x2="104" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+              <line x1="90" y1="70" x2="104" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+              <line x1="90" y1="78" x2="104" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
+
+              <!-- Armored Body Hull -->
+              <path d="M30 48 L38 40 L82 40 L90 48 L90 84 L82 90 L38 90 L30 84 Z" fill="url(#tankHull)" stroke="#38bdf8" stroke-width="1.8"/>
+              <!-- Reactor Core Glow -->
+              <rect x="44" y="75" width="32" height="6" rx="3" fill="#38bdf8" opacity="0.8"/>
+              <circle cx="38" cy="52" r="2.5" fill="#fbbf24"/>
+              <circle cx="82" cy="52" r="2.5" fill="#fbbf24"/>
+            </svg>
+            <!-- Rotating Tank Turret & Cannon Barrel -->
+            <div class="turret-rotator" id="rotator-tank">
+              <svg viewBox="0 0 120 96" fill="none">
+                <defs>
+                  <linearGradient id="barrelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#94a3b8"/>
+                    <stop offset="50%" stop-color="#e2e8f0"/>
+                    <stop offset="100%" stop-color="#475569"/>
+                  </linearGradient>
+                  <radialGradient id="domeGrad" cx="45%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#60a5fa"/>
+                    <stop offset="65%" stop-color="#2563eb"/>
+                    <stop offset="100%" stop-color="#1e3a8a"/>
+                  </radialGradient>
+                </defs>
+                <!-- Main Cannon Barrel -->
+                <rect x="54" y="8" width="12" height="44" rx="3" fill="url(#barrelGrad)" stroke="#334155" stroke-width="1.4"/>
+                <!-- Muzzle Brake -->
+                <rect x="51" y="4" width="18" height="10" rx="2.5" fill="#334155" stroke="#38bdf8" stroke-width="1.4"/>
+                <rect x="55" y="1" width="10" height="4" rx="1.5" fill="#7dd3fc"/>
+                <!-- Turret Dome -->
+                <path d="M40 58 C40 44, 48 38, 60 38 C72 38, 80 44, 80 58 L76 74 L44 74 Z" fill="url(#domeGrad)" stroke="#93c5fd" stroke-width="1.8"/>
+                <!-- Hatch / Sight -->
+                <circle cx="60" cy="58" r="8.5" fill="#0f172a" stroke="#7dd3fc" stroke-width="2"/>
+                <circle cx="58" cy="56" r="2.6" fill="#38bdf8"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 2. TWIN-BARREL ASSAULT GUN -->
+          <div class="weapon-model hidden" id="weapon-gun">
+            <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
+              <path d="M28 84 L40 60 L80 60 L92 84 Z" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+              <ellipse cx="60" cy="64" rx="22" ry="11" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+            </svg>
+            <div class="turret-rotator" id="rotator-gun">
+              <svg viewBox="0 0 120 96" fill="none">
+                <!-- Twin Gun Barrels -->
+                <rect x="46" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4"/>
+                <rect x="66" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4"/>
+                <!-- Glowing Barrel Rails -->
+                <rect x="49" y="12" width="2" height="28" fill="#38bdf8"/>
+                <rect x="69" y="12" width="2" height="28" fill="#38bdf8"/>
+                <!-- Muzzle Tips -->
+                <rect x="45" y="4" width="10" height="6" rx="1.5" fill="#f59e0b"/>
+                <rect x="65" y="4" width="10" height="6" rx="1.5" fill="#f59e0b"/>
+                <!-- Tactical Receiver Body -->
+                <path d="M40 46 L46 38 L74 38 L80 46 L78 72 L42 72 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+                <!-- Red Dot Optical Core -->
+                <rect x="54" y="46" width="12" height="18" rx="4" fill="#0f172a" stroke="#fb7185" stroke-width="1.8"/>
+                <circle cx="60" cy="55" r="3" fill="#fb7185"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 3. HEAVY PLASMA ARTILLERY CANNON -->
+          <div class="weapon-model hidden" id="weapon-cannon">
+            <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
+              <polygon points="60,44 92,62 84,88 36,88 28,62" fill="#1e1b4b" stroke="#818cf8" stroke-width="2"/>
+              <circle cx="60" cy="64" r="18" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+            </svg>
+            <div class="turret-rotator" id="rotator-cannon">
+              <svg viewBox="0 0 120 96" fill="none">
+                <!-- Outer Energy Prongs -->
+                <path d="M45 14 L51 14 L53 46 L43 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4"/>
+                <path d="M69 14 L75 14 L77 46 L67 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4"/>
+                <!-- Central Plasma Accelerator Core -->
+                <rect x="55" y="6" width="10" height="44" rx="4" fill="#e879f9" opacity="0.85"/>
+                <rect x="58" y="8" width="4" height="38" rx="2" fill="#ffffff"/>
+                <!-- Energy Rings -->
+                <rect x="44" y="20" width="32" height="4" rx="2" fill="#38bdf8"/>
+                <rect x="43" y="32" width="34" height="4" rx="2" fill="#a855f7"/>
+                <!-- Cannon Core -->
+                <circle cx="60" cy="58" r="17" fill="#312e81" stroke="#c084fc" stroke-width="2.2"/>
+                <circle cx="60" cy="58" r="8" fill="#e879f9"/>
+                <circle cx="60" cy="58" r="4" fill="#ffffff"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Deck Pill -->
+        <button class="deck-pill" id="deck-pill" title="Nhấn để chọn mốc chủ đề & cấp độ">
+          <span id="deck-pill-text">1,008 từ vựng + 500 Boss Collocations · B1–C2</span>
         </button>
 
-        <!-- Hidden mobile input so touchscreen users can tap to type -->
+        <!-- Hidden mobile input -->
         <input type="text" id="mobile-input" class="sr-only" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Ô nhập từ vựng" />
 
-        <!-- Virtual Keyboard Drawer (toggled via ⌨ icon) -->
+        <!-- Virtual Keyboard Drawer -->
         <div class="virtual-keyboard hidden" id="virtual-keyboard" aria-label="Bàn phím ảo"></div>
 
         <!-- Start / Setup Overlay -->
         <div class="overlay-backdrop" id="start-overlay">
           <div class="glass-card start-card">
             <div class="start-header">
-              <div class="start-rocket-badge">🚀</div>
+              <div class="start-rocket-badge">🛡️</div>
               <div>
-                <h2>Bắn Từ Vựng Tiếng Anh B1–C2</h2>
-                <p>Gõ chuẩn từ đang rơi để bắn hạ — <strong>nghĩa tiếng Việt &amp; từ loại</strong> sẽ bật ra ngay lập tức!</p>
+                <h2>Từ Vựng B1–C2 &amp; Boss Collocations</h2>
+                <p><strong>1.008 từ đơn</strong> + <strong>500 Collocations Boss</strong> cuối mỗi màn — bắn hạ để hiện <strong>nghĩa tiếng Việt &amp; từ loại</strong>!</p>
               </div>
             </div>
 
             <div class="setup-section">
-              <label class="setup-label">Cấp độ CEFR <span class="setup-hint" id="pool-count-hint">(1,008 từ sẵn sàng)</span></label>
+              <label class="setup-label">Cấp độ CEFR <span class="setup-hint" id="pool-count-hint">(1,008 từ + 500 Boss Collocations)</span></label>
               <div class="chip-group" id="start-level-group">
                 <button class="chip active" data-level="ALL">Tất cả B1–C2</button>
                 <button class="chip chip-b1" data-level="B1">B1 · Trung cấp</button>
@@ -323,9 +436,31 @@
               </div>
             </div>
 
+            <!-- Weapon & Ammo Selection -->
             <div class="setup-grid">
               <div class="setup-section">
-                <label class="setup-label" for="select-milestone">Mốc chủ đề (20 mốc)</label>
+                <label class="setup-label">Vũ khí chiến đấu</label>
+                <div class="chip-group compact" id="start-weapon-group">
+                  <button class="chip active" data-weapon="tank">🛡️ Xe tăng</button>
+                  <button class="chip" data-weapon="gun">🔫 Súng máy</button>
+                  <button class="chip" data-weapon="cannon">🎯 Pháo điện</button>
+                </div>
+              </div>
+
+              <div class="setup-section">
+                <label class="setup-label">Loại đạn (Đổi nhanh phím 1–4)</label>
+                <div class="chip-group compact" id="start-ammo-group">
+                  <button class="chip active" data-ammo="bullet">💥 Đạn</button>
+                  <button class="chip" data-ammo="laser">⚡ Laze</button>
+                  <button class="chip" data-ammo="missile">🚀 Tên lửa</button>
+                  <button class="chip" data-ammo="plasma">🔮 Plasma</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-grid">
+              <div class="setup-section">
+                <label class="setup-label" for="select-milestone">Mốc chủ đề (20 mốc · mỗi mốc có Boss)</label>
                 <select id="select-milestone" class="glass-select"></select>
               </div>
 
@@ -346,31 +481,29 @@
               </label>
               <label class="toggle-item">
                 <input type="checkbox" id="opt-show-level" checked />
-                <span>🏷️ Hiện nhãn cấp độ (B1–C2) trên từ đang rơi</span>
+                <span>🏷️ Hiện nhãn cấp độ (B1–C2) trên mục tiêu</span>
               </label>
-              <label class="toggle-item">
-                <input type="checkbox" id="opt-endless" />
-                <span>♾️ Chế độ Vô tận (bắn liên tục mọi chủ đề)</span>
-              </label>
+              <div class="toggle-row-split">
+                <label class="toggle-item">
+                  <input type="checkbox" id="opt-boss-only" />
+                  <span>👑 Chỉ săn Boss Collocations (500 cụm)</span>
+                </label>
+                <label class="toggle-item">
+                  <input type="checkbox" id="opt-endless" />
+                  <span>♾️ Chế độ Vô tận</span>
+                </label>
+              </div>
             </div>
 
-            <div class="color-legend">
-              <span>Màu viền theo cấp độ:</span>
-              <span class="legend-dot b1">B1</span>
-              <span class="legend-dot b2">B2</span>
-              <span class="legend-dot c1">C1</span>
-              <span class="legend-dot c2">C2</span>
-            </div>
-
-            <div class="ime-tip">💡 Mẹo: Chuyển bộ gõ (UniKey/EVKey) sang <strong>EN</strong> để gõ các từ có chữ kép (<em>ee, oo, dd</em>) mượt nhất.</div>
+            <div class="ime-tip">💡 Chuyển bộ gõ sang <strong>EN</strong> khi chơi · Gặp <strong>Boss Collocation</strong> nhớ bấm phím <strong>Space (Cách)</strong> giữa các từ · Nhấn <strong>1–4</strong> để đổi loại đạn ngay trong trận!</div>
 
             <div class="start-actions">
               <button class="btn-primary btn-glow" id="btn-start-game">
-                <span>Bắt đầu bắn từ</span>
+                <span>Vào trận ngay</span>
                 <span class="btn-arrow">→</span>
               </button>
               <button class="btn-secondary" id="btn-open-notebook-start">
-                📚 Xem &amp; Nhập bộ từ
+                📚 Kho 1,508 từ &amp; Boss
               </button>
             </div>
           </div>
@@ -382,7 +515,7 @@
             <h3>⏸ Đang tạm dừng</h3>
             <p class="muted-text" id="pause-subtitle">Mốc 1/20 · Technology</p>
             <div class="vertical-actions">
-              <button class="btn-primary" id="btn-resume">Tiếp tục chơi</button>
+              <button class="btn-primary" id="btn-resume">Tiếp tục chiến đấu</button>
               <button class="btn-secondary" id="btn-restart-milestone">Chơi lại mốc này</button>
               <button class="btn-secondary" id="btn-pause-notebook">Xem sổ từ vựng</button>
               <button class="btn-ghost" id="btn-pause-menu">Về màn hình chính</button>
@@ -397,7 +530,7 @@
               <span class="result-emoji" id="result-emoji">🏆</span>
               <div>
                 <h2 id="result-title">Hoàn thành Mốc 1/20!</h2>
-                <p id="result-subtitle">Chủ đề: Technology · Bạn đã học thêm nhiều từ vựng mới</p>
+                <p id="result-subtitle">Chủ đề: Technology · Bạn đã tiêu diệt Boss Collocation!</p>
               </div>
             </div>
 
@@ -407,7 +540,7 @@
                 <strong id="res-score">0</strong>
               </div>
               <div class="stat-box">
-                <span class="stat-label">Từ bắn hạ</span>
+                <span class="stat-label">Mục tiêu hạ gục</span>
                 <strong id="res-words">0</strong>
               </div>
               <div class="stat-box">
@@ -421,7 +554,7 @@
             </div>
 
             <div class="review-header">
-              <h4>📖 Từ vựng trong ván vừa chơi</h4>
+              <h4>📖 Từ vựng &amp; Boss Collocations trong ván vừa chơi</h4>
               <span class="muted-text">Nhấn 🔊 để nghe lại phát âm</span>
             </div>
             <div class="review-list" id="result-review-list"></div>
@@ -442,8 +575,8 @@
     <div class="glass-card modal-wide">
       <div class="modal-head">
         <div>
-          <h3>🚩 Chọn Mốc Chủ Đề (20 Mốc · B1–C2)</h3>
-          <p class="muted-text">Mỗi mốc gồm ~50 từ vựng chọn lọc trải dài từ B1 đến C2</p>
+          <h3>🚩 Chọn Mốc Chủ Đề (20 Mốc · Từ đơn + Boss Collocations)</h3>
+          <p class="muted-text">Mỗi mốc gồm ~50 từ vựng đơn + 25 Boss Collocations trải dài từ B1 đến C2</p>
         </div>
         <button class="close-x" id="close-milestones" aria-label="Đóng">✕</button>
       </div>
@@ -456,8 +589,8 @@
     <div class="glass-card modal-xl">
       <div class="modal-head">
         <div>
-          <h3>📚 Kho Từ Vựng B1–C2 &amp; Sổ Tay Học Tập</h3>
-          <p class="muted-text" id="nb-summary-text">1,008 từ vựng · 0 từ đã bắn hạ · 0 từ cần ôn lại</p>
+          <h3>📚 Kho 1,008 Từ Vựng &amp; 500 Boss Collocations (B1–C2)</h3>
+          <p class="muted-text" id="nb-summary-text">1,508 mục · 0 đã bắn hạ · 0 cần ôn lại</p>
         </div>
         <div class="modal-tabs">
           <button class="tab-btn active" data-tab="browse">Tra cứu bộ từ</button>
@@ -468,8 +601,13 @@
 
       <!-- Browse Tab -->
       <div class="tab-panel" id="tab-browse">
-        <div class="nb-filters">
-          <input type="search" id="nb-search" class="glass-input" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt..." />
+        <div class="nb-filters nb-filters-5">
+          <input type="search" id="nb-search" class="glass-input" placeholder="Tìm từ, collocation hoặc nghĩa..." />
+          <select id="nb-kind" class="glass-select">
+            <option value="ALL">Tất cả (Từ + Collocations)</option>
+            <option value="WORD">Từ đơn (1,008)</option>
+            <option value="COLLOC">👑 Boss Collocations (500)</option>
+          </select>
           <select id="nb-level" class="glass-select">
             <option value="ALL">Mọi cấp độ (B1–C2)</option>
             <option value="B1">B1</option>
@@ -491,9 +629,9 @@
           <table class="nb-table">
             <thead>
               <tr>
-                <th>Từ vựng</th>
+                <th>Từ vựng / Collocation</th>
                 <th>Cấp độ</th>
-                <th>Từ loại</th>
+                <th>Loại từ / Cấu trúc</th>
                 <th>Nghĩa tiếng Việt</th>
                 <th>Chủ đề</th>
                 <th>Trạng thái</th>
@@ -508,21 +646,21 @@
       <!-- Import Tab -->
       <div class="tab-panel hidden" id="tab-import">
         <div class="import-box">
-          <p>Bạn có thể nhập thêm danh sách từ vựng riêng theo định dạng <strong>CSV</strong> (mỗi dòng 1 từ) hoặc <strong>JSON</strong>:</p>
+          <p>Nhập thêm từ đơn hoặc <strong>Collocation (có dấu cách)</strong> theo định dạng <strong>CSV</strong> hoặc <strong>JSON</strong>:</p>
           <pre class="code-sample">word,pos,level,ipa,meaning
 serendipity,n,C2,/ˌser.ənˈdɪp.ə.ti/,sự tình cờ may mắn
-resilience,n,C1,/rɪˈzɪl.jəns/,khả năng phục hồi bền bỉ</pre>
+take into account,v + n,B2,,xem xét tính đến</pre>
           <div class="import-controls">
             <label class="btn-secondary file-upload-label">
               📁 Chọn file .CSV / .JSON
               <input type="file" id="import-file" accept=".csv,.json,.txt" class="sr-only" />
             </label>
-            <button class="btn-ghost" id="btn-export-json">⬇️ Tải xuống toàn bộ bộ từ (JSON)</button>
+            <button class="btn-ghost" id="btn-export-json">⬇️ Tải toàn bộ 1,508 từ &amp; Boss (JSON)</button>
             <button class="btn-ghost danger-text" id="btn-reset-progress">🗑️ Đặt lại tiến độ học</button>
           </div>
-          <textarea id="import-textarea" class="glass-textarea" rows="6" placeholder="Dán danh sách từ CSV hoặc JSON vào đây..."></textarea>
+          <textarea id="import-textarea" class="glass-textarea" rows="6" placeholder="Dán danh sách từ hoặc collocations (CSV / JSON) vào đây..."></textarea>
           <div class="import-footer">
-            <span class="muted-text" id="import-feedback">Các từ hợp lệ sẽ được lưu tự động vào trình duyệt và dùng ngay trong game.</span>
+            <span class="muted-text" id="import-feedback">Các từ hợp lệ sẽ lưu tự động trên trình duyệt và dùng ngay trong game.</span>
             <button class="btn-primary" id="btn-do-import">Nhập vào game</button>
           </div>
         </div>
@@ -530,12 +668,14 @@ resilience,n,C1,/rɪˈzɪl.jəns/,khả năng phục hồi bền bỉ</pre>
     </div>
   </div>
 
-  <!-- Vocabulary Data Modules (no CORS issues even on file://) -->
+  <!-- Vocabulary & Collocations Data Modules -->
   <script src="data/topics.js"></script>
   <script src="data/vocab-b1.js"></script>
   <script src="data/vocab-b2.js"></script>
   <script src="data/vocab-c1.js"></script>
   <script src="data/vocab-c2.js"></script>
+  <script src="data/collocations-1.js"></script>
+  <script src="data/collocations-2.js"></script>
 
   <!-- Audio & Game Engine -->
   <script src="js/audio.js"></script>
