@@ -40,8 +40,8 @@
         </div>
 
         <div class="brand-text">
-          <h1 id="brand-title">Luyện Gõ · Boss Collocations</h1>
-          <p id="brand-subtitle">Gõ các từ tiếng Anh A1–C2 đang rơi để bắn hạ &amp; học nghĩa tiếng Việt</p>
+          <h1 id="brand-title">Luyện Gõ</h1>
+          <p id="brand-subtitle" class="hidden"></p>
         </div>
       </div>
 
@@ -508,71 +508,106 @@
         <div class="virtual-keyboard hidden" id="virtual-keyboard" aria-label="Bàn phím ảo"></div>
 
         <!-- =================================================================
-             1. GAME SELECTION HUB (Clean & Minimalist — Clear 2-Step Link)
+             1. GAME SELECTION HUB (Cozy, Minimal & Habit-Forming)
              ================================================================= -->
         <div class="overlay-backdrop" id="hub-overlay">
           <div class="glass-card hub-card">
-            <h2 class="hub-title">Học Từ Vựng IELTS (A1–C2)</h2>
+            <div class="hub-top-row">
+              <h2 class="hub-title">Học Từ Vựng Mỗi Ngày ✨</h2>
+              <span class="streak-pill" id="hub-streak-pill">🌱 Mục tiêu 20 từ/ngày</span>
+            </div>
+
+            <!-- Cozy Daily Goal Bar -->
+            <div class="daily-goal-box" id="daily-goal-box">
+              <div class="daily-goal-head">
+                <span id="daily-goal-text">Hôm nay: 0 / 20 từ</span>
+                <span class="daily-goal-sub" id="daily-goal-sub">Khởi động 1 ván nhẹ nhàng nhé!</span>
+              </div>
+              <div class="daily-goal-track">
+                <div class="daily-goal-fill" id="daily-goal-fill" style="width: 0%"></div>
+              </div>
+            </div>
 
             <div class="hub-grid">
-              <button class="game-choice-card" id="choose-game-shooter" type="button">
+              <button class="game-choice-card shooter-choice" id="choose-game-shooter" type="button">
                 <span class="gc-step">Bước 1 · Học từ mới</span>
                 <span class="gc-emoji">🚀</span>
                 <strong class="gc-name">Luyện Gõ</strong>
-                <span class="gc-sub" id="hub-shooter-count">0 / 10.500 đã học</span>
+                <span class="gc-sub" id="hub-shooter-count">0 đã học</span>
               </button>
 
-              <button class="game-choice-card" id="choose-game-rain" type="button">
-                <span class="gc-step">Bước 2 · Ôn từ đã học</span>
+              <button class="game-choice-card rain-choice" id="choose-game-rain" type="button">
+                <span class="gc-step">Bước 2 · Ôn chính tả</span>
                 <span class="gc-emoji">🌧️</span>
                 <strong class="gc-name">Mưa Từ Vựng</strong>
                 <span class="gc-sub" id="hub-rain-count">0 từ chờ ôn</span>
               </button>
             </div>
+
+            <div class="hub-footer">
+              <button type="button" class="hub-link-btn" id="btn-hub-notebook">📚 Sổ từ vựng (10.500 từ)</button>
+            </div>
           </div>
         </div>
 
         <!-- =================================================================
-             2A. GAME 1 SETUP OVERLAY (Luyện Gõ · Học từ mới IELTS A1–C2)
+             2A. GAME 1 SETUP OVERLAY (Luyện Gõ — Clean & Effortless)
              ================================================================= -->
         <div class="overlay-backdrop hidden" id="start-overlay">
           <div class="glass-card start-card">
             <div class="start-header">
-              <div class="start-rocket-badge">🛡️</div>
+              <div class="start-rocket-badge">🚀</div>
               <div style="flex:1;">
-                <h2>Luyện Gõ · Học Từ Mới IELTS</h2>
-                <p><strong>10.000 từ Oxford / Cambridge / AWL (A1–C2)</strong> + <strong>500 Boss Collocations</strong>. Từ bắn hạ sẽ tự động lưu sang <strong>Mưa Từ Vựng</strong> để ôn chính tả.</p>
+                <h2>Luyện Gõ</h2>
+                <p>Học từ mới qua từng chủ đề <span class="setup-hint" id="pool-count-hint"></span></p>
               </div>
               <button class="btn-ghost btn-mini-back" id="btn-back-hub-1">← Đổi game</button>
             </div>
 
             <div class="setup-section">
-              <label class="setup-label">Cấp độ CEFR / Học thuật <span class="setup-hint" id="pool-count-hint">(10,000 từ + 500 Boss)</span></label>
+              <label class="setup-label">Trình độ</label>
               <div class="chip-group" id="start-level-group">
-                <button class="chip active" data-level="ALL">Tất cả A1–C2</button>
+                <button class="chip active" data-level="ALL">Tất cả</button>
                 <button class="chip chip-a1" data-level="A1">A1</button>
                 <button class="chip chip-a2" data-level="A2">A2</button>
                 <button class="chip chip-b1" data-level="B1">B1</button>
                 <button class="chip chip-b2" data-level="B2">B2</button>
                 <button class="chip chip-c1" data-level="C1">C1</button>
                 <button class="chip chip-c2" data-level="C2">C2</button>
-                <button class="chip chip-awl" data-level="AWL">🎓 AWL (IELTS)</button>
+                <button class="chip chip-awl" data-level="AWL" title="Từ vựng học thuật IELTS (Academic Word List)">🎓 IELTS</button>
+              </div>
+            </div>
+
+            <div class="setup-grid">
+              <div class="setup-section">
+                <label class="setup-label" for="select-milestone">Chủ đề</label>
+                <select id="select-milestone" class="glass-select"></select>
+              </div>
+
+              <div class="setup-section">
+                <label class="setup-label">Tốc độ</label>
+                <div class="chip-group compact" id="speed-group">
+                  <button class="chip" data-speed="slow">🐢 Chậm</button>
+                  <button class="chip active" data-speed="chill">☕ Thư giãn</button>
+                  <button class="chip" data-speed="normal">⚡ Vừa</button>
+                  <button class="chip" data-speed="fast">🔥 Nhanh</button>
+                </div>
               </div>
             </div>
 
             <!-- Weapon & Ammo Selection -->
             <div class="setup-grid">
               <div class="setup-section">
-                <label class="setup-label">Vũ khí chiến đấu</label>
+                <label class="setup-label">Vũ khí</label>
                 <div class="chip-group compact" id="start-weapon-group">
                   <button class="chip active" data-weapon="tank">🛡️ Xe tăng</button>
-                  <button class="chip" data-weapon="gun">🔫 Súng máy</button>
-                  <button class="chip" data-weapon="cannon">🎯 Pháo điện</button>
+                  <button class="chip" data-weapon="gun">🔫 Súng</button>
+                  <button class="chip" data-weapon="cannon">🎯 Pháo</button>
                 </div>
               </div>
 
               <div class="setup-section">
-                <label class="setup-label">Loại đạn</label>
+                <label class="setup-label">Đạn</label>
                 <div class="chip-group compact" id="start-ammo-group">
                   <button class="chip active" data-ammo="bullet">💥 Đạn</button>
                   <button class="chip" data-ammo="laser">⚡ Laze</button>
@@ -582,136 +617,111 @@
               </div>
             </div>
 
-            <div class="setup-grid">
-              <div class="setup-section">
-                <label class="setup-label" for="select-milestone">Mốc chủ đề (20 mốc · mỗi mốc có Boss)</label>
-                <select id="select-milestone" class="glass-select"></select>
-              </div>
-
-              <div class="setup-section">
-                <label class="setup-label">Tốc độ rơi</label>
-                <div class="chip-group compact" id="speed-group">
-                  <button class="chip" data-speed="slow">🐢 Rất chậm</button>
-                  <button class="chip active" data-speed="chill">Thư giãn</button>
-                  <button class="chip" data-speed="normal">Tiêu chuẩn</button>
-                  <button class="chip" data-speed="fast">Thử thách</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="setup-toggles">
-              <div class="toggle-row-split" style="align-items:center;justify-content:space-between;">
-                <label class="toggle-item">
-                  <input type="checkbox" id="opt-speak" checked />
-                  <span>🔊 Tự động phát âm tiếng Anh khi bắn hạ</span>
-                </label>
-                <button type="button" class="speak-test-chip" id="btn-test-voice-1">🔊 Thử phát âm</button>
-              </div>
-              <label class="toggle-item">
-                <input type="checkbox" id="opt-show-level" checked />
-                <span>🏷️ Hiện nhãn cấp độ (A1–C2) trên mục tiêu</span>
+            <!-- Compact Single-Row Pill Toggles -->
+            <div class="pill-toggles-bar">
+              <label class="pill-toggle">
+                <input type="checkbox" id="opt-speak" checked />
+                <span>🔊 Phát âm</span>
               </label>
-              <div class="toggle-row-split">
-                <label class="toggle-item">
-                  <input type="checkbox" id="opt-boss-only" />
-                  <span>👑 Chỉ săn Boss Collocations (500 cụm)</span>
-                </label>
-                <label class="toggle-item">
-                  <input type="checkbox" id="opt-endless" />
-                  <span>♾️ Chế độ Vô tận</span>
-                </label>
-              </div>
+              <label class="pill-toggle">
+                <input type="checkbox" id="opt-show-level" checked />
+                <span>🏷️ Nhãn level</span>
+              </label>
+              <label class="pill-toggle">
+                <input type="checkbox" id="opt-boss-only" />
+                <span>👑 Chỉ đấu Boss</span>
+              </label>
+              <label class="pill-toggle">
+                <input type="checkbox" id="opt-endless" />
+                <span>♾️ Vô tận</span>
+              </label>
+              <button type="button" class="speak-test-chip" id="btn-test-voice-1" title="Nghe thử giọng đọc">🔊 Thử âm</button>
             </div>
-
-            <div class="ime-tip">💡 Chuyển bộ gõ sang <strong>EN</strong> khi chơi · Gặp <strong>Boss Collocation</strong> ở cuối mốc nhớ bấm phím <strong>Space (Cách)</strong> giữa các từ.</div>
 
             <div class="start-actions">
               <button class="btn-primary btn-glow" id="btn-start-game">
-                <span>Vào trận Luyện Gõ</span>
+                <span>Bắt đầu chơi</span>
                 <span class="btn-arrow">→</span>
               </button>
               <button class="btn-secondary" id="btn-open-notebook-start">
-                📚 Kho 10,500 từ
+                📚 Sổ từ
               </button>
             </div>
           </div>
         </div>
 
         <!-- =================================================================
-             2B. GAME 2 SETUP OVERLAY (Mưa Từ Vựng · Ôn từ đã học từ Luyện Gõ)
+             2B. GAME 2 SETUP OVERLAY (Mưa Từ Vựng — Clean & Effortless)
              ================================================================= -->
         <div class="overlay-backdrop hidden" id="rain-start-overlay">
           <div class="glass-card start-card rain-setup-card">
             <div class="start-header">
               <div class="start-rocket-badge rain-badge">🌧️</div>
               <div style="flex:1;">
-                <h2>Mưa Từ Vựng · Ôn Chính Tả Từ Đã Học</h2>
-                <p>Ôn lại đúng những từ bạn vừa học ở <strong>Luyện Gõ</strong>. Nhớ đúng chính tả để nâng trạng thái lên <strong>✅ Đã thuộc</strong>!</p>
+                <h2>Mưa Từ Vựng</h2>
+                <p>Nhớ lại và gõ từ tiếng Anh từ nghĩa đang rơi <span class="setup-hint" id="rain-pool-hint"></span></p>
               </div>
               <button class="btn-ghost btn-mini-back" id="btn-back-hub-2">← Đổi game</button>
             </div>
 
             <!-- Empty-pool alert if 0 words learned -->
             <div class="rain-empty-alert hidden" id="rain-empty-alert">
-              <p>🌊 Kho ôn tập đang trống (<strong>0 từ</strong>). Hãy học từ mới ở <strong>🚀 Luyện Gõ</strong> trước — mỗi từ bạn bắn hạ sẽ tự động chuyển sang đây để ôn chính tả!</p>
-              <button class="btn-primary" id="btn-goto-shooter-empty" style="margin-top:8px;">🚀 Vào Luyện Gõ học từ mới ngay →</button>
+              <p>🌊 Bạn chưa có từ nào trong kho ôn tập. Hãy chơi <strong>🚀 Luyện Gõ</strong> vài phút trước nhé!</p>
+              <button class="btn-primary" id="btn-goto-shooter-empty" style="margin-top:10px;">🚀 Sang Luyện Gõ ngay →</button>
             </div>
 
             <div id="rain-setup-body">
               <div class="setup-section">
-                <label class="setup-label">Hàng chờ ôn tập (từ Luyện Gõ) <span class="setup-hint" id="rain-pool-hint">(0 từ sẵn sàng)</span></label>
+                <label class="setup-label">Từ muốn ôn</label>
                 <div class="chip-group" id="rain-source-group">
-                  <button class="chip active" data-source="due">⏳ Cần ôn ngay</button>
-                  <button class="chip" data-source="session">Vừa học phiên này</button>
-                  <button class="chip" data-source="recent20">20 từ học gần nhất</button>
-                  <button class="chip" data-source="all">Tất cả đã học</button>
+                  <button class="chip active" data-source="due">⏳ Cần ôn</button>
+                  <button class="chip" data-source="session">Vừa học</button>
+                  <button class="chip" data-source="recent20">20 từ gần nhất</button>
+                  <button class="chip" data-source="all">Tất cả</button>
                 </div>
               </div>
 
               <div class="setup-grid">
                 <div class="setup-section">
-                  <label class="setup-label" for="rain-kind-select">Loại mục tiêu</label>
-                  <select id="rain-kind-select" class="glass-select">
-                    <option value="WORDS_ONLY">Chỉ từ đơn đã bắn (khuyên dùng)</option>
-                    <option value="ALL">Cả từ đơn &amp; Collocations đã bắn</option>
-                    <option value="COLLOCS_ONLY">Chỉ Boss Collocations đã bắn</option>
-                  </select>
+                  <label class="setup-label">Tốc độ mưa</label>
+                  <div class="chip-group compact" id="rain-speed-group">
+                    <button class="chip" data-speed="slow">🐢 Chậm</button>
+                    <button class="chip active" data-speed="chill">☕ Thư giãn</button>
+                    <button class="chip" data-speed="normal">⚡ Vừa</button>
+                    <button class="chip" data-speed="fast">🔥 Nhanh</button>
+                  </div>
                 </div>
 
                 <div class="setup-section">
-                  <label class="setup-label">Tốc độ mưa rơi</label>
-                  <div class="chip-group compact" id="rain-speed-group">
-                    <button class="chip" data-speed="slow">🐢 Rất chậm</button>
-                    <button class="chip active" data-speed="chill">Thư giãn</button>
-                    <button class="chip" data-speed="normal">Tiêu chuẩn</button>
-                    <button class="chip" data-speed="fast">Thử thách</button>
-                  </div>
+                  <label class="setup-label" for="rain-kind-select">Loại từ</label>
+                  <select id="rain-kind-select" class="glass-select">
+                    <option value="WORDS_ONLY">Từ đơn</option>
+                    <option value="ALL">Từ đơn &amp; Cụm từ</option>
+                    <option value="COLLOCS_ONLY">Chỉ Cụm từ (Boss)</option>
+                  </select>
                 </div>
               </div>
 
-              <div class="setup-toggles">
-                <div class="toggle-row-split" style="align-items:center;justify-content:space-between;">
-                  <label class="toggle-item">
-                    <input type="checkbox" id="rain-opt-speak" checked />
-                    <span>🔊 Phát âm từ tiếng Anh ngay khi điền đúng</span>
-                  </label>
-                  <button type="button" class="speak-test-chip" id="btn-test-voice-2">🔊 Thử phát âm</button>
-                </div>
-                <label class="toggle-item">
-                  <input type="checkbox" id="rain-opt-pos" checked />
-                  <span>🏷️ Hiện gợi ý từ loại (n / v / adj) cạnh nghĩa tiếng Việt</span>
+              <div class="pill-toggles-bar" style="margin-top:12px;">
+                <label class="pill-toggle">
+                  <input type="checkbox" id="rain-opt-speak" checked />
+                  <span>🔊 Phát âm</span>
                 </label>
+                <label class="pill-toggle">
+                  <input type="checkbox" id="rain-opt-pos" checked />
+                  <span>🏷️ Gợi ý từ loại (n/v/adj)</span>
+                </label>
+                <button type="button" class="speak-test-chip" id="btn-test-voice-2" title="Nghe thử giọng đọc">🔊 Thử âm</button>
+                <span class="micro-tip">💡 Bấm <kbd>?</kbd> khi quên chữ</span>
               </div>
 
-              <div class="ime-tip">💡 Gõ bắt đầu từ <strong>chữ cái đầu màu vàng</strong> để khóa mục tiêu (vd: thấy <code>p _ _ _ _ _ _</code> thì gõ <code>package</code>). Quên chữ tiếp theo? Nhấn phím <strong>?</strong> (hoặc <strong>/</strong>) để mở gợi ý 1 chữ cái!</div>
-
-              <div class="start-actions">
+              <div class="start-actions" style="margin-top:14px;">
                 <button class="btn-primary btn-glow rain-btn" id="btn-start-rain">
-                  <span>Bắt đầu Mưa Từ Vựng ⛵</span>
+                  <span>Bắt đầu ôn tập ⛵</span>
                   <span class="btn-arrow">→</span>
                 </button>
                 <button class="btn-secondary" id="btn-open-notebook-rain">
-                  📚 Xem từ đã bắn
+                  📚 Từ đã học
                 </button>
               </div>
             </div>
@@ -764,8 +774,8 @@
             </div>
 
             <div class="review-header">
-              <h4>📖 Từ vựng trong ván vừa chơi</h4>
-              <span class="muted-text">Nhấn 🔊 để nghe lại phát âm</span>
+              <h4>📖 Từ vừa luyện</h4>
+              <span class="muted-text" id="result-daily-note">Chạm vào từ bất kỳ để nghe lại phát âm 🔊</span>
             </div>
             <div class="review-list" id="result-review-list"></div>
 
@@ -787,8 +797,8 @@
     <div class="glass-card modal-wide">
       <div class="modal-head">
         <div>
-          <h3>🚩 Chọn Mốc Chủ Đề (20 Mốc · Từ đơn + Boss Collocations)</h3>
-          <p class="muted-text">Mỗi mốc gồm ~500 từ vựng đơn + 25 Boss Collocations trải dài từ A1 đến C2</p>
+          <h3>🚩 Chọn Chủ Đề</h3>
+          <p class="muted-text">20 chủ đề quen thuộc từ cơ bản đến nâng cao</p>
         </div>
         <button class="close-x" id="close-milestones" aria-label="Đóng">✕</button>
       </div>
@@ -801,8 +811,8 @@
     <div class="glass-card modal-xl">
       <div class="modal-head">
         <div>
-          <h3>📚 Kho 10,000 Từ IELTS (A1–C2 · AWL) &amp; 500 Boss Collocations</h3>
-          <p class="muted-text" id="nb-summary-text">10,500 mục · 0 chờ ôn · 0 đã thuộc</p>
+          <h3>📚 Sổ Từ Vựng</h3>
+          <p class="muted-text" id="nb-summary-text">10.500 mục · 0 chờ ôn · 0 đã thuộc</p>
         </div>
         <div class="modal-tabs">
           <button class="tab-btn active" data-tab="browse">Tra cứu bộ từ</button>

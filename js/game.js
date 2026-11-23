@@ -228,6 +228,12 @@
     chooseGameRain: document.getElementById("choose-game-rain"),
     hubShooterCount: document.getElementById("hub-shooter-count"),
     hubRainCount: document.getElementById("hub-rain-count"),
+    hubStreakPill: document.getElementById("hub-streak-pill"),
+    dailyGoalBox: document.getElementById("daily-goal-box"),
+    dailyGoalText: document.getElementById("daily-goal-text"),
+    dailyGoalSub: document.getElementById("daily-goal-sub"),
+    dailyGoalFill: document.getElementById("daily-goal-fill"),
+    btnHubNotebook: document.getElementById("btn-hub-notebook"),
 
     // Game 1 Start
     startOverlay: document.getElementById("start-overlay"),
@@ -279,6 +285,7 @@
     resWords: document.getElementById("res-words"),
     resAccuracy: document.getElementById("res-accuracy"),
     resCombo: document.getElementById("res-combo"),
+    resultDailyNote: document.getElementById("result-daily-note"),
     resultReviewList: document.getElementById("result-review-list"),
     btnNextMilestone: document.getElementById("btn-next-milestone"),
     btnPracticeRainNow: document.getElementById("btn-practice-rain-now"),
@@ -330,12 +337,34 @@
       .replace(/"/g, "&quot;");
   }
 
+  const DAILY_GOAL_TARGET = 20;
+
+  function todayStr() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function yesterdayStr() {
+    const d = new Date(Date.now() - 86400000);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
   function createEmptyProgress() {
     return {
       learned: {}, // word -> [learnedAtMin, reviewCount, streak, nextDueMin]
       missed: new Set(),
       clearedMilestones: new Set(),
-      highScore: 0
+      highScore: 0,
+      dailyDate: todayStr(),
+      dailyCount: 0,
+      streakDays: 0,
+      lastStreakDate: ""
     };
   }
 
@@ -349,11 +378,23 @@
       const raw = localStorage.getItem(STORAGE_PROGRESS_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
+        const today = todayStr();
+        const savedDate = parsed.dailyDate || today;
+        const dailyCount = savedDate === today ? (Number(parsed.dailyCount) || 0) : 0;
+        let streakDays = Number(parsed.streakDays) || 0;
+        const lastStreakDate = parsed.lastStreakDate || "";
+        if (lastStreakDate && lastStreakDate !== today && lastStreakDate !== yesterdayStr()) {
+          streakDays = 0;
+        }
         return {
           learned: parsed.learned && typeof parsed.learned === "object" ? parsed.learned : {},
           missed: new Set(parsed.missed || []),
           clearedMilestones: new Set(parsed.clearedMilestones || []),
-          highScore: Number(parsed.highScore) || 0
+          highScore: Number(parsed.highScore) || 0,
+          dailyDate: today,
+          dailyCount,
+          streakDays,
+          lastStreakDate
         };
       }
     } catch (_) {}
@@ -368,11 +409,32 @@
           learned: progress.learned,
           missed: Array.from(progress.missed),
           clearedMilestones: Array.from(progress.clearedMilestones),
-          highScore: progress.highScore
+          highScore: progress.highScore,
+          dailyDate: progress.dailyDate,
+          dailyCount: progress.dailyCount,
+          streakDays: progress.streakDays,
+          lastStreakDate: progress.lastStreakDate
         })
       );
     } catch (_) {}
     updateProgressBadges();
+  }
+
+  function recordDailyActivity() {
+    const today = todayStr();
+    if (progress.dailyDate !== today) {
+      progress.dailyDate = today;
+      progress.dailyCount = 0;
+    }
+    progress.dailyCount = (progress.dailyCount || 0) + 1;
+    if (progress.lastStreakDate !== today) {
+      if (progress.lastStreakDate === yesterdayStr()) {
+        progress.streakDays = (progress.streakDays || 0) + 1;
+      } else {
+        progress.streakDays = 1;
+      }
+      progress.lastStreakDate = today;
+    }
   }
 
   function isWordLearned(word) {
@@ -408,13 +470,13 @@
     const t = nowMin();
     const existing = progress.learned[word];
     if (existing) {
-      // Refresh learned timestamp & mark due if not yet mastered
       progress.learned[word] = [t, existing[1], existing[2], existing[2] === 0 ? 0 : existing[3]];
     } else {
-      progress.learned[word] = [t, 0, 0, 0]; // immediately due for Mưa Từ Vựng spelling review!
+      progress.learned[word] = [t, 0, 0, 0];
     }
     progress.missed.delete(word);
     sessionLearned.add(word);
+    recordDailyActivity();
     saveProgress();
   }
 
@@ -424,7 +486,6 @@
     const existing = progress.learned[word] || [t, 0, 0, 0];
     const newCount = existing[1] + 1;
     if (usedHint) {
-      // Needed hint -> keep in due queue to reinforce spelling again
       progress.learned[word] = [existing[0], newCount, 0, 0];
     } else {
       const newStreak = existing[2] + 1;
@@ -433,6 +494,7 @@
       game.rainMasteredThisRun++;
     }
     progress.missed.delete(word);
+    recordDailyActivity();
     saveProgress();
   }
 
@@ -451,12 +513,42 @@
     el.notebookCount.textContent = `${c.totalLearned}/${allLibrary.length}`;
     el.reviewQueueCount.textContent = String(c.due);
     el.btnQuickRain.classList.toggle("has-due", c.due > 0);
-    el.hubShooterCount.textContent = `${c.totalLearned.toLocaleString("en-US")} / ${allLibrary.length.toLocaleString("en-US")} đã học`;
+    el.chooseGameRain.classList.toggle("has-due", c.due > 0);
+
+    el.hubShooterCount.textContent = c.totalLearned > 0
+      ? `Đã học ${c.totalLearned.toLocaleString("en-US")} từ`
+      : "Bắt đầu học từ mới";
     el.hubRainCount.textContent = c.due > 0
-      ? `${c.due} từ chờ ôn · ${c.mastered} đã thuộc`
+      ? `⏳ ${c.due} từ chờ ôn`
       : c.totalLearned > 0
-        ? `Đã thuộc hết ${c.mastered} từ · Ôn lại`
-        : "0 từ chờ ôn · Học ở Luyện Gõ trước";
+        ? `✅ Đã thuộc ${c.mastered} từ`
+        : "Ôn lại từ đã bắn";
+
+    // Cozy Daily Goal & Streak Bar
+    const todayCnt = progress.dailyDate === todayStr() ? (progress.dailyCount || 0) : 0;
+    const pct = Math.min(100, Math.round((todayCnt / DAILY_GOAL_TARGET) * 100));
+    const goalMet = todayCnt >= DAILY_GOAL_TARGET;
+    const streak = progress.streakDays || 0;
+
+    if (el.dailyGoalBox) {
+      el.dailyGoalBox.classList.toggle("goal-met", goalMet);
+      el.dailyGoalText.textContent = goalMet
+        ? `🎉 Đạt mục tiêu hôm nay (${todayCnt} từ)`
+        : `🌱 Hôm nay: ${todayCnt} / ${DAILY_GOAL_TARGET} từ`;
+      el.dailyGoalSub.textContent = goalMet
+        ? `Tuyệt vời! Đã thuộc ${c.mastered} từ`
+        : todayCnt === 0
+          ? "Khởi động 1 ván nhẹ nhàng nhé!"
+          : `Chỉ còn ${DAILY_GOAL_TARGET - todayCnt} từ nữa là đủ mục tiêu!`;
+      el.dailyGoalFill.style.width = `${pct}%`;
+    }
+
+    if (el.hubStreakPill) {
+      el.hubStreakPill.classList.toggle("active-streak", streak > 0);
+      el.hubStreakPill.textContent = streak > 0
+        ? `🔥 Chuỗi ${streak} ngày`
+        : "🌱 20 từ / ngày";
+    }
   }
 
   function loadPrefs() {
@@ -776,13 +868,9 @@
     el.brandIconShooter.classList.toggle("hidden", isRain);
     el.brandIconRain.classList.toggle("hidden", !isRain);
 
-    if (isRain) {
-      el.brandTitle.textContent = "Mưa Từ Vựng · Ôn Chính Tả";
-      el.brandSubtitle.textContent = "Ôn lại các từ bạn đã học từ Luyện Gõ — gõ đúng chính tả để đánh dấu Đã thuộc";
-    } else {
-      el.brandTitle.textContent = "Luyện Gõ · Học Từ Mới IELTS";
-      el.brandSubtitle.textContent = "10.000 từ Oxford / Cambridge / AWL (A1–C2) — bắn hạ để học nghĩa & đưa vào hàng chờ ôn";
-    }
+    el.brandTitle.textContent = isRain ? "Mưa Từ Vựng" : "Luyện Gõ";
+    el.brandSubtitle.textContent = "";
+    el.brandSubtitle.classList.add("hidden");
   }
 
   function openHub() {
@@ -841,15 +929,15 @@
     const allBtn = el.rainSourceGroup.querySelector('[data-source="all"]');
 
     if (dueBtn) {
-      dueBtn.textContent = `⏳ Cần ôn ngay (${counts.due})`;
+      dueBtn.textContent = `⏳ Cần ôn (${counts.due})`;
       dueBtn.disabled = counts.due === 0;
     }
     if (sessionBtn) {
-      sessionBtn.textContent = `Vừa học phiên này (${sessionLearned.size})`;
+      sessionBtn.textContent = `Vừa học (${sessionLearned.size})`;
       sessionBtn.disabled = sessionLearned.size === 0;
     }
     if (allBtn) {
-      allBtn.textContent = `Tất cả đã học (${counts.totalLearned})`;
+      allBtn.textContent = `Tất cả (${counts.totalLearned})`;
     }
 
     // Smart auto-fallback if selected bucket is currently empty
@@ -869,7 +957,7 @@
     el.rainOptPos.checked = game.rainShowPos;
 
     const pool = getRainPool();
-    el.rainPoolHint.textContent = `(${pool.length} từ sẵn sàng ôn · ${counts.mastered} đã thuộc)`;
+    el.rainPoolHint.textContent = `· ${pool.length} từ`;
     el.btnStartRain.disabled = pool.length === 0;
   }
 
@@ -1488,44 +1576,43 @@
 
     if (game.mode === "rain") {
       const srcName = game.rainSource === "due"
-        ? "Cần ôn ngay"
+        ? "Cần ôn"
         : game.rainSource === "session"
-          ? "Phiên vừa học"
+          ? "Vừa học"
           : game.rainSource === "recent20"
             ? "20 từ gần nhất"
             : "Tất cả đã học";
-      el.milestoneLabel.textContent = "Mưa Chính Tả";
+      el.milestoneLabel.textContent = "Mưa Từ Vựng";
       el.milestoneTopic.textContent = srcName;
       el.milestoneProgressText.textContent = `${game.wordsDestroyed}/${game.milestoneGoal}`;
       el.milestoneProgressFill.style.width = `${Math.min(100, (game.wordsDestroyed / Math.max(1, game.milestoneGoal)) * 100)}%`;
-      el.deckPillText.textContent = `Kho đã học: ${counts.totalLearned} từ · Đã thuộc: ${counts.mastered}`;
+      el.deckPillText.textContent = `🌧️ Đã thuộc ${counts.mastered} / ${counts.totalLearned} từ`;
     } else {
       const topic = topicMap.get(game.milestoneId) || topics[0];
       if (game.endless) {
-        el.milestoneLabel.textContent = game.bossOnly ? "Săn Boss Vô tận" : "Vô tận";
+        el.milestoneLabel.textContent = game.bossOnly ? "Boss Vô tận" : "Vô tận";
         el.milestoneTopic.textContent = "Mọi chủ đề";
-        el.milestoneProgressText.textContent = `${game.wordsDestroyed} hạ gục`;
+        el.milestoneProgressText.textContent = `${game.wordsDestroyed} từ`;
         el.milestoneProgressFill.style.width = `${Math.min(100, (game.wordsDestroyed % 20) * 5)}%`;
       } else if (game.bossOnly) {
-        el.milestoneLabel.textContent = `Boss Mốc ${topic.id}/20`;
-        el.milestoneTopic.textContent = topic.name;
-        el.milestoneProgressText.textContent = `${game.bossWavesDefeated}/${game.bossTotalWaves} Boss`;
+        el.milestoneLabel.textContent = `Boss ${topic.id}/20`;
+        el.milestoneTopic.textContent = topic.vi || topic.name;
+        el.milestoneProgressText.textContent = `${game.bossWavesDefeated}/${game.bossTotalWaves}`;
         el.milestoneProgressFill.style.width = `${Math.min(100, (game.bossWavesDefeated / Math.max(1, game.bossTotalWaves)) * 100)}%`;
       } else {
         el.milestoneLabel.textContent = `Mốc ${topic.id}/20`;
-        el.milestoneTopic.textContent = topic.name;
+        el.milestoneTopic.textContent = topic.vi || topic.name;
         if (game.inBossPhase) {
-          el.milestoneProgressText.textContent = `👑 BOSS ${game.bossWavesDefeated}/${game.bossTotalWaves}`;
+          el.milestoneProgressText.textContent = `👑 ${game.bossWavesDefeated}/${game.bossTotalWaves}`;
           el.milestoneProgressFill.style.width = "100%";
         } else {
-          el.milestoneProgressText.textContent = `${game.regularDestroyed}/${game.milestoneGoal} + Boss`;
+          el.milestoneProgressText.textContent = `${game.regularDestroyed}/${game.milestoneGoal}`;
           el.milestoneProgressFill.style.width = `${Math.min(100, (game.regularDestroyed / Math.max(1, game.milestoneGoal)) * 100)}%`;
         }
       }
 
-      const lvlLabel = game.levelFilter === "ALL" ? "A1–C2" : game.levelFilter === "AWL" ? "🎓 AWL IELTS" : `Level ${game.levelFilter}`;
-      const wordCnt = getFilteredPool(singleVocab, false).length;
-      el.deckPillText.textContent = `${wordCnt.toLocaleString("en-US")} từ IELTS · ${lvlLabel}`;
+      const lvlLabel = game.levelFilter === "ALL" ? "A1–C2" : game.levelFilter === "AWL" ? "🎓 IELTS" : game.levelFilter;
+      el.deckPillText.textContent = `${topic.icon} ${topic.vi || topic.name} · ${lvlLabel}`;
     }
 
     renderHearts();
@@ -1536,10 +1623,9 @@
   function updatePoolHints() {
     const wAll = getFilteredPool(singleVocab, false).length;
     const wTopic = getFilteredPool(singleVocab, true).length;
-    const cTopic = getFilteredPool(collocVocab, true).length;
     el.poolCountHint.textContent = game.endless
-      ? `(${wAll.toLocaleString("en-US")} từ IELTS sẵn sàng)`
-      : `(${wTopic} từ + ${cTopic} Boss trong mốc này · ${wAll.toLocaleString("en-US")} tổng)`;
+      ? `· ${wAll.toLocaleString("en-US")} từ`
+      : `· ${wTopic} từ`;
   }
 
   function formatPhraseCharsHtml(text, typedCount) {
@@ -1664,12 +1750,10 @@
     el.meaningCurrent.style.animation = "";
 
     el.mcStatus.textContent = missed
-      ? (game.mode === "rain" ? "✕ ĐÁP ÁN · CẦN ÔN LẠI" : "✕ BỎ LỠ · GHI NHỚ")
+      ? "✕ ĐÁP ÁN"
       : game.mode === "rain"
-        ? "✅ ĐÃ THUỘC CHÍNH TẢ"
-        : entry.isColloc
-          ? "👑 ĐÃ LƯU SANG MƯA TỪ VỰNG"
-          : "✓ ĐÃ HỌC · THÊM VÀO CHỜ ÔN";
+        ? "✅ ĐÃ THUỘC"
+        : "✓ VỪA HỌC";
     el.mcLevel.textContent = entry.level;
     el.mcLevel.className = `cefr-tag ${entry.level}`;
     el.mcWord.textContent = entry.word;
@@ -2304,34 +2388,43 @@
       el.btnBackLearnMore.classList.remove("hidden");
       if (victory) {
         el.resultEmoji.textContent = "⛵";
-        el.resultTitle.textContent = `Hoàn thành ôn chính tả · Đã thuộc +${game.rainMasteredThisRun} từ!`;
-        el.resultSubtitle.textContent = `Còn ${counts.due} từ chờ ôn · Tổng đã thuộc: ${counts.mastered}/${counts.totalLearned} từ`;
+        el.resultTitle.textContent = `Ôn tập xong · Thuộc thêm +${game.rainMasteredThisRun} từ!`;
+        el.resultSubtitle.textContent = counts.due > 0
+          ? `Còn ${counts.due} từ chờ ôn · Đã thuộc ${counts.mastered} từ`
+          : `Tuyệt vời! Bạn đã thuộc hết ${counts.mastered} từ đã học`;
       } else {
         audio.playGameOver();
         el.resultEmoji.textContent = "🌧️";
-        el.resultTitle.textContent = "Kết thúc lượt ôn tập!";
-        el.resultSubtitle.textContent = `Đã thuộc thêm ${game.rainMasteredThisRun} từ · Các từ quên sẽ được giữ lại để ôn tiếp`;
+        el.resultTitle.textContent = "Xong một lượt ôn!";
+        el.resultSubtitle.textContent = `Thuộc thêm +${game.rainMasteredThisRun} từ · Chơi thêm ván nữa cho nhớ hẳn nhé`;
       }
     } else {
       const topic = topicMap.get(game.milestoneId) || topics[0];
       el.btnBackLearnMore.classList.add("hidden");
       el.btnPracticeRainNow.classList.toggle("hidden", counts.totalLearned === 0);
       el.btnPracticeRainNow.textContent = counts.due > 0
-        ? `🌧️ Ôn chính tả ngay (${counts.due} từ chờ ôn)`
-        : `🌧️ Ôn chính tả (${counts.totalLearned} từ đã học)`;
+        ? `🌧️ Ôn lại ngay (${counts.due} từ)`
+        : `🌧️ Sang Mưa Từ Vựng`;
 
       if (victory) {
-        el.resultEmoji.textContent = "👑";
-        el.resultTitle.textContent = `Tiêu diệt Boss · Vượt Mốc ${topic.id}/20!`;
-        el.resultSubtitle.textContent = `${game.wordsDestroyed} từ mới đã lưu vào hàng chờ ôn Mưa Từ Vựng (+500 điểm Boss)`;
+        el.resultEmoji.textContent = "🎉";
+        el.resultTitle.textContent = `Hoàn thành ${topic.vi || topic.name}!`;
+        el.resultSubtitle.textContent = `Học thêm ${game.wordsDestroyed} từ · Có thể qua Mưa Từ Vựng ôn lại ngay`;
         el.btnNextMilestone.classList.toggle("hidden", game.milestoneId >= topics.length);
       } else {
         audio.playGameOver();
-        el.resultEmoji.textContent = "💥";
-        el.resultTitle.textContent = game.endless ? "Kết thúc lượt học!" : "Lá chắn phòng thủ đã vỡ!";
-        el.resultSubtitle.textContent = `Bạn đã học được ${game.wordsDestroyed} từ mới — chuyển qua Mưa Từ Vựng để ôn lại ngay nhé!`;
+        el.resultEmoji.textContent = "💪";
+        el.resultTitle.textContent = "Kết thúc ván!";
+        el.resultSubtitle.textContent = `Bạn vừa bỏ túi thêm ${game.wordsDestroyed} từ mới rồi đó!`;
         el.btnNextMilestone.classList.add("hidden");
       }
+    }
+
+    const todayCnt = progress.dailyDate === todayStr() ? (progress.dailyCount || 0) : 0;
+    if (el.resultDailyNote) {
+      el.resultDailyNote.textContent = todayCnt >= DAILY_GOAL_TARGET
+        ? `🎉 Đạt mục tiêu hôm nay (${todayCnt} từ) · Chạm vào từ để nghe lại 🔊`
+        : `🌱 Hôm nay: ${todayCnt}/${DAILY_GOAL_TARGET} từ · Chạm vào từ để nghe lại 🔊`;
     }
 
     el.resScore.textContent = game.score.toLocaleString("en-US");
@@ -2340,17 +2433,16 @@
     el.resCombo.textContent = `x${game.bestCombo}`;
 
     if (!game.sessionLog.length) {
-      el.resultReviewList.innerHTML = `<p class="muted-text" style="padding:12px;text-align:center;">Chưa có mục tiêu nào trong ván này.</p>`;
+      el.resultReviewList.innerHTML = `<p class="muted-text" style="padding:12px;text-align:center;">Chưa có từ nào trong ván này.</p>`;
     } else {
       el.resultReviewList.innerHTML = game.sessionLog
         .map(
           item => `
-          <div class="review-item ${item.status === "missed" ? "is-missed" : ""}">
+          <div class="review-item ${item.status === "missed" ? "is-missed" : ""}" data-speak="${escapeHtml(item.entry.word)}" title="Chạm để nghe phát âm">
             <div class="review-left">
               <button class="speak-mini-btn" data-speak="${escapeHtml(item.entry.word)}" title="Nghe phát âm">🔊</button>
-              ${item.entry.isColloc ? `<span class="boss-tag-badge">👑 BOSS</span>` : ""}
+              ${item.entry.isColloc ? `<span class="boss-tag-badge">👑</span>` : ""}
               <span class="review-word">${escapeHtml(item.entry.word)}</span>
-              ${item.entry.isAwl ? `<span class="awl-tag">AWL</span>` : ""}
               ${item.entry.ipa ? `<span class="review-ipa">${escapeHtml(item.entry.ipa)}</span>` : ""}
               <span class="cefr-tag ${escapeHtml(item.entry.level)}">${escapeHtml(item.entry.level)}</span>
               <span class="pos-pill pos-${escapeHtml(item.entry.pos)}">${escapeHtml(item.entry.posShort)}</span>
@@ -2473,11 +2565,11 @@
   // --------------------------------------------------------------------------
   function populateTopicSelects() {
     const optsHtml = topics
-      .map(t => `<option value="${t.id}">Mốc ${t.id}/20 · ${t.icon} ${t.name} (${t.vi})</option>`)
+      .map(t => `<option value="${t.id}">${t.icon} ${t.vi} (${t.name})</option>`)
       .join("");
     el.selectMilestone.innerHTML = optsHtml;
     el.selectMilestone.value = String(game.milestoneId);
-    el.nbTopic.innerHTML = `<option value="ALL">Mọi chủ đề (20 mốc)</option>${optsHtml}`;
+    el.nbTopic.innerHTML = `<option value="ALL">Mọi chủ đề</option>${optsHtml}`;
   }
 
   function openMilestonesModal() {
@@ -2502,11 +2594,11 @@
         return `
           <button class="ms-card ${current ? "current" : ""} ${cleared ? "cleared" : ""}" data-milestone="${t.id}">
             <div class="ms-card-top">
-              <span>${t.icon} Mốc ${t.id}/20</span>
-              ${cleared ? `<span class="ms-cleared-badge">👑 Đã diệt Boss</span>` : `<span>${learnedInTopic}/${wInTopic.length + cInTopic.length}</span>`}
+              <span>${t.icon} Chủ đề ${t.id}</span>
+              ${cleared ? `<span class="ms-cleared-badge">✓ Hoàn thành</span>` : `<span>${learnedInTopic}/${wInTopic.length}</span>`}
             </div>
-            <div class="ms-card-title">${t.name}</div>
-            <div class="ms-card-sub">${wInTopic.length} từ IELTS + ${cInTopic.length} Boss</div>
+            <div class="ms-card-title">${t.vi}</div>
+            <div class="ms-card-sub">${t.name} · ${wInTopic.length} từ</div>
           </button>`;
       })
       .join("");
@@ -2776,6 +2868,7 @@
     el.deckPill.addEventListener("click", openMilestonesModal);
     el.btnMilestones.addEventListener("click", openMilestonesModal);
     el.btnNotebook.addEventListener("click", () => openNotebookModal());
+    if (el.btnHubNotebook) el.btnHubNotebook.addEventListener("click", () => openNotebookModal());
     el.btnOpenNotebookStart.addEventListener("click", () => openNotebookModal());
     el.btnOpenNotebookRain.addEventListener("click", () => openNotebookModal("LEARNED"));
     el.btnPauseNotebook.addEventListener("click", () => openNotebookModal());
@@ -2807,7 +2900,12 @@
       savePrefs();
     });
 
-    el.mcSpeak.addEventListener("click", () => {
+    el.meaningCurrent.addEventListener("click", () => {
+      audio.unlock();
+      if (game.lastDockWord) audio.speakWord(game.lastDockWord.entry.word, true, 0);
+    });
+    el.mcSpeak.addEventListener("click", e => {
+      e.stopPropagation();
       el.mcSpeak.blur();
       audio.unlock();
       if (game.lastDockWord) audio.speakWord(game.lastDockWord.entry.word, true, 0);
