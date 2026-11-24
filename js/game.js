@@ -59,6 +59,7 @@
   // State & Data Initialization
   // --------------------------------------------------------------------------
   const audio = new window.GameAudio();
+  const cloud = window.VocabCloudManager ? new window.VocabCloudManager() : null;
   const topics = window.VOCAB_TOPICS || [];
   const topicMap = new Map(topics.map(t => [t.id, t]));
   const posMap = window.POS_LABELS || {};
@@ -177,6 +178,11 @@
     brandTitle: document.getElementById("brand-title"),
     brandSubtitle: document.getElementById("brand-subtitle"),
 
+    btnCloudSync: document.getElementById("btn-cloud-sync"),
+    cloudUserAvatar: document.getElementById("cloud-user-avatar"),
+    cloudSyncIcon: document.getElementById("cloud-sync-icon"),
+    cloudSyncLabel: document.getElementById("cloud-sync-label"),
+
     bossHud: document.getElementById("boss-hud"),
     bossHudTitle: document.getElementById("boss-hud-title"),
     bossHudPhase: document.getElementById("boss-hud-phase"),
@@ -239,6 +245,7 @@
     dailyGoalText: document.getElementById("daily-goal-text"),
     dailyGoalSub: document.getElementById("daily-goal-sub"),
     dailyGoalFill: document.getElementById("daily-goal-fill"),
+    btnHubCloud: document.getElementById("btn-hub-cloud"),
     btnHubNotebook: document.getElementById("btn-hub-notebook"),
 
     // Game 1 Start
@@ -325,7 +332,26 @@
     btnExportJson: document.getElementById("btn-export-json"),
     btnExportProgress: document.getElementById("btn-export-progress"),
     importProgressFile: document.getElementById("import-progress-file"),
-    btnResetProgress: document.getElementById("btn-reset-progress")
+    btnResetProgress: document.getElementById("btn-reset-progress"),
+
+    // Cloud Sync Modal
+    cloudModal: document.getElementById("cloud-modal"),
+    closeCloudModal: document.getElementById("close-cloud-modal"),
+    cloudSignedOut: document.getElementById("cloud-signed-out"),
+    cloudSignedIn: document.getElementById("cloud-signed-in"),
+    cloudAuthHint: document.getElementById("cloud-auth-hint"),
+    btnGoogleSignin: document.getElementById("btn-google-signin"),
+    btnGoogleSignout: document.getElementById("btn-google-signout"),
+    cloudModalAvatar: document.getElementById("cloud-modal-avatar"),
+    cloudUserName: document.getElementById("cloud-user-name"),
+    cloudUserEmail: document.getElementById("cloud-user-email"),
+    cloudAdminDetails: document.getElementById("cloud-admin-details"),
+    cfgFbApikey: document.getElementById("cfg-fb-apikey"),
+    cfgFbProjectid: document.getElementById("cfg-fb-projectid"),
+    cfgFbAuthdomain: document.getElementById("cfg-fb-authdomain"),
+    cfgFbAppid: document.getElementById("cfg-fb-appid"),
+    cfgSaveFeedback: document.getElementById("cfg-save-feedback"),
+    btnSaveCloudConfig: document.getElementById("btn-save-cloud-config")
   };
 
   const ctx = el.canvas.getContext("2d");
@@ -409,22 +435,27 @@
     return createEmptyProgress();
   }
 
-  function saveProgress() {
+  function serializeProgressPlain() {
+    return {
+      learned: progress.learned,
+      missed: Array.from(progress.missed),
+      clearedMilestones: Array.from(progress.clearedMilestones),
+      highScore: progress.highScore,
+      dailyDate: progress.dailyDate,
+      dailyCount: progress.dailyCount,
+      streakDays: progress.streakDays,
+      lastStreakDate: progress.lastStreakDate
+    };
+  }
+
+  function saveProgress(pushToCloud = true) {
+    const plain = serializeProgressPlain();
     try {
-      localStorage.setItem(
-        STORAGE_PROGRESS_KEY,
-        JSON.stringify({
-          learned: progress.learned,
-          missed: Array.from(progress.missed),
-          clearedMilestones: Array.from(progress.clearedMilestones),
-          highScore: progress.highScore,
-          dailyDate: progress.dailyDate,
-          dailyCount: progress.dailyCount,
-          streakDays: progress.streakDays,
-          lastStreakDate: progress.lastStreakDate
-        })
-      );
+      localStorage.setItem(STORAGE_PROGRESS_KEY, JSON.stringify(plain));
     } catch (_) {}
+    if (pushToCloud && cloud) {
+      cloud.schedulePushProgress(plain, loadCustomWords());
+    }
     updateProgressBadges();
   }
 
@@ -874,6 +905,16 @@
   // --------------------------------------------------------------------------
   // Mode Switching (Hub <-> Space Shooter <-> Rain Spelling Review)
   // --------------------------------------------------------------------------
+  function isMobileTouchDevice() {
+    return window.innerWidth <= 768 || Boolean(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+  }
+
+  function syncVirtualKeyboardLayout() {
+    el.virtualKeyboard.classList.toggle("hidden", !game.virtualKeyboardOpen);
+    el.btnKeyboard.classList.toggle("active", game.virtualKeyboardOpen);
+    el.arena.classList.toggle("vk-open", Boolean(game.virtualKeyboardOpen && window.innerWidth <= 768));
+  }
+
   function syncRainAmbienceState() {
     const enabledForMode = game.mode === "rain" ? game.rainAmbienceInRain : game.rainAmbienceInShooter;
     audio.rainAmbienceEnabled = enabledForMode;
@@ -895,6 +936,7 @@
     el.brandTitle.textContent = isRain ? "Mưa Từ Vựng" : "Luyện Gõ";
     el.brandSubtitle.textContent = "";
     el.brandSubtitle.classList.add("hidden");
+    syncVirtualKeyboardLayout();
     syncRainAmbienceState();
   }
 
@@ -904,7 +946,7 @@
     game.freezeTimer = 0;
     clearArenaWords();
     closeAllModals();
-    el.arena.classList.remove("boss-mode", "freeze-active");
+    el.arena.classList.remove("boss-mode", "freeze-active", "vk-open");
     el.bossHud.classList.add("hidden");
     el.startOverlay.classList.add("hidden");
     el.rainStartOverlay.classList.add("hidden");
@@ -925,19 +967,18 @@
     closeAllModals();
     applyModeTheme();
 
-    el.arena.classList.remove("boss-mode");
+    el.arena.classList.remove("boss-mode", "vk-open");
     el.bossHud.classList.add("hidden");
     el.hubOverlay.classList.add("hidden");
     el.pauseOverlay.classList.add("hidden");
     el.resultOverlay.classList.add("hidden");
 
+    el.startOverlay.classList.toggle("hidden", mode !== "shooter");
+    el.rainStartOverlay.classList.toggle("hidden", mode !== "rain");
+
     if (mode === "rain") {
-      el.startOverlay.classList.add("hidden");
-      el.rainStartOverlay.classList.remove("hidden");
       syncRainSetupControls();
     } else {
-      el.rainStartOverlay.classList.add("hidden");
-      el.startOverlay.classList.remove("hidden");
       syncStartOverlayControls();
     }
     syncPauseIcon();
@@ -2378,6 +2419,11 @@
     audio.unlock();
     clearArenaWords();
     closeAllModals();
+
+    // Auto-open ergonomic thumb keyboard on touch phones for Games 1 & 2!
+    if (isMobileTouchDevice() && !game.virtualKeyboardOpen) {
+      game.virtualKeyboardOpen = true;
+    }
     applyModeTheme();
 
     if (game.mode === "rain") {
@@ -2480,7 +2526,7 @@
     game.inBossPhase = false;
     game.freezeTimer = 0;
     clearArenaWords();
-    el.arena.classList.remove("boss-mode", "freeze-active");
+    el.arena.classList.remove("boss-mode", "freeze-active", "vk-open");
     if (el.activeBuffPill) el.activeBuffPill.classList.add("hidden");
     el.bossHud.classList.add("hidden");
     syncPauseIcon();
@@ -2599,7 +2645,8 @@
         if (el.activeBuffPill) el.activeBuffPill.classList.add("hidden");
       }
 
-      const speedMult = game.freezeTimer > 0 ? 0.42 : 1;
+      const mobileSpeedScale = window.innerWidth <= 640 ? 0.82 : 1;
+      const speedMult = (game.freezeTimer > 0 ? 0.42 : 1) * mobileSpeedScale;
 
       if (!game.inBossPhase) {
         const preset = SPEED_PRESETS[game.speedKey] || SPEED_PRESETS.chill;
@@ -2615,7 +2662,8 @@
         }
       }
 
-      const dangerY = fx.height - 34;
+      const mobileVkOffset = game.virtualKeyboardOpen && window.innerWidth <= 768 ? 186 : 0;
+      const dangerY = fx.height - 34 - mobileVkOffset;
       for (let i = game.activeWords.length - 1; i >= 0; i--) {
         const w = game.activeWords[i];
         w.y += w.speed * speedMult * dt;
@@ -2643,27 +2691,33 @@
       ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
       ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
       ["z", "x", "c", "v", "b", "n", "m", "⌫"],
-      ["SPACE"]
+      ["ESC", "SPACE", "?"]
     ];
     el.virtualKeyboard.innerHTML = rows
       .map(
         row =>
           `<div class="vk-row">${row
-            .map(k =>
-              k === "SPACE"
-                ? `<button class="vk-key vk-space" data-key=" " type="button">SPACE (CÁCH)</button>`
-                : `<button class="vk-key" data-key="${k}" type="button">${k}</button>`
-            )
+            .map(k => {
+              if (k === "SPACE") return `<button class="vk-key vk-space" data-key=" " type="button">SPACE</button>`;
+              if (k === "ESC") return `<button class="vk-key" data-key="ESC" type="button" title="Đổi từ khác">ĐỔI</button>`;
+              if (k === "?") return `<button class="vk-key" data-key="?" type="button" title="Gợi ý chữ cái (Mưa Từ Vựng)">? GỢI Ý</button>`;
+              return `<button class="vk-key" data-key="${k}" type="button">${k}</button>`;
+            })
             .join("")}</div>`
       )
       .join("");
 
-    el.virtualKeyboard.addEventListener("click", e => {
+    el.virtualKeyboard.addEventListener("pointerdown", e => {
       const btn = e.target.closest(".vk-key");
       if (!btn) return;
-      btn.blur();
+      e.preventDefault();
+      navigator.vibrate?.(10);
       const key = btn.dataset.key;
+      btn.classList.add("pressed");
+      setTimeout(() => btn.classList.remove("pressed"), 100);
       if (key === "⌫") handleBackspace();
+      else if (key === "ESC") unlockTarget();
+      else if (key === "?") revealRainHint();
       else handleCharInput(key);
     });
   }
@@ -2738,6 +2792,67 @@
   function closeAllModals() {
     el.milestonesModal.classList.add("hidden");
     el.notebookModal.classList.add("hidden");
+    if (el.cloudModal) el.cloudModal.classList.add("hidden");
+  }
+
+  function openCloudModal(expandAdmin = false) {
+    if (game.status === "playing") pauseGame();
+    if (!el.cloudModal) return;
+    if (cloud) {
+      const cfg = cloud.getEffectiveConfig();
+      el.cfgFbApikey.value = cfg.firebase.apiKey || "";
+      el.cfgFbProjectid.value = cfg.firebase.projectId || "";
+      el.cfgFbAuthdomain.value = cfg.firebase.authDomain || "";
+      el.cfgFbAppid.value = cfg.firebase.appId || "";
+      if (expandAdmin && el.cloudAdminDetails) {
+        el.cloudAdminDetails.open = true;
+      }
+    }
+    el.cfgSaveFeedback.textContent = "";
+    el.cloudModal.classList.remove("hidden");
+  }
+
+  function renderCloudAuthUI(user, isFbConfigured) {
+    if (!el.btnCloudSync) return;
+    if (user) {
+      el.btnCloudSync.classList.add("synced");
+      const shortName = (user.displayName || "Đã đồng bộ").split(" ")[0];
+      el.cloudSyncLabel.textContent = shortName;
+      if (user.photoURL) {
+        el.cloudUserAvatar.src = user.photoURL;
+        el.cloudUserAvatar.classList.remove("hidden");
+        el.cloudSyncIcon.classList.add("hidden");
+      } else {
+        el.cloudUserAvatar.classList.add("hidden");
+        el.cloudSyncIcon.classList.remove("hidden");
+        el.cloudSyncIcon.textContent = "✓";
+      }
+
+      el.cloudSignedOut.classList.add("hidden");
+      el.cloudSignedIn.classList.remove("hidden");
+      el.cloudUserName.textContent = user.displayName || "Tài khoản Google";
+      el.cloudUserEmail.textContent = user.email || "";
+      if (user.photoURL) {
+        el.cloudModalAvatar.src = user.photoURL;
+        el.cloudModalAvatar.classList.remove("hidden");
+      } else {
+        el.cloudModalAvatar.classList.add("hidden");
+      }
+      if (el.btnHubCloud) el.btnHubCloud.textContent = `☁️ Đã đồng bộ (${shortName})`;
+    } else {
+      el.btnCloudSync.classList.remove("synced");
+      el.cloudUserAvatar.classList.add("hidden");
+      el.cloudSyncIcon.classList.remove("hidden");
+      el.cloudSyncIcon.textContent = "☁️";
+      el.cloudSyncLabel.textContent = "Đồng bộ";
+
+      el.cloudSignedOut.classList.remove("hidden");
+      el.cloudSignedIn.classList.add("hidden");
+      el.cloudAuthHint.textContent = isFbConfigured
+        ? "Đăng nhập Google trên Laptop và Điện thoại để nối tiếp toàn bộ tiến trình học."
+        : "Hãy điền cấu hình Firebase ở mục ⚙️ bên dưới 1 lần để bật Đăng nhập Google.";
+      if (el.btnHubCloud) el.btnHubCloud.textContent = "☁️ Đồng bộ Google";
+    }
   }
 
   function renderNotebook() {
@@ -2914,8 +3029,26 @@
   }
 
   function bindEvents() {
-    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      syncVirtualKeyboardLayout();
+    });
     window.addEventListener("pointerdown", () => audio.unlock(), { once: true });
+
+    // Mobile Tap-to-Lock on any falling word pill / rain card!
+    el.wordsLayer.addEventListener("pointerdown", e => {
+      if (game.status !== "playing") return;
+      const pillEl = e.target.closest(".word-pill");
+      if (!pillEl) return;
+      const found = game.activeWords.find(w => w.el === pillEl);
+      if (!found || found === game.lockedWord) return;
+      if (game.lockedWord && game.lockedWord.isBoss) return;
+      if (game.lockedWord) unlockTarget();
+      game.lockedWord = found;
+      found.el.classList.add("locked");
+      navigator.vibrate?.(12);
+      updateTypingIndicator();
+    });
 
     window.addEventListener("keydown", e => {
       audio.unlock();
@@ -2923,7 +3056,11 @@
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") {
         if (document.activeElement !== el.mobileInput) return;
       }
-      if (!el.milestonesModal.classList.contains("hidden") || !el.notebookModal.classList.contains("hidden")) {
+      if (
+        !el.milestonesModal.classList.contains("hidden") ||
+        !el.notebookModal.classList.contains("hidden") ||
+        (el.cloudModal && !el.cloudModal.classList.contains("hidden"))
+      ) {
         if (e.key === "Escape") closeAllModals();
         return;
       }
@@ -2969,6 +3106,48 @@
     el.btnHome.addEventListener("click", openHub);
     el.btnGotoShooterEmpty.addEventListener("click", () => openGameSetup("shooter"));
 
+    // Cloud Sync Modal Bindings
+    [el.btnCloudSync, el.btnHubCloud].forEach(btn => {
+      if (btn) btn.addEventListener("click", () => openCloudModal(false));
+    });
+    if (el.closeCloudModal) el.closeCloudModal.addEventListener("click", () => el.cloudModal.classList.add("hidden"));
+    if (el.cloudModal) el.cloudModal.addEventListener("click", e => { if (e.target === el.cloudModal) el.cloudModal.classList.add("hidden"); });
+
+    if (el.btnGoogleSignin) {
+      el.btnGoogleSignin.addEventListener("click", async () => {
+        if (!cloud) return;
+        try {
+          await cloud.signInWithGoogle();
+        } catch (err) {
+          if (err && err.message === "NOT_CONFIGURED") {
+            if (el.cloudAdminDetails) el.cloudAdminDetails.open = true;
+            el.cfgSaveFeedback.textContent = "⚠️ Hãy điền Firebase API Key & Project ID bên dưới trước khi đăng nhập Google.";
+          } else {
+            el.cloudAuthHint.textContent = `❌ Không thể đăng nhập: ${err.message || err}`;
+          }
+        }
+      });
+    }
+    if (el.btnGoogleSignout) {
+      el.btnGoogleSignout.addEventListener("click", () => { if (cloud) cloud.signOut(); });
+    }
+    if (el.btnSaveCloudConfig) {
+      el.btnSaveCloudConfig.addEventListener("click", async () => {
+        if (!cloud) return;
+        const overrides = {
+          firebase: {
+            apiKey: el.cfgFbApikey.value.trim(),
+            projectId: el.cfgFbProjectid.value.trim(),
+            authDomain: el.cfgFbAuthdomain.value.trim(),
+            appId: el.cfgFbAppid.value.trim()
+          }
+        };
+        cloud.saveOverrides(overrides);
+        await cloud.init();
+        el.cfgSaveFeedback.textContent = "✅ Đã lưu cấu hình kết nối trên trình duyệt!";
+      });
+    }
+
     // Top bar quick jump to Mưa Từ Vựng review queue!
     el.btnQuickRain.addEventListener("click", () => {
       el.btnQuickRain.blur();
@@ -3011,8 +3190,7 @@
     el.btnKeyboard.addEventListener("click", () => {
       el.btnKeyboard.blur();
       game.virtualKeyboardOpen = !game.virtualKeyboardOpen;
-      el.virtualKeyboard.classList.toggle("hidden", !game.virtualKeyboardOpen);
-      el.btnKeyboard.classList.toggle("active", game.virtualKeyboardOpen);
+      syncVirtualKeyboardLayout();
       updateTypingIndicator();
     });
 
@@ -3251,6 +3429,50 @@
     });
   }
 
+  function initCloudSync() {
+    if (cloud) {
+      cloud.onAuthStateChangedCb = (user, configured) => {
+        renderCloudAuthUI(user, configured);
+      };
+      cloud.onCloudProgressCb = (remoteData, firstLogin) => {
+        if (firstLogin) {
+          saveProgress(true);
+          return;
+        }
+        const localPlain = serializeProgressPlain();
+        const { merged, changedLocal, changedRemote } = window.VocabCloudManager.mergeProgressRecords(localPlain, remoteData);
+        if (changedLocal) {
+          progress = {
+            learned: merged.learned || {},
+            missed: new Set(merged.missed || []),
+            clearedMilestones: new Set(merged.clearedMilestones || []),
+            highScore: Number(merged.highScore) || 0,
+            dailyDate: merged.dailyDate || todayStr(),
+            dailyCount: Number(merged.dailyCount) || 0,
+            streakDays: Number(merged.streakDays) || 0,
+            lastStreakDate: merged.lastStreakDate || ""
+          };
+          if (Array.isArray(remoteData.customWords) && remoteData.customWords.length) {
+            const existing = loadCustomWords();
+            const map = new Map(existing.map(r => [r[0], r]));
+            remoteData.customWords.forEach(r => { if (Array.isArray(r) && r[0]) map.set(r[0], r); });
+            saveCustomWords(Array.from(map.values()));
+            rebuildVocabulary();
+          }
+          saveProgress(false);
+          updateHUD();
+          if (!el.notebookModal.classList.contains("hidden")) renderNotebook();
+          if (game.mode === "rain" && game.status === "menu") syncRainSetupControls();
+        }
+        if (changedRemote) {
+          cloud.schedulePushProgress(merged, loadCustomWords());
+        }
+      };
+      renderCloudAuthUI(null, cloud.isFirebaseConfigured());
+      cloud.init();
+    }
+  }
+
   function init() {
     audio.soundEnabled = prefs.soundEnabled !== false;
     audio.autoSpeak = prefs.autoSpeak !== false;
@@ -3259,6 +3481,7 @@
     populateTopicSelects();
     buildVirtualKeyboard();
     resizeCanvas();
+    initCloudSync();
     syncSoundIcon();
     syncStartOverlayControls();
     applyModeTheme();

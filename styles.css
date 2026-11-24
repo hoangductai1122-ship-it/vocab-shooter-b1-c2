@@ -82,6 +82,8 @@ button, select, input, textarea {
   flex-direction: column;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   background: var(--bg-outer);
 }
 
@@ -639,6 +641,33 @@ button, select, input, textarea {
   animation: popIn 0.2s ease;
 }
 
+.tulip-quote {
+  position: absolute;
+  left: 96px;
+  bottom: 28px;
+  max-width: calc(50% - 178px);
+  z-index: 11;
+  pointer-events: none;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.015em;
+  color: rgba(241, 245, 249, 0.72);
+  text-shadow: 0 2px 8px rgba(2, 6, 23, 0.88);
+}
+
+.arena.rain-mode .tulip-quote {
+  bottom: 38px;
+  color: rgba(224, 242, 254, 0.76);
+}
+
+@media (max-width: 760px) {
+  .tulip-quote {
+    display: none;
+  }
+}
+
 /* ==========================================================================
    Boss Mode Vignette, HUD, Warning Banner & Armored Boss Collocation Pill
    ========================================================================== */
@@ -923,6 +952,9 @@ button, select, input, textarea {
   position: absolute;
   top: 0;
   left: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -2842,4 +2874,314 @@ button, select, input, textarea {
 
 @media (max-width: 1120px) {
   .quick-level-bar { display: none; }
+}
+
+/* ==========================================================================
+   Cloud Sync Button & Modal + 2-Game Hub
+   ========================================================================== */
+
+.cloud-sync-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.72);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  white-space: nowrap;
+}
+
+.cloud-sync-btn:hover {
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #ffffff;
+}
+
+.cloud-sync-btn.synced {
+  border-color: rgba(52, 211, 153, 0.55);
+  background: rgba(6, 78, 59, 0.35);
+  color: #a7f3d0;
+}
+
+.cloud-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cloud-avatar-lg {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(52, 211, 153, 0.6);
+}
+
+.cloud-modal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: 20px 22px;
+}
+
+.cloud-account-box {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.68);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.cloud-signed-out, .cloud-signed-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cloud-user-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cloud-admin-details {
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(10, 15, 30, 0.58);
+  padding: 10px 14px;
+}
+
+.cloud-admin-details summary {
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #93c5fd;
+  list-style: none;
+}
+
+.cloud-admin-form {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ==========================================================================
+   Full Mobile Optimization Across Both Games (<= 768px & Touch Devices)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .top-bar {
+    height: 50px;
+    min-height: 50px;
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .top-bar-left, .top-bar-right {
+    gap: 6px;
+  }
+
+  .brand-badge {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-text h1 {
+    font-size: 13.5px;
+    white-space: nowrap;
+  }
+
+  .cloud-sync-label,
+  .rq-label,
+  .nb-label,
+  #btn-fullscreen {
+    display: none;
+  }
+
+  .cloud-sync-btn,
+  .review-queue-btn,
+  .notebook-btn {
+    padding: 5px 9px;
+    gap: 4px;
+  }
+
+  .arena-frame {
+    padding: 4px 6px 6px;
+  }
+
+  .arena {
+    border-radius: 14px;
+  }
+
+  /* Compact 2-Row Hub on Phone so zero scrolling needed */
+  .hub-card {
+    padding: 16px;
+    gap: 11px;
+  }
+
+  .hub-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .game-choice-card {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 13px 14px;
+    gap: 12px;
+  }
+
+  .gc-emoji {
+    font-size: 26px;
+    margin-bottom: 0;
+  }
+
+  .gc-step {
+    display: none;
+  }
+
+  .gc-sub {
+    margin-left: auto;
+    font-size: 11.5px;
+    text-align: right;
+  }
+
+  /* Overlay & Setup Cards fit phone screen cleanly */
+  .overlay-backdrop, .modal-backdrop {
+    padding: 8px;
+  }
+
+  .start-card {
+    padding: 15px 14px;
+    gap: 10px;
+    max-height: 100%;
+  }
+
+  .start-header h2 {
+    font-size: 17px;
+  }
+
+  .chip {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  /* HUD & Floating Side Controls on Phone */
+  .hud-top {
+    top: 7px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .hud-pill {
+    padding: 5px 10px;
+    gap: 5px;
+  }
+
+  .score-num {
+    font-size: 14px;
+  }
+
+  .milestone-topic {
+    max-width: 92px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .milestone-progress-track {
+    min-width: 96px;
+  }
+
+  .arena-controls {
+    top: 52px;
+    right: 8px;
+    gap: 7px;
+  }
+
+  .ctrl-circle {
+    width: 33px;
+    height: 33px;
+  }
+
+  /* Thumb-Friendly Full-Width Docked Virtual Keyboard for Games 1 & 2 */
+  .virtual-keyboard {
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    transform: none;
+    width: auto;
+    padding: 7px 4px;
+    gap: 5px;
+    border-radius: 12px;
+  }
+
+  .vk-row {
+    gap: 3.5px;
+    width: 100%;
+  }
+
+  .vk-key {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    padding: 0 2px;
+    font-size: 13.5px;
+    touch-action: manipulation;
+  }
+
+  .vk-key.vk-space {
+    flex: 4.5;
+    font-size: 12px;
+  }
+
+  /* Lift turret, boat, danger line & tulip cleanly ABOVE the docked mobile keyboard! */
+  .arena.vk-open .danger-line {
+    bottom: 192px;
+  }
+
+  .arena.vk-open .ocean-surface {
+    bottom: 186px;
+    height: 26px;
+  }
+
+  .arena.vk-open .turret-anchor {
+    bottom: 188px;
+    transform: translateX(-50%) scale(0.76);
+  }
+
+  .arena.vk-open .boat-anchor {
+    bottom: 188px;
+    transform: translateX(-50%) scale(0.82);
+  }
+
+  .arena.vk-open .mascot {
+    bottom: 192px;
+    width: 44px;
+    height: 52px;
+  }
+
+  .arena.vk-open .deck-pill {
+    display: none;
+  }
+
+  .arena.vk-open .meaning-dock {
+    display: none;
+  }
+
+  .arena.vk-open .typing-indicator {
+    bottom: 202px;
+    padding: 4px 10px;
+    font-size: 12.5px;
+  }
 }

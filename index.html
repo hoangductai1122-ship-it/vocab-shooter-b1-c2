@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IELTS Vocabulary · Luyện Gõ &amp; Mưa Từ Vựng (A1–C2 · 10.000 từ)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>IELTS Vocabulary · Luyện Gõ &amp; Mưa Từ Vựng</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -57,8 +57,14 @@
           <button class="lvl-pill lvl-awl" data-level="AWL" title="Academic Word List (IELTS Học thuật)">AWL</button>
         </div>
 
+        <button class="cloud-sync-btn" id="btn-cloud-sync" title="Đồng bộ tiến độ Google giữa Laptop và Điện thoại">
+          <img id="cloud-user-avatar" class="cloud-avatar hidden" alt="" />
+          <span id="cloud-sync-icon">☁️</span>
+          <span class="cloud-sync-label" id="cloud-sync-label">Đồng bộ</span>
+        </button>
+
         <button class="review-queue-btn" id="btn-quick-rain" title="Mở Mưa Từ Vựng để ôn lại các từ đã học từ Luyện Gõ">
-          <span>🌧️ Chờ ôn</span>
+          <span class="rq-label">🌧️ Chờ ôn</span>
           <span class="review-queue-count" id="review-queue-count">0</span>
         </button>
 
@@ -66,7 +72,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
           </svg>
-          <span>Sổ từ</span>
+          <span class="nb-label">Sổ từ</span>
           <span class="notebook-count" id="notebook-count">0/10500</span>
         </button>
 
@@ -378,6 +384,7 @@
             <path d="M38 104 Q42 97 46 103 M50 103 Q55 96 59 104" stroke="#22c55e" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
           </svg>
         </div>
+        <p class="tulip-quote" aria-hidden="true">“A journey of a thousand miles begins with a single step.”</p>
 
         <!-- Space Weapon Turret (Space Mode only: Tank / Gun / Cannon) -->
         <div class="turret-anchor space-only" id="turret-anchor" aria-hidden="true">
@@ -539,7 +546,7 @@
 
             <div class="hub-grid">
               <button class="game-choice-card shooter-choice" id="choose-game-shooter" type="button">
-                <span class="gc-step">Bước 1 · Học từ mới</span>
+                <span class="gc-step">Bước 1 · Học mới</span>
                 <span class="gc-emoji">🚀</span>
                 <strong class="gc-name">Luyện Gõ</strong>
                 <span class="gc-sub" id="hub-shooter-count">0 đã học</span>
@@ -554,7 +561,9 @@
             </div>
 
             <div class="hub-footer">
-              <button type="button" class="hub-link-btn" id="btn-hub-notebook">📚 Sổ từ vựng (10.500 từ)</button>
+              <button type="button" class="hub-link-btn" id="btn-hub-cloud">☁️ Đồng bộ Google</button>
+              <span class="hub-dot">·</span>
+              <button type="button" class="hub-link-btn" id="btn-hub-notebook">📚 Sổ từ (10.500)</button>
             </div>
           </div>
         </div>
@@ -798,7 +807,7 @@
 
             <div class="result-actions">
               <button class="btn-primary btn-glow" id="btn-next-milestone">Mốc tiếp theo →</button>
-              <button class="btn-secondary rain-bridge-btn hidden" id="btn-practice-rain-now">🌧️ Ôn chính tả từ vừa học</button>
+              <button class="btn-secondary rain-bridge-btn hidden" id="btn-practice-rain-now">🌧️ Ôn chính tả ngay</button>
               <button class="btn-primary btn-glow hidden" id="btn-back-learn-more">🚀 Học từ mới tiếp →</button>
               <button class="btn-secondary" id="btn-replay-milestone">Chơi lại</button>
               <button class="btn-ghost" id="btn-result-menu">Về menu</button>
@@ -917,6 +926,75 @@ take into account,v + n,B2,,xem xét tính đến</pre>
     </div>
   </div>
 
+  <!-- Cloud Sync (Google Account) Modal -->
+  <div class="modal-backdrop hidden" id="cloud-modal">
+    <div class="glass-card modal-wide cloud-modal-card">
+      <div class="modal-head">
+        <div>
+          <h3>☁️ Đồng Bộ Tài Khoản Google</h3>
+          <p class="muted-text">Đăng nhập cùng 1 tài khoản Google trên Laptop &amp; Điện thoại để tự động nối tiếp tiến trình học</p>
+        </div>
+        <button class="close-x" id="close-cloud-modal" aria-label="Đóng">✕</button>
+      </div>
+
+      <!-- Google Account Sign-In Card -->
+      <div class="cloud-account-box" id="cloud-account-box">
+        <div class="cloud-signed-out" id="cloud-signed-out">
+          <div class="cloud-account-info">
+            <strong>🔵 Đồng bộ tiến độ qua Google</strong>
+            <p class="muted-text" id="cloud-auth-hint">Giữ nguyên toàn bộ từ đã học, chuỗi ngày &amp; lịch ôn SRS giữa máy tính và điện thoại.</p>
+          </div>
+          <button type="button" class="btn-primary" id="btn-google-signin">Đăng nhập Google</button>
+        </div>
+
+        <div class="cloud-signed-in hidden" id="cloud-signed-in">
+          <div class="cloud-user-row">
+            <img id="cloud-modal-avatar" class="cloud-avatar-lg hidden" alt="" />
+            <div>
+              <strong id="cloud-user-name">Người học</strong>
+              <p class="muted-text" id="cloud-user-email"></p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="nb-status-pill mastered">✓ Đang đồng bộ tự động</span>
+            <button type="button" class="btn-ghost" id="btn-google-signout" style="padding:6px 12px;font-size:12px;">Đăng xuất</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible Admin Configuration for Firebase -->
+      <details class="cloud-admin-details" id="cloud-admin-details">
+        <summary>⚙️ Cấu hình dự án Firebase (Đã cài sẵn)</summary>
+        <div class="cloud-admin-form">
+          <div class="setup-grid">
+            <div>
+              <label class="setup-label">Firebase API Key</label>
+              <input type="text" id="cfg-fb-apikey" class="glass-input" placeholder="AIzaSy..." />
+            </div>
+            <div>
+              <label class="setup-label">Firebase Project ID</label>
+              <input type="text" id="cfg-fb-projectid" class="glass-input" placeholder="ten-project-cua-ban" />
+            </div>
+          </div>
+          <div class="setup-grid">
+            <div>
+              <label class="setup-label">Firebase Auth Domain</label>
+              <input type="text" id="cfg-fb-authdomain" class="glass-input" placeholder="ten-project.firebaseapp.com" />
+            </div>
+            <div>
+              <label class="setup-label">Firebase App ID</label>
+              <input type="text" id="cfg-fb-appid" class="glass-input" placeholder="1:123456:web:abcdef" />
+            </div>
+          </div>
+          <div class="import-footer" style="margin-top:4px;">
+            <span class="muted-text" id="cfg-save-feedback" style="font-size:12px;"></span>
+            <button type="button" class="btn-primary" id="btn-save-cloud-config" style="padding:8px 15px;font-size:12.5px;">Lưu cấu hình</button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
   <!-- Vocabulary & Collocations Data Modules (10,000 A1-C2 IELTS/AWL + 500 Boss) -->
   <script src="data/topics.js"></script>
   <script src="data/vocab-a1.js"></script>
@@ -928,7 +1006,9 @@ take into account,v + n,B2,,xem xét tính đến</pre>
   <script src="data/collocations-1.js"></script>
   <script src="data/collocations-2.js"></script>
 
-  <!-- Audio & Game Engine -->
+  <!-- Cloud Sync, Audio & Game Engine -->
+  <script src="js/cloud-config.js"></script>
+  <script src="js/cloud.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/game.js"></script>
 </body>

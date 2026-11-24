@@ -757,7 +757,7 @@ class GameAudio {
     } catch (_) { }
   }
 
-  speakWord(text, force = false, delayMs = 0) {
+  speakWord(text, force = false, delayMs = 0, rateOverride = null) {
     if (!text) return;
     if (!force && (!this.soundEnabled || !this.autoSpeak)) return;
 
@@ -787,7 +787,7 @@ class GameAudio {
         const fireUtterance = () => {
           const utter = new SpeechSynthesisUtterance(text);
           utter.lang = "en-US";
-          utter.rate = text.includes(" ") ? 0.92 : 0.94;
+          utter.rate = rateOverride || (text.includes(" ") ? 0.92 : 0.94);
           utter.pitch = 1.0;
           utter.volume = 1.0;
           if (this.preferredVoice) {
