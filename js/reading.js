@@ -24,8 +24,6 @@
     return {
       theme: "sepia",
       fontSize: 17.5,
-      showAcademic: true,
-      showGist: false,
       showPanel: true,
       filter: "all"
     };
@@ -56,8 +54,6 @@
         JSON.stringify({
           theme: state.theme,
           fontSize: state.fontSize,
-          showAcademic: state.showAcademic,
-          showGist: state.showGist,
           showPanel: state.showPanel,
           filter: state.filter
         })
@@ -89,8 +85,6 @@
     themeGroup: document.getElementById("rd-theme-group"),
     btnFontDown: document.getElementById("btn-rd-font-down"),
     btnFontUp: document.getElementById("btn-rd-font-up"),
-    btnToggleAcad: document.getElementById("btn-rd-toggle-acad"),
-    btnToggleGist: document.getElementById("btn-rd-toggle-gist"),
     btnToggleAmbience: document.getElementById("btn-rd-toggle-ambience"),
     btnTogglePanel: document.getElementById("btn-rd-toggle-panel"),
 
@@ -428,19 +422,12 @@
     if (!dom.stage || !dom.paper || !dom.body) return;
     dom.stage.setAttribute("data-theme", state.theme);
     dom.paper.style.setProperty("--rd-font-size", `${state.fontSize}px`);
-    dom.paper.classList.toggle("show-academic", Boolean(state.showAcademic));
     dom.body.classList.toggle("panel-collapsed", !state.showPanel);
 
     dom.themeGroup.querySelectorAll(".rd-theme-btn").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.theme === state.theme);
     });
-    dom.btnToggleAcad.classList.toggle("active", Boolean(state.showAcademic));
-    dom.btnToggleGist.classList.toggle("active", Boolean(state.showGist));
     dom.btnTogglePanel.classList.toggle("active", Boolean(state.showPanel));
-
-    dom.paperContent.querySelectorAll(".a4-para-gist").forEach(gEl => {
-      gEl.classList.toggle("hidden", !state.showGist);
-    });
   }
 
   function tokenizeParagraphHtml(text, topicId) {
@@ -450,14 +437,7 @@
       const info = resolveWordEntry(match, topicId);
       const saveKey = info.saveLemma;
       const isSaved = Boolean(saveKey && b && b.isWordLearned(saveKey));
-      const isAcad = Boolean(saveKey && (info.level === "C1" || info.level === "C2" || info.isAwl));
-      const cls = [
-        "r-word",
-        isSaved ? "is-saved" : "",
-        isAcad ? "is-academic" : ""
-      ]
-        .filter(Boolean)
-        .join(" ");
+      const cls = isSaved ? "r-word is-saved" : "r-word";
       return `<span class="${cls}" data-surface="${escapeHtml(match)}" data-lemma="${escapeHtml(saveKey)}">${escapeHtml(match)}</span>`;
     });
   }
@@ -604,7 +584,6 @@
         p => `
         <section class="a4-para-block" id="rd-para-${escapeHtml(p.id)}" data-para="${escapeHtml(p.id)}">
           <p class="a4-para-text"><span class="a4-para-label">${escapeHtml(p.id)}</span>${tokenizeParagraphHtml(p.text, article.topicId)}</p>
-          <div class="a4-para-gist ${state.showGist ? "" : "hidden"}">💡 <strong>Ý chính đoạn ${escapeHtml(p.id)}:</strong> ${escapeHtml(p.gistVi)}</div>
         </section>`
       )
       .join("");
@@ -861,18 +840,6 @@
 
     dom.btnFontUp.addEventListener("click", () => {
       state.fontSize = Math.min(22.5, state.fontSize + 1);
-      saveReadingPrefs();
-      applyReaderVisualPrefs();
-    });
-
-    dom.btnToggleAcad.addEventListener("click", () => {
-      state.showAcademic = !state.showAcademic;
-      saveReadingPrefs();
-      applyReaderVisualPrefs();
-    });
-
-    dom.btnToggleGist.addEventListener("click", () => {
-      state.showGist = !state.showGist;
       saveReadingPrefs();
       applyReaderVisualPrefs();
     });
