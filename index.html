@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>IELTS Vocabulary · Luyện Gõ &amp; Mưa Từ Vựng</title>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>IELTS Vocabulary · Luyện Gõ, Mưa Từ Vựng &amp; Luyện Đọc IELTS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="app-shell" id="app-shell">
     <!-- Top Bar -->
     <header class="top-bar">
       <div class="top-bar-left">
-        <button class="icon-btn back-btn" id="btn-home" title="Chọn game (Luyện Gõ / Mưa Từ Vựng)" aria-label="Chọn game">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <button class="icon-btn back-btn" id="btn-home" title="Chọn game (Luyện Gõ / Mưa Từ Vựng)"
+          aria-label="Chọn game">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </button>
 
         <div class="brand-badge" id="brand-badge" aria-hidden="true">
           <!-- Space Shooter Icon -->
-          <svg id="brand-icon-shooter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <svg id="brand-icon-shooter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+            stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9"></circle>
             <circle cx="12" cy="12" r="3"></circle>
             <line x1="12" y1="2" x2="12" y2="6"></line>
@@ -31,11 +39,18 @@
             <line x1="18" y1="12" x2="22" y2="12"></line>
           </svg>
           <!-- Rain Spelling Icon -->
-          <svg id="brand-icon-rain" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <svg id="brand-icon-rain" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
             <path d="M8 19v2"></path>
             <path d="M12 17v4"></path>
             <path d="M16 19v2"></path>
+          </svg>
+          <!-- IELTS Reading Icon -->
+          <svg id="brand-icon-reading" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
           </svg>
         </div>
 
@@ -63,21 +78,31 @@
           <span class="cloud-sync-label" id="cloud-sync-label">Đồng bộ</span>
         </button>
 
-        <button class="review-queue-btn" id="btn-quick-rain" title="Mở Mưa Từ Vựng để ôn lại các từ đã học từ Luyện Gõ">
+        <button class="reading-top-btn" id="btn-quick-reading"
+          title="Đọc 20 bản tin Khoa học &amp; Kinh tế chuẩn IELTS Reading · Chạm từ để tra &amp; lưu">
+          <span class="rd-top-emoji">📰</span>
+          <span class="rd-label">Luyện đọc</span>
+          <span class="reading-top-count" id="reading-top-count">0/20</span>
+        </button>
+
+        <button class="review-queue-btn" id="btn-quick-rain"
+          title="Mở Mưa Từ Vựng để ôn lại các từ đã học &amp; từ đã lưu từ bài đọc">
           <span class="rq-label">🌧️ Chờ ôn</span>
           <span class="review-queue-count" id="review-queue-count">0</span>
         </button>
 
         <button class="notebook-btn" id="btn-notebook" title="Kho 10.000 từ IELTS (A1–C2) + 500 Boss Collocations">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
           </svg>
           <span class="nb-label">Sổ từ</span>
           <span class="notebook-count" id="notebook-count">0/10500</span>
         </button>
 
         <button class="icon-btn" id="btn-fullscreen" title="Toàn màn hình" aria-label="Toàn màn hình">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
             <polyline points="15 3 21 3 21 9"></polyline>
             <polyline points="9 21 3 21 3 15"></polyline>
             <line x1="21" y1="3" x2="14" y2="10"></line>
@@ -110,21 +135,21 @@
           <svg viewBox="0 0 120 120" fill="none">
             <defs>
               <radialGradient id="iceGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45"/>
-                <stop offset="60%" stop-color="#6366f1" stop-opacity="0.16"/>
-                <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45" />
+                <stop offset="60%" stop-color="#6366f1" stop-opacity="0.16" />
+                <stop offset="100%" stop-color="#6366f1" stop-opacity="0" />
               </radialGradient>
               <radialGradient id="iceBody" cx="32%" cy="28%" r="72%">
-                <stop offset="0%" stop-color="#bae6fd"/>
-                <stop offset="48%" stop-color="#38bdf8"/>
-                <stop offset="100%" stop-color="#1e3a8a"/>
+                <stop offset="0%" stop-color="#bae6fd" />
+                <stop offset="48%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#1e3a8a" />
               </radialGradient>
             </defs>
-            <circle cx="60" cy="60" r="56" fill="url(#iceGlow)"/>
-            <circle cx="60" cy="60" r="24" fill="url(#iceBody)"/>
-            <circle cx="52" cy="54" r="4.2" fill="#0284c7" opacity="0.35"/>
-            <circle cx="68" cy="65" r="5.5" fill="#1e3a8a" opacity="0.3"/>
-            <circle cx="63" cy="49" r="2.6" fill="#0284c7" opacity="0.3"/>
+            <circle cx="60" cy="60" r="56" fill="url(#iceGlow)" />
+            <circle cx="60" cy="60" r="24" fill="url(#iceBody)" />
+            <circle cx="52" cy="54" r="4.2" fill="#0284c7" opacity="0.35" />
+            <circle cx="68" cy="65" r="5.5" fill="#1e3a8a" opacity="0.3" />
+            <circle cx="63" cy="49" r="2.6" fill="#0284c7" opacity="0.3" />
           </svg>
         </div>
 
@@ -133,25 +158,27 @@
           <svg viewBox="0 0 220 140" fill="none">
             <defs>
               <radialGradient id="planetGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.55"/>
-                <stop offset="65%" stop-color="#f9571f" stop-opacity="0.16"/>
-                <stop offset="100%" stop-color="#f9571f" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.55" />
+                <stop offset="65%" stop-color="#f9571f" stop-opacity="0.16" />
+                <stop offset="100%" stop-color="#f9571f" stop-opacity="0" />
               </radialGradient>
               <radialGradient id="planetBody" cx="35%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="#ffb85c"/>
-                <stop offset="45%" stop-color="#eb5e1e"/>
-                <stop offset="100%" stop-color="#87220e"/>
+                <stop offset="0%" stop-color="#ffb85c" />
+                <stop offset="45%" stop-color="#eb5e1e" />
+                <stop offset="100%" stop-color="#87220e" />
               </radialGradient>
               <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#f3d6a4" stop-opacity="0.9"/>
-                <stop offset="50%" stop-color="#d8aa6e" stop-opacity="0.55"/>
-                <stop offset="100%" stop-color="#f3d6a4" stop-opacity="0.9"/>
+                <stop offset="0%" stop-color="#f3d6a4" stop-opacity="0.9" />
+                <stop offset="50%" stop-color="#d8aa6e" stop-opacity="0.55" />
+                <stop offset="100%" stop-color="#f3d6a4" stop-opacity="0.9" />
               </linearGradient>
             </defs>
-            <circle cx="110" cy="68" r="64" fill="url(#planetGlow)"/>
-            <path d="M 28 84 A 88 22 -14 0 1 192 52" stroke="url(#ringGrad)" stroke-width="5.5" stroke-linecap="round" opacity="0.65"/>
-            <circle cx="110" cy="68" r="34" fill="url(#planetBody)"/>
-            <path d="M 192 52 A 88 22 -14 0 1 28 84" stroke="url(#ringGrad)" stroke-width="6.5" stroke-linecap="round"/>
+            <circle cx="110" cy="68" r="64" fill="url(#planetGlow)" />
+            <path d="M 28 84 A 88 22 -14 0 1 192 52" stroke="url(#ringGrad)" stroke-width="5.5" stroke-linecap="round"
+              opacity="0.65" />
+            <circle cx="110" cy="68" r="34" fill="url(#planetBody)" />
+            <path d="M 192 52 A 88 22 -14 0 1 28 84" stroke="url(#ringGrad)" stroke-width="6.5"
+              stroke-linecap="round" />
           </svg>
         </div>
 
@@ -159,13 +186,14 @@
         <div class="hud-top">
           <!-- Score pill (Top Left) -->
           <div class="hud-pill hud-score">
-            <svg class="trophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
-              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
-              <path d="M4 22h16"/>
-              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
-              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
-              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            <svg class="trophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+              <path d="M4 22h16" />
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
             </svg>
             <span class="score-num" id="score-value">0</span>
             <span class="combo-chip hidden" id="combo-badge">x2</span>
@@ -176,9 +204,10 @@
           <div class="hud-center-stack">
             <button class="hud-pill hud-milestone" id="btn-milestones" title="Nhấn để đổi mốc chủ đề">
               <div class="milestone-row">
-                <svg class="flag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
-                  <line x1="4" y1="22" x2="4" y2="15"/>
+                <svg class="flag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                  <line x1="4" y1="22" x2="4" y2="15" />
                 </svg>
                 <span class="milestone-label" id="milestone-label">Mốc 1/20</span>
                 <span class="milestone-dot">·</span>
@@ -212,7 +241,8 @@
             </svg>
           </button>
           <button class="ctrl-circle" id="btn-pause" title="Tạm dừng (Esc)" aria-label="Tạm dừng">
-            <svg id="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <svg id="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round">
               <rect x="6" y="4" width="4" height="16" rx="1"></rect>
               <rect x="14" y="4" width="4" height="16" rx="1"></rect>
             </svg>
@@ -221,26 +251,32 @@
             </svg>
           </button>
           <button class="ctrl-circle" id="btn-keyboard" title="Bật/tắt bàn phím ảo" aria-label="Bàn phím ảo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <rect x="2" y="5" width="20" height="14" rx="2"></rect>
               <path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M8 13h.01M12 13h.01M16 13h.01M7 16h10"></path>
             </svg>
           </button>
-          <button class="ctrl-circle" id="btn-rain-ambience" title="Bật/tắt nhạc mưa tí tách & piano thư giãn" aria-label="Mưa & Piano">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="ctrl-circle" id="btn-rain-ambience" title="Bật/tắt nhạc mưa tí tách & piano thư giãn"
+            aria-label="Mưa & Piano">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
               <path d="M8 19v2"></path>
               <path d="M12 17v4"></path>
               <path d="M16 19v2"></path>
             </svg>
           </button>
-          <button class="ctrl-circle active" id="btn-sound" title="Bật/tắt âm thanh & phát âm tiếng Anh" aria-label="Âm thanh">
-            <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="ctrl-circle active" id="btn-sound" title="Bật/tắt âm thanh & phát âm tiếng Anh"
+            aria-label="Âm thanh">
+            <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
               <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
             </svg>
-            <svg id="icon-sound-off" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="icon-sound-off" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
               <line x1="23" y1="9" x2="17" y2="15"></line>
               <line x1="17" y1="9" x2="23" y2="15"></line>
@@ -278,7 +314,8 @@
 
         <!-- Active Typing Buffer Indicator -->
         <div class="typing-indicator hidden" id="typing-indicator">
-          <span class="typing-typed" id="typing-typed"></span><span class="typing-remaining" id="typing-remaining"></span>
+          <span class="typing-typed" id="typing-typed"></span><span class="typing-remaining"
+            id="typing-remaining"></span>
           <span class="typing-hint" id="typing-hint">ESC đổi mục tiêu</span>
         </div>
 
@@ -294,94 +331,104 @@
           <svg class="tulip-svg" viewBox="0 0 96 112" fill="none">
             <defs>
               <radialGradient id="tulipGlow" cx="50%" cy="38%" r="48%">
-                <stop offset="0%" stop-color="#fb7185" stop-opacity="0.42"/>
-                <stop offset="60%" stop-color="#f43f5e" stop-opacity="0.12"/>
-                <stop offset="100%" stop-color="#f43f5e" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#fb7185" stop-opacity="0.42" />
+                <stop offset="60%" stop-color="#f43f5e" stop-opacity="0.12" />
+                <stop offset="100%" stop-color="#f43f5e" stop-opacity="0" />
               </radialGradient>
               <linearGradient id="tulipStem" x1="48" y1="46" x2="48" y2="104" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#4ade80"/>
-                <stop offset="55%" stop-color="#22c55e"/>
-                <stop offset="100%" stop-color="#15803d"/>
+                <stop offset="0%" stop-color="#4ade80" />
+                <stop offset="55%" stop-color="#22c55e" />
+                <stop offset="100%" stop-color="#15803d" />
               </linearGradient>
               <linearGradient id="tulipLeafL" x1="20" y1="54" x2="50" y2="102" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#4ade80"/>
-                <stop offset="60%" stop-color="#16a34a"/>
-                <stop offset="100%" stop-color="#14532d"/>
+                <stop offset="0%" stop-color="#4ade80" />
+                <stop offset="60%" stop-color="#16a34a" />
+                <stop offset="100%" stop-color="#14532d" />
               </linearGradient>
               <linearGradient id="tulipLeafR" x1="78" y1="58" x2="46" y2="102" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#86efac"/>
-                <stop offset="55%" stop-color="#22c55e"/>
-                <stop offset="100%" stop-color="#166534"/>
+                <stop offset="0%" stop-color="#86efac" />
+                <stop offset="55%" stop-color="#22c55e" />
+                <stop offset="100%" stop-color="#166534" />
               </linearGradient>
               <linearGradient id="petalBack" x1="48" y1="12" x2="48" y2="52" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#fda4af"/>
-                <stop offset="42%" stop-color="#e11d48"/>
-                <stop offset="100%" stop-color="#9f1239"/>
+                <stop offset="0%" stop-color="#fda4af" />
+                <stop offset="42%" stop-color="#e11d48" />
+                <stop offset="100%" stop-color="#9f1239" />
               </linearGradient>
               <linearGradient id="petalLeft" x1="28" y1="18" x2="48" y2="54" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#ffe4e6"/>
-                <stop offset="30%" stop-color="#fb7185"/>
-                <stop offset="78%" stop-color="#e11d48"/>
-                <stop offset="100%" stop-color="#9f1239"/>
+                <stop offset="0%" stop-color="#ffe4e6" />
+                <stop offset="30%" stop-color="#fb7185" />
+                <stop offset="78%" stop-color="#e11d48" />
+                <stop offset="100%" stop-color="#9f1239" />
               </linearGradient>
               <linearGradient id="petalRight" x1="68" y1="18" x2="48" y2="54" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#fecdd3"/>
-                <stop offset="32%" stop-color="#f43f5e"/>
-                <stop offset="80%" stop-color="#be123c"/>
-                <stop offset="100%" stop-color="#881337"/>
+                <stop offset="0%" stop-color="#fecdd3" />
+                <stop offset="32%" stop-color="#f43f5e" />
+                <stop offset="80%" stop-color="#be123c" />
+                <stop offset="100%" stop-color="#881337" />
               </linearGradient>
               <linearGradient id="petalFront" x1="48" y1="18" x2="48" y2="54" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#fff1f2"/>
-                <stop offset="28%" stop-color="#fda4af"/>
-                <stop offset="72%" stop-color="#f43f5e"/>
-                <stop offset="100%" stop-color="#be123c"/>
+                <stop offset="0%" stop-color="#fff1f2" />
+                <stop offset="28%" stop-color="#fda4af" />
+                <stop offset="72%" stop-color="#f43f5e" />
+                <stop offset="100%" stop-color="#be123c" />
               </linearGradient>
             </defs>
 
             <!-- Soft ground shadow -->
-            <ellipse cx="48" cy="104" rx="18" ry="4" fill="#020617" opacity="0.45"/>
+            <ellipse cx="48" cy="104" rx="18" ry="4" fill="#020617" opacity="0.45" />
 
             <!-- Swaying tulip plant anchored at stem root -->
             <g class="tulip-plant">
               <!-- Soft luminous bloom halo -->
-              <circle cx="48" cy="36" r="34" fill="url(#tulipGlow)"/>
+              <circle cx="48" cy="36" r="34" fill="url(#tulipGlow)" />
 
               <!-- Left leaf -->
               <g class="tulip-leaf-left">
-                <path d="M47 101 C37 92, 22 80, 17 59 C27 65, 39 76, 48 93 Z" fill="url(#tulipLeafL)"/>
-                <path d="M46 98 C37 87, 27 76, 21 63" stroke="#86efac" stroke-width="1.1" stroke-linecap="round" opacity="0.55"/>
+                <path d="M47 101 C37 92, 22 80, 17 59 C27 65, 39 76, 48 93 Z" fill="url(#tulipLeafL)" />
+                <path d="M46 98 C37 87, 27 76, 21 63" stroke="#86efac" stroke-width="1.1" stroke-linecap="round"
+                  opacity="0.55" />
               </g>
 
               <!-- Curved stem -->
-              <path d="M48 102 C46.5 85, 49.5 66, 48 48" stroke="url(#tulipStem)" stroke-width="4.4" stroke-linecap="round"/>
-              <path d="M47.2 98 C46.2 84, 48.6 67, 47.4 51" stroke="#bbf7d0" stroke-width="1.1" stroke-linecap="round" opacity="0.45"/>
+              <path d="M48 102 C46.5 85, 49.5 66, 48 48" stroke="url(#tulipStem)" stroke-width="4.4"
+                stroke-linecap="round" />
+              <path d="M47.2 98 C46.2 84, 48.6 67, 47.4 51" stroke="#bbf7d0" stroke-width="1.1" stroke-linecap="round"
+                opacity="0.45" />
 
               <!-- Right leaf -->
               <g class="tulip-leaf-right">
-                <path d="M49 101 C60 93, 75 81, 80 62 C69 68, 57 78, 48 94 Z" fill="url(#tulipLeafR)"/>
-                <path d="M50 98 C60 88, 70 78, 76 66" stroke="#dcfce7" stroke-width="1.1" stroke-linecap="round" opacity="0.55"/>
+                <path d="M49 101 C60 93, 75 81, 80 62 C69 68, 57 78, 48 94 Z" fill="url(#tulipLeafR)" />
+                <path d="M50 98 C60 88, 70 78, 76 66" stroke="#dcfce7" stroke-width="1.1" stroke-linecap="round"
+                  opacity="0.55" />
               </g>
 
               <!-- Tulip Flower Head (secondary wind nod) -->
               <g class="tulip-head">
                 <!-- Back center petal -->
-                <path d="M48 12 C56 20, 60 32, 57 46 C54 51, 42 51, 39 46 C36 32, 40 20, 48 12 Z" fill="url(#petalBack)"/>
+                <path d="M48 12 C56 20, 60 32, 57 46 C54 51, 42 51, 39 46 C36 32, 40 20, 48 12 Z"
+                  fill="url(#petalBack)" />
                 <!-- Left outer petal -->
-                <path d="M31 20 C24 31, 26 48, 40 53 C45 54, 48 52, 48 47 C47 36, 41 25, 31 20 Z" fill="url(#petalLeft)"/>
+                <path d="M31 20 C24 31, 26 48, 40 53 C45 54, 48 52, 48 47 C47 36, 41 25, 31 20 Z"
+                  fill="url(#petalLeft)" />
                 <!-- Right outer petal -->
-                <path d="M65 20 C72 31, 70 48, 56 53 C51 54, 48 52, 48 47 C49 36, 55 25, 65 20 Z" fill="url(#petalRight)"/>
+                <path d="M65 20 C72 31, 70 48, 56 53 C51 54, 48 52, 48 47 C49 36, 55 25, 65 20 Z"
+                  fill="url(#petalRight)" />
                 <!-- Center cupping petal -->
-                <path d="M48 18 C57 25, 60 38, 55 49 C52 53, 44 53, 41 49 C36 38, 39 25, 48 18 Z" fill="url(#petalFront)"/>
+                <path d="M48 18 C57 25, 60 38, 55 49 C52 53, 44 53, 41 49 C36 38, 39 25, 48 18 Z"
+                  fill="url(#petalFront)" />
                 <!-- Delicate petal highlight & dewdrop -->
-                <path d="M44 25 C41.5 32, 41.5 40, 44.5 46" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.45"/>
-                <circle cx="54" cy="31" r="1.6" fill="#ffffff" opacity="0.8"/>
+                <path d="M44 25 C41.5 32, 41.5 40, 44.5 46" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round"
+                  opacity="0.45" />
+                <circle cx="54" cy="31" r="1.6" fill="#ffffff" opacity="0.8" />
                 <!-- Green calyx base -->
-                <path d="M43 50 Q48 55 53 50 Q48 52.5 43 50 Z" fill="#22c55e"/>
+                <path d="M43 50 Q48 55 53 50 Q48 52.5 43 50 Z" fill="#22c55e" />
               </g>
             </g>
 
             <!-- Small grass blades at root -->
-            <path d="M38 104 Q42 97 46 103 M50 103 Q55 96 59 104" stroke="#22c55e" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+            <path d="M38 104 Q42 97 46 103 M50 103 Q55 96 59 104" stroke="#22c55e" stroke-width="2"
+              stroke-linecap="round" opacity="0.75" />
           </svg>
         </div>
         <p class="tulip-quote" aria-hidden="true">“A journey of a thousand miles begins with a single step.”</p>
@@ -393,51 +440,56 @@
             <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
               <defs>
                 <linearGradient id="tankHull" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#1e3a5f"/>
-                  <stop offset="50%" stop-color="#2d5a8c"/>
-                  <stop offset="100%" stop-color="#172c4b"/>
+                  <stop offset="0%" stop-color="#1e3a5f" />
+                  <stop offset="50%" stop-color="#2d5a8c" />
+                  <stop offset="100%" stop-color="#172c4b" />
                 </linearGradient>
                 <linearGradient id="treadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#475569"/>
-                  <stop offset="50%" stop-color="#1e293b"/>
-                  <stop offset="100%" stop-color="#0f172a"/>
+                  <stop offset="0%" stop-color="#475569" />
+                  <stop offset="50%" stop-color="#1e293b" />
+                  <stop offset="100%" stop-color="#0f172a" />
                 </linearGradient>
               </defs>
-              <rect x="14" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b" stroke-width="1.8"/>
-              <line x1="16" y1="54" x2="30" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <line x1="16" y1="62" x2="30" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <line x1="16" y1="70" x2="30" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <line x1="16" y1="78" x2="30" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <rect x="88" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b" stroke-width="1.8"/>
-              <line x1="90" y1="54" x2="104" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <line x1="90" y1="62" x2="104" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <line x1="90" y1="70" x2="104" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <line x1="90" y1="78" x2="104" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6"/>
-              <path d="M30 48 L38 40 L82 40 L90 48 L90 84 L82 90 L38 90 L30 84 Z" fill="url(#tankHull)" stroke="#38bdf8" stroke-width="1.8"/>
-              <rect x="44" y="75" width="32" height="6" rx="3" fill="#38bdf8" opacity="0.8"/>
-              <circle cx="38" cy="52" r="2.5" fill="#fbbf24"/>
-              <circle cx="82" cy="52" r="2.5" fill="#fbbf24"/>
+              <rect x="14" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b"
+                stroke-width="1.8" />
+              <line x1="16" y1="54" x2="30" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <line x1="16" y1="62" x2="30" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <line x1="16" y1="70" x2="30" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <line x1="16" y1="78" x2="30" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <rect x="88" y="46" width="18" height="44" rx="7" fill="url(#treadGrad)" stroke="#64748b"
+                stroke-width="1.8" />
+              <line x1="90" y1="54" x2="104" y2="54" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <line x1="90" y1="62" x2="104" y2="62" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <line x1="90" y1="70" x2="104" y2="70" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <line x1="90" y1="78" x2="104" y2="78" stroke="#94a3b8" stroke-width="1.6" opacity="0.6" />
+              <path d="M30 48 L38 40 L82 40 L90 48 L90 84 L82 90 L38 90 L30 84 Z" fill="url(#tankHull)" stroke="#38bdf8"
+                stroke-width="1.8" />
+              <rect x="44" y="75" width="32" height="6" rx="3" fill="#38bdf8" opacity="0.8" />
+              <circle cx="38" cy="52" r="2.5" fill="#fbbf24" />
+              <circle cx="82" cy="52" r="2.5" fill="#fbbf24" />
             </svg>
             <div class="turret-rotator" id="rotator-tank">
               <svg viewBox="0 0 120 96" fill="none">
                 <defs>
                   <linearGradient id="barrelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#94a3b8"/>
-                    <stop offset="50%" stop-color="#e2e8f0"/>
-                    <stop offset="100%" stop-color="#475569"/>
+                    <stop offset="0%" stop-color="#94a3b8" />
+                    <stop offset="50%" stop-color="#e2e8f0" />
+                    <stop offset="100%" stop-color="#475569" />
                   </linearGradient>
                   <radialGradient id="domeGrad" cx="45%" cy="35%" r="65%">
-                    <stop offset="0%" stop-color="#60a5fa"/>
-                    <stop offset="65%" stop-color="#2563eb"/>
-                    <stop offset="100%" stop-color="#1e3a8a"/>
+                    <stop offset="0%" stop-color="#60a5fa" />
+                    <stop offset="65%" stop-color="#2563eb" />
+                    <stop offset="100%" stop-color="#1e3a8a" />
                   </radialGradient>
                 </defs>
-                <rect x="54" y="8" width="12" height="44" rx="3" fill="url(#barrelGrad)" stroke="#334155" stroke-width="1.4"/>
-                <rect x="51" y="4" width="18" height="10" rx="2.5" fill="#334155" stroke="#38bdf8" stroke-width="1.4"/>
-                <rect x="55" y="1" width="10" height="4" rx="1.5" fill="#7dd3fc"/>
-                <path d="M40 58 C40 44, 48 38, 60 38 C72 38, 80 44, 80 58 L76 74 L44 74 Z" fill="url(#domeGrad)" stroke="#93c5fd" stroke-width="1.8"/>
-                <circle cx="60" cy="58" r="8.5" fill="#0f172a" stroke="#7dd3fc" stroke-width="2"/>
-                <circle cx="58" cy="56" r="2.6" fill="#38bdf8"/>
+                <rect x="54" y="8" width="12" height="44" rx="3" fill="url(#barrelGrad)" stroke="#334155"
+                  stroke-width="1.4" />
+                <rect x="51" y="4" width="18" height="10" rx="2.5" fill="#334155" stroke="#38bdf8" stroke-width="1.4" />
+                <rect x="55" y="1" width="10" height="4" rx="1.5" fill="#7dd3fc" />
+                <path d="M40 58 C40 44, 48 38, 60 38 C72 38, 80 44, 80 58 L76 74 L44 74 Z" fill="url(#domeGrad)"
+                  stroke="#93c5fd" stroke-width="1.8" />
+                <circle cx="60" cy="58" r="8.5" fill="#0f172a" stroke="#7dd3fc" stroke-width="2" />
+                <circle cx="58" cy="56" r="2.6" fill="#38bdf8" />
               </svg>
             </div>
           </div>
@@ -445,20 +497,21 @@
           <!-- 2. TWIN-BARREL ASSAULT GUN -->
           <div class="weapon-model hidden" id="weapon-gun">
             <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
-              <path d="M28 84 L40 60 L80 60 L92 84 Z" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
-              <ellipse cx="60" cy="64" rx="22" ry="11" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+              <path d="M28 84 L40 60 L80 60 L92 84 Z" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+              <ellipse cx="60" cy="64" rx="22" ry="11" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
             </svg>
             <div class="turret-rotator" id="rotator-gun">
               <svg viewBox="0 0 120 96" fill="none">
-                <rect x="46" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4"/>
-                <rect x="66" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4"/>
-                <rect x="49" y="12" width="2" height="28" fill="#38bdf8"/>
-                <rect x="69" y="12" width="2" height="28" fill="#38bdf8"/>
-                <rect x="45" y="4" width="10" height="6" rx="1.5" fill="#f59e0b"/>
-                <rect x="65" y="4" width="10" height="6" rx="1.5" fill="#f59e0b"/>
-                <path d="M40 46 L46 38 L74 38 L80 46 L78 72 L42 72 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
-                <rect x="54" y="46" width="12" height="18" rx="4" fill="#0f172a" stroke="#fb7185" stroke-width="1.8"/>
-                <circle cx="60" cy="55" r="3" fill="#fb7185"/>
+                <rect x="46" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4" />
+                <rect x="66" y="7" width="8" height="44" rx="2.5" fill="#cbd5e1" stroke="#334155" stroke-width="1.4" />
+                <rect x="49" y="12" width="2" height="28" fill="#38bdf8" />
+                <rect x="69" y="12" width="2" height="28" fill="#38bdf8" />
+                <rect x="45" y="4" width="10" height="6" rx="1.5" fill="#f59e0b" />
+                <rect x="65" y="4" width="10" height="6" rx="1.5" fill="#f59e0b" />
+                <path d="M40 46 L46 38 L74 38 L80 46 L78 72 L42 72 Z" fill="#1e293b" stroke="#94a3b8"
+                  stroke-width="2" />
+                <rect x="54" y="46" width="12" height="18" rx="4" fill="#0f172a" stroke="#fb7185" stroke-width="1.8" />
+                <circle cx="60" cy="55" r="3" fill="#fb7185" />
               </svg>
             </div>
           </div>
@@ -466,20 +519,20 @@
           <!-- 3. HEAVY PLASMA ARTILLERY CANNON -->
           <div class="weapon-model hidden" id="weapon-cannon">
             <svg class="weapon-base-svg" viewBox="0 0 120 96" fill="none">
-              <polygon points="60,44 92,62 84,88 36,88 28,62" fill="#1e1b4b" stroke="#818cf8" stroke-width="2"/>
-              <circle cx="60" cy="64" r="18" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+              <polygon points="60,44 92,62 84,88 36,88 28,62" fill="#1e1b4b" stroke="#818cf8" stroke-width="2" />
+              <circle cx="60" cy="64" r="18" fill="#0f172a" stroke="#a855f7" stroke-width="2" />
             </svg>
             <div class="turret-rotator" id="rotator-cannon">
               <svg viewBox="0 0 120 96" fill="none">
-                <path d="M45 14 L51 14 L53 46 L43 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4"/>
-                <path d="M69 14 L75 14 L77 46 L67 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4"/>
-                <rect x="55" y="6" width="10" height="44" rx="4" fill="#e879f9" opacity="0.85"/>
-                <rect x="58" y="8" width="4" height="38" rx="2" fill="#ffffff"/>
-                <rect x="44" y="20" width="32" height="4" rx="2" fill="#38bdf8"/>
-                <rect x="43" y="32" width="34" height="4" rx="2" fill="#a855f7"/>
-                <circle cx="60" cy="58" r="17" fill="#312e81" stroke="#c084fc" stroke-width="2.2"/>
-                <circle cx="60" cy="58" r="8" fill="#e879f9"/>
-                <circle cx="60" cy="58" r="4" fill="#ffffff"/>
+                <path d="M45 14 L51 14 L53 46 L43 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4" />
+                <path d="M69 14 L75 14 L77 46 L67 46 Z" fill="#6366f1" stroke="#c4b5fd" stroke-width="1.4" />
+                <rect x="55" y="6" width="10" height="44" rx="4" fill="#e879f9" opacity="0.85" />
+                <rect x="58" y="8" width="4" height="38" rx="2" fill="#ffffff" />
+                <rect x="44" y="20" width="32" height="4" rx="2" fill="#38bdf8" />
+                <rect x="43" y="32" width="34" height="4" rx="2" fill="#a855f7" />
+                <circle cx="60" cy="58" r="17" fill="#312e81" stroke="#c084fc" stroke-width="2.2" />
+                <circle cx="60" cy="58" r="8" fill="#e879f9" />
+                <circle cx="60" cy="58" r="4" fill="#ffffff" />
               </svg>
             </div>
           </div>
@@ -491,23 +544,23 @@
             <svg viewBox="0 0 110 82" fill="none">
               <defs>
                 <linearGradient id="boatHull" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#f8fafc"/>
-                  <stop offset="100%" stop-color="#cbd5e1"/>
+                  <stop offset="0%" stop-color="#f8fafc" />
+                  <stop offset="100%" stop-color="#cbd5e1" />
                 </linearGradient>
                 <linearGradient id="sailShade" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#94a3b8"/>
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="100%" stop-color="#94a3b8" />
                 </linearGradient>
               </defs>
               <!-- Mast & Red Pennant -->
-              <line x1="55" y1="12" x2="55" y2="54" stroke="#94a3b8" stroke-width="2.8" stroke-linecap="round"/>
-              <path d="M56 19 L72 25 L56 30 Z" fill="#ef4444"/>
-              <circle cx="55" cy="11" r="5" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.5"/>
+              <line x1="55" y1="12" x2="55" y2="54" stroke="#94a3b8" stroke-width="2.8" stroke-linecap="round" />
+              <path d="M56 19 L72 25 L56 30 Z" fill="#ef4444" />
+              <circle cx="55" cy="11" r="5" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.5" />
               <!-- Center Origami Peak -->
-              <polygon points="55,28 36,56 74,56" fill="url(#sailShade)" stroke="#e2e8f0" stroke-width="1.2"/>
+              <polygon points="55,28 36,56 74,56" fill="url(#sailShade)" stroke="#e2e8f0" stroke-width="1.2" />
               <!-- Boat Hull -->
-              <polygon points="14,54 96,54 81,72 29,72" fill="url(#boatHull)" stroke="#e2e8f0" stroke-width="1.4"/>
-              <polygon points="14,54 55,54 45,72 29,72" fill="#e2e8f0" opacity="0.55"/>
+              <polygon points="14,54 96,54 81,72 29,72" fill="url(#boatHull)" stroke="#e2e8f0" stroke-width="1.4" />
+              <polygon points="14,54 55,54 45,72 29,72" fill="#e2e8f0" opacity="0.55" />
             </svg>
           </div>
         </div>
@@ -518,7 +571,8 @@
         </button>
 
         <!-- Hidden mobile input -->
-        <input type="text" id="mobile-input" class="sr-only" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Ô nhập từ vựng" />
+        <input type="text" id="mobile-input" class="sr-only" autocomplete="off" autocorrect="off" autocapitalize="off"
+          spellcheck="false" aria-label="Ô nhập từ vựng" />
 
         <!-- Virtual Keyboard Drawer -->
         <div class="virtual-keyboard hidden" id="virtual-keyboard" aria-label="Bàn phím ảo"></div>
@@ -558,6 +612,13 @@
                 <strong class="gc-name">Mưa Từ Vựng</strong>
                 <span class="gc-sub" id="hub-rain-count">0 từ chờ ôn</span>
               </button>
+
+              <button class="game-choice-card reading-choice" id="choose-game-reading" type="button">
+                <span class="gc-step">Bước 3 · Đọc báo A4</span>
+                <span class="gc-emoji">📰</span>
+                <strong class="gc-name">Luyện Đọc IELTS</strong>
+                <span class="gc-sub" id="hub-reading-count">20 bài Khoa học &amp; Kinh tế</span>
+              </button>
             </div>
 
             <div class="hub-footer">
@@ -592,7 +653,8 @@
                 <button class="chip chip-b2" data-level="B2">B2</button>
                 <button class="chip chip-c1" data-level="C1">C1</button>
                 <button class="chip chip-c2" data-level="C2">C2</button>
-                <button class="chip chip-awl" data-level="AWL" title="Từ vựng học thuật IELTS (Academic Word List)">🎓 IELTS</button>
+                <button class="chip chip-awl" data-level="AWL" title="Từ vựng học thuật IELTS (Academic Word List)">🎓
+                  IELTS</button>
               </div>
             </div>
 
@@ -657,7 +719,8 @@
                 <input type="checkbox" id="opt-endless" />
                 <span>♾️ Vô tận</span>
               </label>
-              <button type="button" class="speak-test-chip" id="btn-test-voice-1" title="Nghe thử giọng đọc">🔊 Thử âm</button>
+              <button type="button" class="speak-test-chip" id="btn-test-voice-1" title="Nghe thử giọng đọc">🔊 Thử
+                âm</button>
             </div>
 
             <div class="start-actions">
@@ -688,8 +751,13 @@
 
             <!-- Empty-pool alert if 0 words learned -->
             <div class="rain-empty-alert hidden" id="rain-empty-alert">
-              <p>🌊 Bạn chưa có từ nào trong kho ôn tập. Hãy chơi <strong>🚀 Luyện Gõ</strong> vài phút trước nhé!</p>
-              <button class="btn-primary" id="btn-goto-shooter-empty" style="margin-top:10px;">🚀 Sang Luyện Gõ ngay →</button>
+              <p>🌊 Bạn chưa có từ nào trong kho ôn tập. Hãy chơi <strong>🚀 Luyện Gõ</strong> hoặc lưu từ mới trong
+                <strong>📰 Luyện Đọc IELTS</strong> trước nhé!</p>
+              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+                <button class="btn-primary" id="btn-goto-shooter-empty" style="flex:0 1 auto;">🚀 Sang Luyện Gõ
+                  →</button>
+                <button class="btn-secondary" id="btn-goto-reading-empty">📰 Đọc báo &amp; lưu từ →</button>
+              </div>
             </div>
 
             <div id="rain-setup-body">
@@ -737,7 +805,8 @@
                   <input type="checkbox" id="rain-opt-pos" checked />
                   <span>🏷️ Gợi ý từ loại</span>
                 </label>
-                <button type="button" class="speak-test-chip" id="btn-test-voice-2" title="Nghe thử giọng đọc">🔊 Thử âm</button>
+                <button type="button" class="speak-test-chip" id="btn-test-voice-2" title="Nghe thử giọng đọc">🔊 Thử
+                  âm</button>
                 <span class="micro-tip">💡 Bấm <kbd>?</kbd> mở chữ</span>
               </div>
 
@@ -807,10 +876,161 @@
 
             <div class="result-actions">
               <button class="btn-primary btn-glow" id="btn-next-milestone">Mốc tiếp theo →</button>
-              <button class="btn-secondary rain-bridge-btn hidden" id="btn-practice-rain-now">🌧️ Ôn chính tả ngay</button>
+              <button class="btn-secondary rain-bridge-btn hidden" id="btn-practice-rain-now">🌧️ Ôn chính tả
+                ngay</button>
               <button class="btn-primary btn-glow hidden" id="btn-back-learn-more">🚀 Học từ mới tiếp →</button>
               <button class="btn-secondary" id="btn-replay-milestone">Chơi lại</button>
               <button class="btn-ghost" id="btn-result-menu">Về menu</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================================================
+             3. IELTS READING STUDIO (20 Science & Economics A4 Passages)
+             ================================================================= -->
+        <div class="reading-stage hidden" id="reading-stage" data-theme="sepia">
+          <!-- 3A. Magazine Library of 20 Breakthrough Articles -->
+          <div class="reading-library" id="reading-library">
+            <div class="rd-lib-header">
+              <div class="rd-lib-title-wrap">
+                <div class="rd-lib-badge">📰</div>
+                <div>
+                  <h2>Bản Tin Khoa Học &amp; Kinh Tế · IELTS Reading</h2>
+                  <p id="rd-lib-summary">20 bài đọc học thuật chuẩn 1 trang A4 · Chạm từ bất kỳ để giải nghĩa &amp; lưu
+                    thẳng vào 🌧️ Mưa Từ Vựng</p>
+                </div>
+              </div>
+              <div class="rd-lib-top-actions">
+                <button type="button" class="btn-secondary rd-rain-jump-btn" id="rd-lib-goto-rain">🌧️ Mưa Từ
+                  Vựng</button>
+                <button type="button" class="btn-ghost btn-mini-back" id="btn-reading-back-hub">← Đổi chế độ</button>
+              </div>
+            </div>
+
+            <div class="rd-lib-controls">
+              <div class="chip-group" id="rd-filter-group">
+                <button type="button" class="chip active" data-filter="all">Lộ trình dễ → khó (20)</button>
+                <button type="button" class="chip rd-chip-p1" data-filter="p1">🟢 Passage 1 · 5.5–6.5 (6)</button>
+                <button type="button" class="chip rd-chip-p2" data-filter="p2">🔵 Passage 2 · 6.5–7.5 (7)</button>
+                <button type="button" class="chip rd-chip-p3" data-filter="p3">🟣 Passage 3 · 7.5–8.5 (7)</button>
+                <button type="button" class="chip" data-filter="science">🔬 Khoa học (10)</button>
+                <button type="button" class="chip" data-filter="economics">📈 Kinh tế (10)</button>
+                <button type="button" class="chip" data-filter="unread">⏳ Chưa đọc</button>
+                <button type="button" class="chip" data-filter="done">✅ Đã đọc</button>
+              </div>
+              <div class="rd-search-box">
+                <input type="search" id="rd-search" class="glass-input"
+                  placeholder="🔍 Tìm bài đọc (AI, Nobel, lượng tử, lạm phát, bán dẫn...)" />
+              </div>
+            </div>
+
+            <div class="rd-articles-grid" id="rd-articles-grid"></div>
+          </div>
+
+          <!-- 3B. A4 Reading Sheet + Interactive IELTS Quiz & Saved Vocab Panel -->
+          <div class="reading-workspace hidden" id="reading-workspace">
+            <div class="rd-toolbar">
+              <div class="rd-toolbar-left">
+                <button type="button" class="rd-tool-btn rd-back-btn" id="btn-rd-back-list"
+                  title="Quay lại danh sách 20 bản tin">
+                  ← <span>Danh sách bài</span>
+                </button>
+                <div class="rd-nav-stepper">
+                  <button type="button" class="rd-step-btn" id="btn-rd-prev" title="Bài trước">‹</button>
+                  <span class="rd-article-pos" id="rd-article-pos">Bài 01/20</span>
+                  <button type="button" class="rd-step-btn" id="btn-rd-next" title="Bài tiếp theo">›</button>
+                </div>
+              </div>
+
+              <div class="rd-toolbar-right">
+                <div class="rd-theme-pills" id="rd-theme-group" role="group" aria-label="Màu trang giấy đọc">
+                  <button type="button" class="rd-theme-btn active" data-theme="sepia"
+                    title="Giấy kem ấm dịu mắt (Mặc định)">📜 Ấm</button>
+                  <button type="button" class="rd-theme-btn" data-theme="light" title="Trang giấy trắng chuẩn A4">☀️
+                    Sáng</button>
+                  <button type="button" class="rd-theme-btn" data-theme="dark" title="Nền tối ban đêm">🌙 Tối</button>
+                </div>
+
+                <div class="rd-font-stepper" aria-label="Cỡ chữ bài đọc">
+                  <button type="button" class="rd-step-btn" id="btn-rd-font-down" title="Thu nhỏ chữ">A−</button>
+                  <button type="button" class="rd-step-btn" id="btn-rd-font-up" title="Phóng to chữ">A+</button>
+                </div>
+
+                <button type="button" class="rd-tool-btn active" id="btn-rd-toggle-acad"
+                  title="Gạch chân nhẹ các từ học thuật IELTS C1–C2">
+                  ✨ <span>Từ C1–C2</span>
+                </button>
+                <button type="button" class="rd-tool-btn" id="btn-rd-toggle-gist"
+                  title="Hiện/ẩn câu tóm tắt ý chính tiếng Việt dưới mỗi đoạn">
+                  💡 <span>Ý chính</span>
+                </button>
+                <button type="button" class="rd-tool-btn" id="btn-rd-toggle-ambience"
+                  title="Bật/tắt tiếng mưa &amp; đàn piano thư giãn khi đọc">
+                  🌧️ <span>Nhạc mưa</span>
+                </button>
+                <button type="button" class="rd-tool-btn active" id="btn-rd-toggle-panel"
+                  title="Hiện/ẩn cột Câu hỏi IELTS &amp; Từ đã lưu">
+                  📝 <span>Bài tập</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="rd-body" id="rd-body">
+              <!-- Authentic 1-Page A4 Editorial Sheet -->
+              <article class="a4-paper" id="rd-a4-paper">
+                <div class="a4-meta-row" id="rd-paper-meta"></div>
+                <h1 class="a4-title" id="rd-paper-title"></h1>
+                <p class="a4-subtitle-vi" id="rd-paper-title-vi"></p>
+
+                <div class="a4-tip-banner">
+                  <span>👆 <strong>Mẹo học nhanh:</strong> Chạm vào <em>bất kỳ từ nào</em> trong bài để nghe phát âm,
+                    xem giải nghĩa tiếng Việt và bấm <strong>Lưu vào Mưa Từ Vựng</strong> (áp dụng đường cong trí nhớ
+                    SRS y hệt Luyện Gõ).</span>
+                </div>
+
+                <div class="a4-paragraphs" id="rd-paper-content"></div>
+
+                <footer class="a4-footer">
+                  <button type="button" class="btn-secondary" id="btn-rd-mark-done">✓ Đánh dấu đã đọc xong</button>
+                  <button type="button" class="btn-secondary rain-bridge-btn" id="btn-rd-practice-rain-bottom">🌧️ Ôn từ
+                    vừa lưu</button>
+                  <button type="button" class="btn-primary" id="btn-rd-next-bottom">Bài tiếp theo →</button>
+                </footer>
+              </article>
+
+              <!-- Side Companion: Saved Words -> Rain SRS + IELTS Reading Questions -->
+              <aside class="rd-side-panel" id="rd-side-panel">
+                <div class="rd-side-card saved-vocab-card">
+                  <div class="rd-side-head">
+                    <h3>🌧️ Kho Lưu Mưa Từ Vựng</h3>
+                    <span class="rd-pill-badge" id="rd-saved-count">0 từ</span>
+                  </div>
+                  <p class="rd-srs-explain">
+                    Từ bạn bấm lưu sẽ rơi trong <strong>Mưa Từ Vựng</strong> và lặp lại theo đường cong trí nhớ
+                    <em>(Ngay → 1 ngày → 3 ngày → 7 ngày → 21 ngày)</em> đến khi gõ thuộc lòng.
+                  </p>
+                  <div class="rd-saved-list" id="rd-saved-list"></div>
+                  <button type="button" class="btn-primary btn-glow rain-btn rd-full-btn" id="btn-rd-goto-rain">
+                    <span>🌧️ Qua Mưa Từ Vựng ôn ngay</span>
+                    <span class="btn-arrow">→</span>
+                  </button>
+                </div>
+
+                <div class="rd-side-card ielts-quiz-card">
+                  <div class="rd-side-head">
+                    <h3>🎯 Câu Hỏi IELTS Reading</h3>
+                    <span class="rd-pill-badge quiz-badge" id="rd-quiz-score">4 câu</span>
+                  </div>
+                  <p class="rd-srs-explain">Luyện phản xạ <strong>True / False / Not Given</strong> &amp;
+                    <strong>Multiple Choice</strong> sát chuẩn đề thi thật.</p>
+                  <div class="rd-quiz-list" id="rd-quiz-list"></div>
+                  <div class="rd-quiz-actions">
+                    <button type="button" class="btn-primary" id="btn-rd-check-quiz">✓ Chấm đáp án &amp; Giải
+                      thích</button>
+                    <button type="button" class="btn-ghost" id="btn-rd-reset-quiz">Làm lại</button>
+                  </div>
+                </div>
+              </aside>
             </div>
           </div>
         </div>
@@ -899,7 +1119,8 @@
       <!-- Import Tab -->
       <div class="tab-panel hidden" id="tab-import">
         <div class="import-box">
-          <p>Nhập thêm từ đơn hoặc <strong>Collocation (có dấu cách)</strong> theo định dạng <strong>CSV</strong> hoặc <strong>JSON</strong>:</p>
+          <p>Nhập thêm từ đơn hoặc <strong>Collocation (có dấu cách)</strong> theo định dạng <strong>CSV</strong> hoặc
+            <strong>JSON</strong>:</p>
           <pre class="code-sample">word,pos,level,ipa,meaning
 serendipity,n,C2,/ˌser.ənˈdɪp.ə.ti/,sự tình cờ may mắn
 take into account,v + n,B2,,xem xét tính đến</pre>
@@ -916,9 +1137,11 @@ take into account,v + n,B2,,xem xét tính đến</pre>
             </label>
             <button class="btn-ghost danger-text" id="btn-reset-progress">🗑️ Xóa sạch tiến độ</button>
           </div>
-          <textarea id="import-textarea" class="glass-textarea" rows="6" placeholder="Dán danh sách từ hoặc collocations (CSV / JSON) vào đây..."></textarea>
+          <textarea id="import-textarea" class="glass-textarea" rows="6"
+            placeholder="Dán danh sách từ hoặc collocations (CSV / JSON) vào đây..."></textarea>
           <div class="import-footer">
-            <span class="muted-text" id="import-feedback">Các từ hợp lệ sẽ lưu tự động trên trình duyệt và dùng ngay trong game.</span>
+            <span class="muted-text" id="import-feedback">Các từ hợp lệ sẽ lưu tự động trên trình duyệt và dùng ngay
+              trong game.</span>
             <button class="btn-primary" id="btn-do-import">Nhập vào game</button>
           </div>
         </div>
@@ -932,7 +1155,8 @@ take into account,v + n,B2,,xem xét tính đến</pre>
       <div class="modal-head">
         <div>
           <h3>☁️ Đồng Bộ Tài Khoản Google</h3>
-          <p class="muted-text">Đăng nhập cùng 1 tài khoản Google trên Laptop &amp; Điện thoại để tự động nối tiếp tiến trình học</p>
+          <p class="muted-text">Đăng nhập cùng 1 tài khoản Google trên Laptop &amp; Điện thoại để tự động nối tiếp tiến
+            trình học</p>
         </div>
         <button class="close-x" id="close-cloud-modal" aria-label="Đóng">✕</button>
       </div>
@@ -942,7 +1166,8 @@ take into account,v + n,B2,,xem xét tính đến</pre>
         <div class="cloud-signed-out" id="cloud-signed-out">
           <div class="cloud-account-info">
             <strong>🔵 Đồng bộ tiến độ qua Google</strong>
-            <p class="muted-text" id="cloud-auth-hint">Giữ nguyên toàn bộ từ đã học, chuỗi ngày &amp; lịch ôn SRS giữa máy tính và điện thoại.</p>
+            <p class="muted-text" id="cloud-auth-hint">Giữ nguyên toàn bộ từ đã học, chuỗi ngày &amp; lịch ôn SRS giữa
+              máy tính và điện thoại.</p>
           </div>
           <button type="button" class="btn-primary" id="btn-google-signin">Đăng nhập Google</button>
         </div>
@@ -957,7 +1182,8 @@ take into account,v + n,B2,,xem xét tính đến</pre>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
             <span class="nb-status-pill mastered">✓ Đang đồng bộ tự động</span>
-            <button type="button" class="btn-ghost" id="btn-google-signout" style="padding:6px 12px;font-size:12px;">Đăng xuất</button>
+            <button type="button" class="btn-ghost" id="btn-google-signout"
+              style="padding:6px 12px;font-size:12px;">Đăng xuất</button>
           </div>
         </div>
       </div>
@@ -988,10 +1214,60 @@ take into account,v + n,B2,,xem xét tính đến</pre>
           </div>
           <div class="import-footer" style="margin-top:4px;">
             <span class="muted-text" id="cfg-save-feedback" style="font-size:12px;"></span>
-            <button type="button" class="btn-primary" id="btn-save-cloud-config" style="padding:8px 15px;font-size:12.5px;">Lưu cấu hình</button>
+            <button type="button" class="btn-primary" id="btn-save-cloud-config"
+              style="padding:8px 15px;font-size:12.5px;">Lưu cấu hình</button>
           </div>
         </div>
       </details>
+    </div>
+  </div>
+
+  <!-- Interactive Reading Word Lookup & SRS Save Popover -->
+  <div class="word-popover-backdrop hidden" id="word-popover-backdrop"></div>
+  <div class="word-popover hidden" id="word-popover" role="dialog" aria-label="Tra cứu &amp; Lưu từ vựng">
+    <div class="wp-head">
+      <div class="wp-title-group">
+        <strong class="wp-word" id="wp-word">prosperity</strong>
+        <span class="wp-surface hidden" id="wp-surface">trong bài: prosperities</span>
+      </div>
+      <div class="wp-head-right">
+        <span class="cefr-tag B2" id="wp-level">C1</span>
+        <span class="awl-tag hidden" id="wp-awl">AWL</span>
+        <button type="button" class="wp-close-btn" id="wp-close" aria-label="Đóng">✕</button>
+      </div>
+    </div>
+
+    <div class="wp-phonetics-row">
+      <span class="pos-pill pos-n" id="wp-pos">n · Danh từ</span>
+      <span class="wp-ipa" id="wp-ipa">/prɒˈsper.ə.ti/</span>
+      <div class="wp-audio-btns">
+        <button type="button" class="wp-audio-btn" id="wp-speak" title="Nghe phát âm chuẩn">🔊 Nghe</button>
+        <button type="button" class="wp-audio-btn" id="wp-speak-slow" title="Nghe phát âm chậm rõ từng âm">🐢
+          Chậm</button>
+      </div>
+    </div>
+
+    <div class="wp-meaning-box">
+      <div class="wp-meaning-vi" id="wp-meaning">sự thịnh vượng, sự phồn vinh giàu có</div>
+      <div class="wp-note-vi hidden" id="wp-note">Kinh tế vĩ mô &amp; thể chế</div>
+    </div>
+
+    <div class="wp-context-box" id="wp-context-wrap">
+      <span class="wp-context-label">Ngữ cảnh trong bài:</span>
+      <p class="wp-context-sentence" id="wp-context"></p>
+    </div>
+
+    <div class="wp-actions">
+      <button type="button" class="wp-save-btn" id="wp-btn-save">
+        🌧️ Lưu vào Mưa Từ Vựng (+ Đường cong nhớ)
+      </button>
+      <button type="button" class="wp-requeue-btn hidden" id="wp-btn-requeue">
+        🔄 Quên nghĩa · Đưa lại vào hàng Chờ ôn ngay
+      </button>
+      <div class="wp-saved-status-row hidden" id="wp-saved-row">
+        <span class="wp-srs-hint" id="wp-srs-hint">✅ Đã nằm trong hàng chờ Mưa Từ Vựng</span>
+        <button type="button" class="wp-undo-btn" id="wp-btn-remove">Bỏ lưu</button>
+      </div>
     </div>
   </div>
 
@@ -1005,11 +1281,15 @@ take into account,v + n,B2,,xem xét tính đến</pre>
   <script src="data/vocab-c2.js"></script>
   <script src="data/collocations-1.js"></script>
   <script src="data/collocations-2.js"></script>
+  <script src="data/reading-articles.js"></script>
+  <script src="data/reading-glossary.js"></script>
 
-  <!-- Cloud Sync, Audio & Game Engine -->
+  <!-- Cloud Sync, Audio, Game Engine & IELTS Reading Studio -->
   <script src="js/cloud-config.js"></script>
   <script src="js/cloud.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/reading.js"></script>
 </body>
+
 </html>

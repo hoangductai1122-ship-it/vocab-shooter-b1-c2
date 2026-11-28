@@ -91,6 +91,7 @@
     rainShowPos: prefs.rainShowPos !== false,
     rainAmbienceInRain: prefs.rainAmbienceInRain !== false,
     rainAmbienceInShooter: Boolean(prefs.rainAmbienceInShooter),
+    rainAmbienceInReading: Boolean(prefs.rainAmbienceInReading),
 
     score: 0,
     lives: 3,
@@ -175,6 +176,7 @@
 
     brandIconShooter: document.getElementById("brand-icon-shooter"),
     brandIconRain: document.getElementById("brand-icon-rain"),
+    brandIconReading: document.getElementById("brand-icon-reading"),
     brandTitle: document.getElementById("brand-title"),
     brandSubtitle: document.getElementById("brand-subtitle"),
 
@@ -189,6 +191,8 @@
     bossHpSegments: document.getElementById("boss-hp-segments"),
 
     btnHome: document.getElementById("btn-home"),
+    btnQuickReading: document.getElementById("btn-quick-reading"),
+    readingTopCount: document.getElementById("reading-top-count"),
     btnQuickRain: document.getElementById("btn-quick-rain"),
     reviewQueueCount: document.getElementById("review-queue-count"),
     btnNotebook: document.getElementById("btn-notebook"),
@@ -238,8 +242,11 @@
     hubOverlay: document.getElementById("hub-overlay"),
     chooseGameShooter: document.getElementById("choose-game-shooter"),
     chooseGameRain: document.getElementById("choose-game-rain"),
+    chooseGameReading: document.getElementById("choose-game-reading"),
     hubShooterCount: document.getElementById("hub-shooter-count"),
     hubRainCount: document.getElementById("hub-rain-count"),
+    hubReadingCount: document.getElementById("hub-reading-count"),
+    readingStage: document.getElementById("reading-stage"),
     hubStreakPill: document.getElementById("hub-streak-pill"),
     dailyGoalBox: document.getElementById("daily-goal-box"),
     dailyGoalText: document.getElementById("daily-goal-text"),
@@ -271,6 +278,7 @@
     btnBackHub2: document.getElementById("btn-back-hub-2"),
     rainEmptyAlert: document.getElementById("rain-empty-alert"),
     btnGotoShooterEmpty: document.getElementById("btn-goto-shooter-empty"),
+    btnGotoReadingEmpty: document.getElementById("btn-goto-reading-empty"),
     rainSetupBody: document.getElementById("rain-setup-body"),
     rainPoolHint: document.getElementById("rain-pool-hint"),
     rainSourceGroup: document.getElementById("rain-source-group"),
@@ -394,6 +402,7 @@
       learned: {}, // word -> [learnedAtMin, reviewCount, streak, nextDueMin]
       missed: new Set(),
       clearedMilestones: new Set(),
+      readArticles: new Set(),
       highScore: 0,
       dailyDate: todayStr(),
       dailyCount: 0,
@@ -424,6 +433,7 @@
           learned: parsed.learned && typeof parsed.learned === "object" ? parsed.learned : {},
           missed: new Set(parsed.missed || []),
           clearedMilestones: new Set(parsed.clearedMilestones || []),
+          readArticles: new Set(parsed.readArticles || []),
           highScore: Number(parsed.highScore) || 0,
           dailyDate: today,
           dailyCount,
@@ -440,6 +450,7 @@
       learned: progress.learned,
       missed: Array.from(progress.missed),
       clearedMilestones: Array.from(progress.clearedMilestones),
+      readArticles: Array.from(progress.readArticles || []),
       highScore: progress.highScore,
       dailyDate: progress.dailyDate,
       dailyCount: progress.dailyCount,
@@ -563,6 +574,17 @@
         ? `✅ Đã thuộc ${c.mastered} từ`
         : "Ôn lại từ đã bắn";
 
+    const totalArticles = (window.READING_ARTICLES || []).length || 20;
+    const readCnt = progress.readArticles ? progress.readArticles.size : 0;
+    if (el.readingTopCount) {
+      el.readingTopCount.textContent = `${readCnt}/${totalArticles}`;
+    }
+    if (el.hubReadingCount) {
+      el.hubReadingCount.textContent = readCnt > 0
+        ? `✅ Đã đọc ${readCnt}/${totalArticles} bài · Tra & lưu từ`
+        : `${totalArticles} bài Khoa học & Kinh tế`;
+    }
+
     // Cozy Daily Goal & Streak Bar
     const todayCnt = progress.dailyDate === todayStr() ? (progress.dailyCount || 0) : 0;
     const pct = Math.min(100, Math.round((todayCnt / DAILY_GOAL_TARGET) * 100));
@@ -610,7 +632,8 @@
       rainKind: "WORDS_ONLY",
       rainShowPos: true,
       rainAmbienceInRain: true,
-      rainAmbienceInShooter: false
+      rainAmbienceInShooter: false,
+      rainAmbienceInReading: false
     };
   }
 
@@ -633,7 +656,8 @@
           rainKind: game.rainKind,
           rainShowPos: game.rainShowPos,
           rainAmbienceInRain: game.rainAmbienceInRain,
-          rainAmbienceInShooter: game.rainAmbienceInShooter
+          rainAmbienceInShooter: game.rainAmbienceInShooter,
+          rainAmbienceInReading: game.rainAmbienceInReading
         })
       );
     } catch (_) {}
@@ -910,13 +934,18 @@
   }
 
   function syncVirtualKeyboardLayout() {
-    el.virtualKeyboard.classList.toggle("hidden", !game.virtualKeyboardOpen);
-    el.btnKeyboard.classList.toggle("active", game.virtualKeyboardOpen);
-    el.arena.classList.toggle("vk-open", Boolean(game.virtualKeyboardOpen && window.innerWidth <= 768));
+    const isReading = game.mode === "reading" || game.status === "reading";
+    el.virtualKeyboard.classList.toggle("hidden", !game.virtualKeyboardOpen || isReading);
+    el.btnKeyboard.classList.toggle("active", game.virtualKeyboardOpen && !isReading);
+    el.arena.classList.toggle("vk-open", Boolean(game.virtualKeyboardOpen && !isReading && window.innerWidth <= 768));
   }
 
   function syncRainAmbienceState() {
-    const enabledForMode = game.mode === "rain" ? game.rainAmbienceInRain : game.rainAmbienceInShooter;
+    const enabledForMode = game.mode === "rain"
+      ? game.rainAmbienceInRain
+      : game.mode === "reading"
+        ? game.rainAmbienceInReading
+        : game.rainAmbienceInShooter;
     audio.rainAmbienceEnabled = enabledForMode;
     if (el.optRainAmbience1) el.optRainAmbience1.checked = game.rainAmbienceInShooter;
     if (el.rainOptAmbience) el.rainOptAmbience.checked = game.rainAmbienceInRain;
@@ -925,15 +954,21 @@
     }
     const shouldPlay = game.status !== "hub" && enabledForMode && audio.soundEnabled;
     audio.syncRainAmbience(shouldPlay);
+    if (window.VocabReadingStudio && typeof window.VocabReadingStudio.syncAmbienceButton === "function") {
+      window.VocabReadingStudio.syncAmbienceButton(Boolean(game.rainAmbienceInReading && audio.soundEnabled));
+    }
   }
 
   function applyModeTheme() {
     const isRain = game.mode === "rain";
+    const isReading = game.mode === "reading";
     el.arena.classList.toggle("rain-mode", isRain);
-    el.brandIconShooter.classList.toggle("hidden", isRain);
+    el.arena.classList.toggle("reading-mode", isReading);
+    el.brandIconShooter.classList.toggle("hidden", isRain || isReading);
     el.brandIconRain.classList.toggle("hidden", !isRain);
+    if (el.brandIconReading) el.brandIconReading.classList.toggle("hidden", !isReading);
 
-    el.brandTitle.textContent = isRain ? "Mưa Từ Vựng" : "Luyện Gõ";
+    el.brandTitle.textContent = isReading ? "Luyện Đọc IELTS" : isRain ? "Mưa Từ Vựng" : "Luyện Gõ";
     el.brandSubtitle.textContent = "";
     el.brandSubtitle.classList.add("hidden");
     syncVirtualKeyboardLayout();
@@ -941,25 +976,59 @@
   }
 
   function openHub() {
+    if (window.VocabReadingStudio && typeof window.VocabReadingStudio.hidePopover === "function") {
+      window.VocabReadingStudio.hidePopover();
+    }
     game.status = "hub";
+    if (game.mode === "reading") game.mode = "shooter";
+    game.inBossPhase = false;
+    game.freezeTimer = 0;
+    clearArenaWords();
+    closeAllModals();
+    el.arena.classList.remove("boss-mode", "freeze-active", "vk-open", "reading-mode");
+    el.bossHud.classList.add("hidden");
+    el.startOverlay.classList.add("hidden");
+    el.rainStartOverlay.classList.add("hidden");
+    if (el.readingStage) el.readingStage.classList.add("hidden");
+    el.pauseOverlay.classList.add("hidden");
+    el.resultOverlay.classList.add("hidden");
+    el.hubOverlay.classList.remove("hidden");
+    applyModeTheme();
+    updateProgressBadges();
+    syncPauseIcon();
+    updateHUD();
+  }
+
+  function openReadingStudio(articleId = null) {
+    game.mode = "reading";
+    game.status = "reading";
     game.inBossPhase = false;
     game.freezeTimer = 0;
     clearArenaWords();
     closeAllModals();
     el.arena.classList.remove("boss-mode", "freeze-active", "vk-open");
     el.bossHud.classList.add("hidden");
+    el.hubOverlay.classList.add("hidden");
     el.startOverlay.classList.add("hidden");
     el.rainStartOverlay.classList.add("hidden");
     el.pauseOverlay.classList.add("hidden");
     el.resultOverlay.classList.add("hidden");
-    el.hubOverlay.classList.remove("hidden");
-    syncRainAmbienceState();
+    if (el.readingStage) el.readingStage.classList.remove("hidden");
+    applyModeTheme();
     updateProgressBadges();
-    syncPauseIcon();
-    updateHUD();
+    if (window.VocabReadingStudio && typeof window.VocabReadingStudio.open === "function") {
+      window.VocabReadingStudio.open(articleId);
+    }
   }
 
   function openGameSetup(mode) {
+    if (mode === "reading") {
+      openReadingStudio();
+      return;
+    }
+    if (window.VocabReadingStudio && typeof window.VocabReadingStudio.hidePopover === "function") {
+      window.VocabReadingStudio.hidePopover();
+    }
     game.mode = mode;
     game.status = "menu";
     game.inBossPhase = false;
@@ -967,9 +1036,10 @@
     closeAllModals();
     applyModeTheme();
 
-    el.arena.classList.remove("boss-mode", "vk-open");
+    el.arena.classList.remove("boss-mode", "vk-open", "reading-mode");
     el.bossHud.classList.add("hidden");
     el.hubOverlay.classList.add("hidden");
+    if (el.readingStage) el.readingStage.classList.add("hidden");
     el.pauseOverlay.classList.add("hidden");
     el.resultOverlay.classList.add("hidden");
 
@@ -3066,6 +3136,7 @@
       }
 
       if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (game.status === "reading") return;
 
       if (e.key === "Escape") {
         e.preventDefault();
@@ -3097,14 +3168,27 @@
       }
     });
 
-    // Hub & Quick 2-Game Link Bridge
+    // Hub & Quick 3-Mode Link Bridge (Luyện Gõ + Mưa Từ Vựng + Luyện Đọc IELTS)
     el.chooseGameShooter.addEventListener("click", () => { audio.unlock(); openGameSetup("shooter"); });
     el.chooseGameRain.addEventListener("click", () => { audio.unlock(); openGameSetup("rain"); });
+    if (el.chooseGameReading) {
+      el.chooseGameReading.addEventListener("click", () => { audio.unlock(); openReadingStudio(); });
+    }
+    if (el.btnQuickReading) {
+      el.btnQuickReading.addEventListener("click", () => {
+        el.btnQuickReading.blur();
+        audio.unlock();
+        openReadingStudio();
+      });
+    }
     el.btnBackHub1.addEventListener("click", openHub);
     el.btnBackHub2.addEventListener("click", openHub);
     el.btnPauseHub.addEventListener("click", openHub);
     el.btnHome.addEventListener("click", openHub);
     el.btnGotoShooterEmpty.addEventListener("click", () => openGameSetup("shooter"));
+    if (el.btnGotoReadingEmpty) {
+      el.btnGotoReadingEmpty.addEventListener("click", () => openReadingStudio());
+    }
 
     // Cloud Sync Modal Bindings
     [el.btnCloudSync, el.btnHubCloud].forEach(btn => {
@@ -3400,7 +3484,12 @@
               learned: data.learned,
               missed: new Set(data.missed || []),
               clearedMilestones: new Set(data.clearedMilestones || []),
-              highScore: Number(data.highScore) || 0
+              readArticles: new Set(data.readArticles || []),
+              highScore: Number(data.highScore) || 0,
+              dailyDate: data.dailyDate || todayStr(),
+              dailyCount: Number(data.dailyCount) || 0,
+              streakDays: Number(data.streakDays) || 0,
+              lastStreakDate: data.lastStreakDate || ""
             };
             saveProgress();
             renderNotebook();
@@ -3446,6 +3535,7 @@
             learned: merged.learned || {},
             missed: new Set(merged.missed || []),
             clearedMilestones: new Set(merged.clearedMilestones || []),
+            readArticles: new Set(merged.readArticles || []),
             highScore: Number(merged.highScore) || 0,
             dailyDate: merged.dailyDate || todayStr(),
             dailyCount: Number(merged.dailyCount) || 0,
@@ -3463,6 +3553,9 @@
           updateHUD();
           if (!el.notebookModal.classList.contains("hidden")) renderNotebook();
           if (game.mode === "rain" && game.status === "menu") syncRainSetupControls();
+          if (window.VocabReadingStudio && typeof window.VocabReadingStudio.onProgressSynced === "function") {
+            window.VocabReadingStudio.onProgressSynced();
+          }
         }
         if (changedRemote) {
           cloud.schedulePushProgress(merged, loadCustomWords());
@@ -3491,6 +3584,142 @@
     openHub();
     requestAnimationFrame(gameLoop);
   }
+
+  // --------------------------------------------------------------------------
+  // Public Bridge for IELTS Reading Studio -> Mưa Từ Vựng SRS Queue
+  // --------------------------------------------------------------------------
+  window.VocabAppBridge = {
+    lookupVocab(word) {
+      return vocabByWord.get(String(word || "").trim().toLowerCase()) || null;
+    },
+    getPosInfo(posKey) {
+      return posMap[posKey] || { abbr: posKey || "n", vi: "Từ vựng", short: posKey || "n" };
+    },
+    isWordLearned(word) {
+      return isWordLearned(String(word || "").trim().toLowerCase());
+    },
+    isWordDue(word) {
+      return isWordDueForReview(String(word || "").trim().toLowerCase());
+    },
+    isWordMastered(word) {
+      return isWordMasteredSpelling(String(word || "").trim().toLowerCase());
+    },
+    getWordRecord(word) {
+      return progress.learned[String(word || "").trim().toLowerCase()] || null;
+    },
+    getLearningCounts() {
+      return getLearningCounts();
+    },
+    saveWordToRainQueue(item) {
+      const cleanWord = String(item.word || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z ]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!cleanWord || !/^[a-z]+( [a-z]+)*$/.test(cleanWord)) return false;
+
+      if (!vocabByWord.has(cleanWord)) {
+        const custom = loadCustomWords();
+        const filtered = custom.filter(r => String(r[0] || "").toLowerCase() !== cleanWord);
+        filtered.push([
+          cleanWord,
+          item.pos || (cleanWord.includes(" ") ? "colloc" : "n"),
+          item.level || "B2",
+          item.ipa || "",
+          item.shortMeaning || item.meaning || "",
+          Number(item.topicId) || 2,
+          item.isAwl ? 1 : 0
+        ]);
+        saveCustomWords(filtered);
+        rebuildVocabulary();
+      }
+
+      // Uses the EXACT same SRS curve initialization as shooting a word in Luyện Gõ:
+      // learned[word] = [nowMin(), 0, 0, 0] -> Due immediately -> 1d -> 3d -> 7d -> 21d
+      recordLearnedFromShooter(cleanWord);
+      audio.unlock();
+      audio.playPowerUp("gem");
+      updateHUD();
+      return true;
+    },
+    requeueWordForImmediateReview(word) {
+      const cleanWord = String(word || "").trim().toLowerCase();
+      if (!cleanWord || !progress.learned[cleanWord]) return false;
+      const existing = progress.learned[cleanWord];
+      progress.learned[cleanWord] = [nowMin(), existing[1] || 0, 0, 0];
+      sessionLearned.add(cleanWord);
+      saveProgress();
+      audio.unlock();
+      audio.playPowerUp("freeze");
+      updateHUD();
+      return true;
+    },
+    removeSavedWord(word) {
+      const cleanWord = String(word || "").trim().toLowerCase();
+      if (!cleanWord || !progress.learned[cleanWord]) return false;
+      delete progress.learned[cleanWord];
+      sessionLearned.delete(cleanWord);
+      saveProgress();
+      updateHUD();
+      return true;
+    },
+    isArticleRead(articleId) {
+      return Boolean(progress.readArticles && progress.readArticles.has(articleId));
+    },
+    toggleArticleRead(articleId, forceState = null) {
+      if (!progress.readArticles) progress.readArticles = new Set();
+      const next = forceState !== null ? Boolean(forceState) : !progress.readArticles.has(articleId);
+      if (next) {
+        if (!progress.readArticles.has(articleId)) {
+          progress.readArticles.add(articleId);
+          recordDailyActivity();
+          audio.unlock();
+          audio.playPowerUp("heal");
+        }
+      } else {
+        progress.readArticles.delete(articleId);
+      }
+      saveProgress();
+      return next;
+    },
+    speak(text, rate = null) {
+      audio.unlock();
+      audio.speakWord(text, true, 0, rate);
+    },
+    toggleReadingAmbience() {
+      const turningOn = !game.rainAmbienceInReading;
+      if (turningOn && !audio.soundEnabled) {
+        audio.soundEnabled = true;
+        syncSoundIcon();
+      }
+      audio.unlock();
+      game.rainAmbienceInReading = turningOn;
+      savePrefs();
+      syncRainAmbienceState();
+      return Boolean(game.rainAmbienceInReading && audio.soundEnabled);
+    },
+    isReadingAmbienceOn() {
+      return Boolean(game.rainAmbienceInReading && audio.soundEnabled);
+    },
+    openRainFromReading(preferSessionWords = true) {
+      const counts = getLearningCounts();
+      if (preferSessionWords && sessionLearned.size > 0) {
+        game.rainSource = "session";
+      } else if (counts.due > 0) {
+        game.rainSource = "due";
+      } else {
+        game.rainSource = "all";
+      }
+      // Include both single words and any saved collocations!
+      game.rainKind = "ALL";
+      savePrefs();
+      openGameSetup("rain");
+    },
+    openHub() {
+      openHub();
+    }
+  };
 
   init();
 })();

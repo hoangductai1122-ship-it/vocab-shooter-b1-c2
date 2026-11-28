@@ -258,6 +258,13 @@
       if (milestonesSet.size !== (localPlain.clearedMilestones || []).length) changedLocal = true;
       if (milestonesSet.size !== (remotePlain.clearedMilestones || []).length) changedRemote = true;
 
+      const readArticlesSet = new Set([
+        ...(localPlain.readArticles || []),
+        ...(remotePlain.readArticles || [])
+      ]);
+      if (readArticlesSet.size !== (localPlain.readArticles || []).length) changedLocal = true;
+      if (readArticlesSet.size !== (remotePlain.readArticles || []).length) changedRemote = true;
+
       const highScore = Math.max(Number(localPlain.highScore) || 0, Number(remotePlain.highScore) || 0);
       const streakDays = Math.max(Number(localPlain.streakDays) || 0, Number(remotePlain.streakDays) || 0);
 
@@ -279,6 +286,7 @@
           learned: mergedLearned,
           missed: Array.from(missedSet),
           clearedMilestones: Array.from(milestonesSet),
+          readArticles: Array.from(readArticlesSet),
           highScore,
           dailyDate: today,
           dailyCount,
